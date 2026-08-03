@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHALANX｜パラメーター解説</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ── トークン ── */
+:root {
+  --white:    #FFFFFF;
+  --g50:      #FAFAFA;
+  --g100:     #F4F4F6;
+  --g200:     #E8E8EC;
+  --g400:     #9CA3AF;
+  --g600:     #6B7280;
+  --g900:     #111318;
+  --navy:     #1B2A4A;
+  --gold:     #C9A84C;
+  --gold-lt:  #EDD98A;
+  --green:    #06C755;
+  --r:        1rem;
+}
+/* ── リセット ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--white); color: var(--g900);
+  font-size: 15px; line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  max-width: 640px; margin: 0 auto;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ── タイポグラフィ ── */
+.serif { font-family: 'Noto Serif JP', serif; }
+.label {
+  display: block; font-size: 11px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: .6rem;
+}
+.h1 { font-family: 'Noto Serif JP', serif; font-size: clamp(26px, 7vw, 34px); line-height: 1.3; font-weight: 700; }
+.h2 { font-family: 'Noto Serif JP', serif; font-size: 22px; line-height: 1.4; font-weight: 700; }
+.h3 { font-size: 16px; font-weight: 700; line-height: 1.45; }
+.body { font-size: 14px; color: var(--g600); line-height: 1.85; }
+.body p + p { margin-top: .9rem; }
+.body strong { color: var(--g900); font-weight: 700; }
+.muted { font-size: 12px; color: var(--g400); line-height: 1.7; }
+
+/* ── ボタン ── */
+.btn-line {
+  display: flex; align-items: center; justify-content: center; gap: .5rem;
+  background: var(--green); color: #fff; border-radius: 6px;
+  padding: 14px 24px; font-size: 15px; font-weight: 700;
+  letter-spacing: .04em; width: 100%;
+}
+.btn-outline {
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--gold); color: var(--gold);
+  border-radius: 6px; padding: 13px 24px; font-size: 14px; font-weight: 700;
+  width: 100%; background: transparent; letter-spacing: .04em;
+}
+.btn-outline-dark {
+  border-color: rgba(255,255,255,.3); color: #fff;
+}
+
+/* ── セクション ── */
+.sec        { padding: 56px 20px; background: var(--white); }
+.sec-gray   { padding: 56px 20px; background: var(--g50); }
+.sec-navy   { padding: 56px 20px; background: var(--navy); color: #fff; }
+.sec-dark   { padding: 56px 20px; background: var(--g900); color: #fff; }
+.sec-title  { margin-bottom: 28px; }
+.divider    { width: 32px; height: 2px; background: var(--gold); margin: 12px 0 0; }
+
+/* ── ヒーロー ── */
+.hero {
+  position: relative; min-height: 520px;
+  background:
+    linear-gradient(rgba(17,19,24,.68), rgba(17,19,24,.78)),
+    url('hero-bg.jpg')
+    center center / cover no-repeat;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 64px 24px 56px;
+  color: #fff;
+}
+.hero-badge {
+  display: inline-block; border: 1px solid rgba(201,168,76,.6);
+  color: var(--gold-lt); font-size: 10px; letter-spacing: .18em;
+  padding: 4px 14px; border-radius: 2px; margin-bottom: 24px;
+  text-transform: uppercase; font-weight: 500;
+}
+.hero-logo { height: 52px; width: auto; margin: 0 auto 20px; opacity: .9; filter: saturate(.6) brightness(.95); }
+.hero-catch { font-family: 'Noto Serif JP', serif; font-size: 13px; color: rgba(255,255,255,.6); margin-bottom: 14px; line-height: 2; }
+.hero-title { margin-bottom: 12px; color: #fff; }
+.hero-title span { color: var(--gold-lt); }
+.hero-sub { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.9; max-width: 400px; margin: 0 auto 32px; }
+.hero-line { width: 28px; height: 1px; background: var(--gold); margin: 0 auto 28px; opacity: .5; }
+.hero-ver { font-size: 10px; color: rgba(201,168,76,.5); letter-spacing: .2em; text-transform: uppercase; margin-top: 20px; }
+
+/* ── 商品概要 ── */
+.overview-lead { font-size: 15px; line-height: 1.9; color: var(--g600); margin-bottom: 24px; }
+.overview-lead strong { color: var(--g900); }
+.overview-points { display: flex; flex-direction: column; gap: 1px; background: var(--g200); border-radius: 8px; overflow: hidden; }
+.overview-point { background: var(--white); padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start; }
+.op-icon { flex-shrink: 0; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; margin-top: 8px; }
+.op-text { font-size: 14px; color: var(--g600); line-height: 1.7; }
+.op-text strong { color: var(--g900); font-weight: 700; }
+
+/* ── 特徴 ── */
+.feat-grid { display: flex; flex-direction: column; gap: 14px; }
+.feat-card {
+  background: var(--white); border-radius: 10px;
+  border: 1px solid var(--g200); padding: 22px 20px;
+  border-left: 3px solid var(--gold);
+}
+.feat-card-title { font-size: 15px; font-weight: 700; color: var(--g900); margin-bottom: 8px; line-height: 1.4; }
+.feat-card-body { font-size: 13px; color: var(--g600); line-height: 1.8; }
+
+/* ── 仕様 ── */
+.spec-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.spec-table tr { border-bottom: 1px solid var(--g100); }
+.spec-table tr:first-child { border-top: 1px solid var(--g100); }
+.spec-table td { padding: 14px 4px; vertical-align: top; line-height: 1.6; }
+.spec-table .sl { color: var(--g400); font-size: 12px; font-weight: 500; width: 42%; padding-left: 0; }
+.spec-table .sv { color: var(--g900); font-weight: 700; }
+
+/* ── 実績 ── */
+.result-img-area {
+  background: var(--g100); border-radius: 12px;
+  aspect-ratio: 9/16; max-height: 520px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; margin-bottom: 20px;
+}
+.result-img-area img { width: 100%; height: 100%; object-fit: contain; }
+.result-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; color: var(--g400);
+}
+.result-img-placeholder span { font-size: 13px; }
+
+.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.result-card {
+  background: var(--white); border: 1px solid var(--g200); border-radius: 8px;
+  padding: 16px 14px; border-top: 2px solid var(--gold);
+}
+.result-card-label { font-size: 11px; color: var(--g400); letter-spacing: .06em; margin-bottom: 6px; }
+.result-card-value { font-family: 'Noto Serif JP', serif; font-size: 17px; font-weight: 700; color: var(--g900); line-height: 1.3; }
+.result-card-value.plus { color: #16A34A; }
+.result-disc { font-size: 11px; color: var(--g400); line-height: 1.7; padding: 12px 0; border-top: 1px solid var(--g100); }
+
+/* ── 流れ ── */
+.flow-wrap { display: flex; flex-direction: column; gap: 0; }
+.flow-step { display: flex; gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--g100); }
+.flow-step:last-child { border-bottom: none; }
+.flow-num {
+  flex-shrink: 0; width: 32px; height: 32px;
+  background: var(--navy); color: var(--gold-lt);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: 'Noto Serif JP', serif; font-size: 14px; font-weight: 700;
+  margin-top: 2px;
+}
+.flow-content { flex: 1; }
+.flow-title { font-size: 15px; font-weight: 700; color: var(--g900); margin-bottom: 8px; line-height: 1.45; }
+.flow-body { font-size: 13px; color: var(--g600); line-height: 1.8; }
+.flow-body strong { color: var(--g900); }
+
+/* ── ブローカーカード ── */
+.broker-wrap { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+.broker-card { border: 1px solid var(--g200); border-radius: 10px; overflow: hidden; }
+.broker-head {
+  background: var(--g50); padding: 12px 16px;
+  font-size: 13px; font-weight: 700; color: var(--g900);
+  border-bottom: 1px solid var(--g200);
+  display: flex; align-items: center; gap: 8px;
+}
+.broker-badge {
+  font-size: 10px; font-weight: 700; background: var(--navy);
+  color: var(--gold-lt); padding: 2px 8px; border-radius: 2px; letter-spacing: .06em;
+}
+.broker-body { padding: 16px; background: var(--white); }
+
+/* パートナーコードボックス */
+.code-box {
+  background: #FFF5F5; border: 1.5px solid #FCA5A5;
+  border-radius: 6px; padding: 14px 16px; margin: 12px 0;
+  animation: pulse-red 3s ease-in-out infinite;
+}
+@keyframes pulse-red {
+  0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0);}
+  50%{box-shadow:0 0 10px 2px rgba(220,38,38,0.12);}
+}
+.code-box-warn { font-size: 10px; font-weight: 700; color: #DC2626; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
+.code-box-title { font-size: 13px; font-weight: 700; color: #7F1D1D; margin-bottom: 10px; }
+.code-display { text-align: center; margin-bottom: 8px; }
+.code-val {
+  display: inline-block; font-size: 22px; font-weight: 700; letter-spacing: .3em;
+  background: linear-gradient(135deg, #fff7ed, #ffffff); border: 1px solid #FCA5A5;
+  color: #7F1D1D; padding: 6px 20px; border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1); user-select: all;
+}
+.code-note { font-size: 11px; color: #9B1C1C; line-height: 1.75; }
+.code-note strong { color: #7F1D1D; }
+
+/* チェックリスト */
+.check-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
+.check-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--g600); }
+.check-dot { flex-shrink: 0; width: 16px; height: 16px; background: #D1FAE5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+.check-dot svg { width: 8px; height: 8px; }
+.check-txt strong { color: var(--g900); font-weight: 700; }
+
+/* URLボタン */
+.url-btn {
+  display: block; background: var(--g900); color: #fff;
+  border-radius: 6px; padding: 12px 16px; font-size: 13px; font-weight: 700;
+  text-align: center; letter-spacing: .04em; margin-top: 12px;
+}
+.url-btn-sub {
+  display: block; background: var(--g50); color: var(--g600);
+  border: 1px solid var(--g200); border-radius: 6px;
+  padding: 11px 16px; font-size: 12px; font-weight: 500;
+  text-align: center; margin-top: 8px;
+}
+
+/* アクション（フォーム・LINE） */
+.action-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.action-card { border: 1px solid var(--g200); border-radius: 10px; overflow: hidden; }
+.action-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; background: var(--g50); border-bottom: 1px solid var(--g200);
+}
+.action-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.action-num.form  { background: var(--gold); color: var(--g900); }
+.action-num.line  { background: var(--green); color: #fff; }
+.action-title { font-size: 13px; font-weight: 700; color: var(--g900); }
+.action-sub   { font-size: 10px; color: var(--g400); }
+.action-body  { padding: 14px 16px; }
+.form-btn {
+  display: block; background: var(--gold); color: var(--g900);
+  border-radius: 6px; padding: 13px 20px; font-size: 14px; font-weight: 700;
+  text-align: center; letter-spacing: .04em; margin-top: 12px;
+}
+
+/* shot list */
+.shot-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
+.shot-item { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--g600); }
+.shot-dot { flex-shrink: 0; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; margin-top: 8px; }
+
+/* ── FAQ ── */
+.faq-list { display: flex; flex-direction: column; gap: 0; }
+.faq-item { border-bottom: 1px solid var(--g100); }
+.faq-q {
+  width: 100%; text-align: left; padding: 18px 0;
+  background: none; border: none; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  font-size: 14px; font-weight: 700; color: var(--g900);
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.faq-icon {
+  flex-shrink: 0; width: 20px; height: 20px;
+  border: 1px solid var(--g200); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--g400); font-size: 14px; transition: transform .3s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+.faq-a-inner { padding-bottom: 16px; font-size: 13px; color: var(--g600); line-height: 1.85; }
+.faq-a-inner strong { color: var(--g900); }
+
+/* ── CTA（ダーク） ── */
+.cta-dark {
+  background: var(--g900); color: #fff;
+  padding: 56px 24px; text-align: center;
+}
+.cta-dark .h2 { color: #fff; margin-bottom: 14px; }
+.cta-dark .h2 span { color: var(--gold-lt); }
+.cta-body { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.9; margin-bottom: 28px; }
+.cta-note { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 12px; line-height: 1.7; }
+
+/* ── フッター ── */
+.footer { padding: 28px 20px; background: #050508; text-align: center; border-top: 1px solid rgba(255,255,255,.06); }
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-bottom: 14px; }
+.footer-links a { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .06em; }
+.footer-copy { font-size: 11px; color: rgba(255,255,255,.2); margin-bottom: 12px; }
+.footer-disc { font-size: 11px; color: rgba(255,255,255,.18); line-height: 1.8; border-top: 1px solid rgba(255,255,255,.06); padding-top: 12px; }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="hero" style="min-height:280px;padding:56px 24px 48px;">
+  <img src="phalanx-logo.png" alt="PHALANX" class="hero-logo">
+  <span class="hero-badge">Parameter Guide</span>
+  <h1 class="h1 hero-title">パラメーター<span>解説</span></h1>
+  <div class="hero-line"></div>
+  <p class="hero-sub">
+    各設定項目の内容と役割をまとめています。<br>設定を変更する際は、必ずこちらをご確認ください。
+  </p>
+</div>
+
+<!-- ── イントロ ── -->
+<div class="sec-navy">
+  <p style="font-size:13px;color:rgba(255,255,255,.75);line-height:2;">
+    PHALANXは、初期設定（デフォルト値）のままでも安全に運用できるよう設計されています。<br>
+    ご自身でリスク許容度に合わせて調整したい場合は、以下の解説を参考に設定を変更してください。
+  </p>
+</div>
+
+<!-- ── 基本設定 ── -->
+<div class="sec">
+  <div class="sec-title">
+    <span class="label">Basic Settings</span>
+    <h2 class="h2">基本設定</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">初期ロット <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0.01</span></div>
+      <div class="feat-card-body">最初の1回目のエントリーで使うロット数です。ナンピンのロットは、この数値を元にロット倍率で計算されます。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">損切金額 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0（無効）</span></div>
+      <div class="feat-card-body">口座全体の含み損がこの金額（円）を下回ったら、強制的に全ポジションを決済します。0にすると、この機能自体がオフになります。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ナンピン設定 ── -->
+<div class="sec-gray">
+  <div class="sec-title">
+    <span class="label">Nanpin Settings</span>
+    <h2 class="h2">ナンピン設定</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">最大ナンピン段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：14</span></div>
+      <div class="feat-card-body">この段数に達すると、それ以上のナンピンは行いません。既に保有しているポジションはそのまま管理されます。0にすると制限なしになります。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">ロット倍率 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：1.6</span></div>
+      <div class="feat-card-body">ナンピンのたびにロットを何倍にしていくかの倍率です。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">ナンピン幅 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：160</span></div>
+      <div class="feat-card-body">前回のエントリー価格から、どれだけ価格が離れたら次のナンピンを入れるかの幅（Point単位）です。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 利確設定 ── -->
+<div class="sec">
+  <div class="sec-title">
+    <span class="label">Take Profit Settings</span>
+    <h2 class="h2">利確設定</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">利確最小pips <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：10.0</span></div>
+      <div class="feat-card-body">ポジションが1本だけの時の利益確定幅です。この値に到達すると利益確定します。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">利確最大pips <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：12.5</span></div>
+      <div class="feat-card-body">ポジションが2〜5本ある時の利益確定幅です。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">トレイリング幅pips <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：3.0</span></div>
+      <div class="feat-card-body">6本以上保有した後は、利益を伸ばしながら、価格が設定幅だけ戻ると利益確定します。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── スプレッドフィルター ── -->
+<div class="sec-gray">
+  <div class="sec-title">
+    <span class="label">Spread Filter</span>
+    <h2 class="h2">スプレッドフィルター</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">スプレッド上限 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：55.0</span></div>
+      <div class="feat-card-body">この数値（Point）を超えるスプレッドの時、新規エントリー・ナンピンを見送ります。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 損切り段数 ── -->
+<div class="sec">
+  <div class="sec-title">
+    <span class="label">Cut Loss by Count</span>
+    <h2 class="h2">損切り段数設定</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">損切り段数機能 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：OFF</span></div>
+      <div class="feat-card-body">ONにすると、下の「損切り段数」による強制決済が有効になります。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">損切り段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：10</span></div>
+      <div class="feat-card-body">損切り段数機能がONの場合、この段数に達したら強制的に決済（損切り）します。決済後もエントリーは止まらず、条件が揃えばすぐに再エントリーします。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 救済決済 ── -->
+<div class="sec-gray">
+  <div class="sec-title">
+    <span class="label">Rescue Close</span>
+    <h2 class="h2">救済決済設定</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">救済決済機能 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：OFF</span></div>
+      <div class="feat-card-body">ONにすると、買いと売りのポジション全体の損益がプラスになった時、一括決済します。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">救済決済発動額 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：5000</span></div>
+      <div class="feat-card-body">損益の合計がこの金額（円）以上のプラスになったら発動します。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">救済決済起動段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：8</span></div>
+      <div class="feat-card-body">買いまたは売りどちらかがこの段数以上ある時だけ、救済決済の判定を始めます。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 背景色アラート ── -->
+<div class="sec">
+  <div class="sec-title">
+    <span class="label">Background Alert</span>
+    <h2 class="h2">背景色アラート設定</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">背景色アラート機能 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：ON</span></div>
+      <div class="feat-card-body">チャートの背景色を状況に応じて変える機能のON/OFFです。売買には影響しません。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">注意段数／警告段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：6／10</span></div>
+      <div class="feat-card-body">買いまたは売りどちらかの本数がこの段数以上になったら、背景を黄色（注意段数）・赤（警告段数）にします。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">注意含み損／警告含み損 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：30000／50000</span></div>
+      <div class="feat-card-body">口座全体の含み損がこの金額（円）以上になったら、背景を黄色・赤にします。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">急落検知pips <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：500</span></div>
+      <div class="feat-card-body">短時間で価格が大きく動いた場合、背景色を赤にして注意を促します。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── パネル設定 ── -->
+<div class="sec-gray">
+  <div class="sec-title">
+    <span class="label">Panel Settings</span>
+    <h2 class="h2">パネル設定</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">パネル角／パネルX／パネルY_タイトル／パネル行間</div>
+      <div class="feat-card-body">チャート上に表示する情報パネルの位置を調整します。通常は初期設定のままで問題ありません。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 稼働時間 ── -->
+<div class="sec">
+  <div class="sec-title">
+    <span class="label">Trading Hours</span>
+    <h2 class="h2">稼働曜日・時間設定</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">曜日ごとのモード・開始時刻・停止時刻</div>
+      <div class="feat-card-body">EAが新規注文を行う曜日・時間帯を設定します。初期設定は月〜木12:00〜17:00、金12:00〜15:00、土日は停止です。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 推奨設定 ── -->
+<div class="cta-dark">
+  <h2 class="h2 serif">推奨設定</h2>
+  <p class="cta-body" style="margin-top:16px;">
+    初めて運用する場合は、初期設定（デフォルト値）のままご利用ください。<br>
+    各パラメーターは十分な検証を行ったうえで設定しています。
+  </p>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+  <div class="footer-copy">&copy; 2026 MKJAPAN Co.,Ltd. All rights reserved.</div>
+</div>
+
+</body>
+</html>
