@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BARRAGE｜爆撃型ゴールドEA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:    #FFFFFF;
+  --g50:      #FAFAFA;
+  --g100:     #F4F4F6;
+  --g200:     #E8E8EC;
+  --g400:     #9CA3AF;
+  --g600:     #6B7280;
+  --g900:     #111318;
+  --navy:     #1B2A4A;
+  --gold:     #C9A84C;
+  --gold-lt:  #EDD98A;
+  --green:    #06C755;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--white); color: var(--g900);
+  font-size: 15px; line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  max-width: 640px; margin: 0 auto;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+.serif { font-family: 'Noto Serif JP', serif; }
+.label {
+  display: block; font-size: 11px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: .6rem;
+}
+.h1 { font-family: 'Noto Serif JP', serif; font-size: clamp(26px, 7vw, 34px); line-height: 1.3; font-weight: 700; }
+.h2 { font-family: 'Noto Serif JP', serif; font-size: 22px; line-height: 1.4; font-weight: 700; }
+.h3 { font-size: 16px; font-weight: 700; line-height: 1.45; }
+.body { font-size: 14px; color: var(--g600); line-height: 1.85; }
+.body p + p { margin-top: .9rem; }
+.body strong { color: var(--g900); font-weight: 700; }
+.muted { font-size: 12px; color: var(--g400); line-height: 1.7; }
+
+.btn-line {
+  display: flex; align-items: center; justify-content: center; gap: .5rem;
+  background: var(--green); color: #fff; border-radius: 6px;
+  padding: 14px 24px; font-size: 15px; font-weight: 700;
+  letter-spacing: .04em; width: 100%;
+}
+.btn-outline {
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--gold); color: var(--gold);
+  border-radius: 6px; padding: 13px 24px; font-size: 14px; font-weight: 700;
+  width: 100%; background: transparent; letter-spacing: .04em;
+}
+
+.sec        { padding: 56px 20px; background: var(--white); }
+.sec-gray   { padding: 56px 20px; background: var(--g50); }
+.sec-navy   { padding: 56px 20px; background: var(--navy); color: #fff; }
+.sec-dark   { padding: 56px 20px; background: var(--g900); color: #fff; }
+.sec-title  { margin-bottom: 28px; }
+.divider    { width: 32px; height: 2px; background: var(--gold); margin: 12px 0 0; }
+
+.hero {
+  position: relative; min-height: 520px;
+  background:
+    linear-gradient(rgba(17,19,24,.72), rgba(17,19,24,.82)),
+    url('hero-bg.jpg')
+    center center / cover no-repeat;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 64px 24px 56px;
+  color: #fff;
+}
+.hero-badge {
+  display: inline-block; border: 1px solid rgba(201,168,76,.6);
+  color: var(--gold-lt); font-size: 10px; letter-spacing: .18em;
+  padding: 4px 14px; border-radius: 2px; margin-bottom: 24px;
+  text-transform: uppercase; font-weight: 500;
+}
+.hero-logo { height: 100px; width: auto; margin: 0 auto 20px; }
+.hero-catch { font-family: 'Noto Serif JP', serif; font-size: 13px; color: rgba(255,255,255,.6); margin-bottom: 14px; line-height: 2; }
+.hero-title { margin-bottom: 12px; color: #fff; }
+.hero-title span { color: var(--gold-lt); }
+.hero-sub { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.9; max-width: 400px; margin: 0 auto 32px; }
+.hero-line { width: 28px; height: 1px; background: var(--gold); margin: 0 auto 28px; opacity: .5; }
+.hero-ver { font-size: 10px; color: rgba(201,168,76,.5); letter-spacing: .2em; text-transform: uppercase; margin-top: 20px; }
+
+.overview-lead { font-size: 15px; line-height: 1.9; color: var(--g600); margin-bottom: 24px; }
+.overview-lead strong { color: var(--g900); }
+.overview-points { display: flex; flex-direction: column; gap: 1px; background: var(--g200); border-radius: 8px; overflow: hidden; }
+.overview-point { background: var(--white); padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start; }
+.op-icon { flex-shrink: 0; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; margin-top: 8px; }
+.op-text { font-size: 14px; color: var(--g600); line-height: 1.7; }
+.op-text strong { color: var(--g900); font-weight: 700; }
+
+.feat-grid { display: flex; flex-direction: column; gap: 14px; }
+.feat-card {
+  background: var(--white); border-radius: 10px;
+  border: 1px solid var(--g200); padding: 22px 20px;
+  border-left: 3px solid var(--gold);
+}
+.feat-card-title { font-size: 15px; font-weight: 700; color: var(--g900); margin-bottom: 8px; line-height: 1.4; }
+.feat-card-body { font-size: 13px; color: var(--g600); line-height: 1.8; }
+
+.spec-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.spec-table tr { border-bottom: 1px solid var(--g100); }
+.spec-table tr:first-child { border-top: 1px solid var(--g100); }
+.spec-table td { padding: 14px 4px; vertical-align: top; line-height: 1.6; }
+.spec-table .sl { color: var(--g400); font-size: 12px; font-weight: 500; width: 42%; padding-left: 0; }
+.spec-table .sv { color: var(--g900); font-weight: 700; }
+
+.result-img-area {
+  background: var(--g100); border-radius: 12px;
+  aspect-ratio: 9/16; max-height: 520px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; margin-bottom: 20px;
+}
+.result-img-area img { width: 100%; height: 100%; object-fit: contain; }
+.result-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; color: var(--g400);
+}
+.result-img-placeholder span { font-size: 13px; }
+
+.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.result-card {
+  background: var(--white); border: 1px solid var(--g200); border-radius: 8px;
+  padding: 16px 14px; border-top: 2px solid var(--gold);
+}
+.result-card-label { font-size: 11px; color: var(--g400); letter-spacing: .06em; margin-bottom: 6px; }
+.result-card-value { font-family: 'Noto Serif JP', serif; font-size: 17px; font-weight: 700; color: var(--g900); line-height: 1.3; }
+.result-card-value.plus { color: #16A34A; }
+.result-disc { font-size: 11px; color: var(--g400); line-height: 1.7; padding: 12px 0; border-top: 1px solid var(--g100); }
+
+.flow-wrap { display: flex; flex-direction: column; gap: 0; }
+.flow-step { display: flex; gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--g100); }
+.flow-step:last-child { border-bottom: none; }
+.flow-num {
+  flex-shrink: 0; width: 32px; height: 32px;
+  background: var(--navy); color: var(--gold-lt);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: 'Noto Serif JP', serif; font-size: 14px; font-weight: 700;
+  margin-top: 2px;
+}
+.flow-content { flex: 1; }
+.flow-title { font-size: 15px; font-weight: 700; color: var(--g900); margin-bottom: 8px; line-height: 1.45; }
+.flow-body { font-size: 13px; color: var(--g600); line-height: 1.8; }
+.flow-body strong { color: var(--g900); }
+
+.broker-wrap { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+.broker-card { border: 1px solid var(--g200); border-radius: 10px; overflow: hidden; }
+.broker-head {
+  background: var(--g50); padding: 12px 16px;
+  font-size: 13px; font-weight: 700; color: var(--g900);
+  border-bottom: 1px solid var(--g200);
+  display: flex; align-items: center; gap: 8px;
+}
+.broker-badge {
+  font-size: 10px; font-weight: 700; background: var(--navy);
+  color: var(--gold-lt); padding: 2px 8px; border-radius: 2px; letter-spacing: .06em;
+}
+.broker-body { padding: 16px; background: var(--white); }
+
+.code-box {
+  background: #FFF5F5; border: 1.5px solid #FCA5A5;
+  border-radius: 6px; padding: 14px 16px; margin: 12px 0;
+  animation: pulse-red 3s ease-in-out infinite;
+}
+@keyframes pulse-red {
+  0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0);}
+  50%{box-shadow:0 0 10px 2px rgba(220,38,38,0.12);}
+}
+.code-box-warn { font-size: 10px; font-weight: 700; color: #DC2626; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
+.code-box-title { font-size: 13px; font-weight: 700; color: #7F1D1D; margin-bottom: 10px; }
+.code-display { text-align: center; margin-bottom: 8px; }
+.code-val {
+  display: inline-block; font-size: 22px; font-weight: 700; letter-spacing: .3em;
+  background: linear-gradient(135deg, #fff7ed, #ffffff); border: 1px solid #FCA5A5;
+  color: #7F1D1D; padding: 6px 20px; border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1); user-select: all;
+}
+.code-note { font-size: 11px; color: #9B1C1C; line-height: 1.75; }
+
+.check-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
+.check-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--g600); }
+.check-dot { flex-shrink: 0; width: 16px; height: 16px; background: #D1FAE5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+.check-dot svg { width: 8px; height: 8px; }
+.check-txt strong { color: var(--g900); font-weight: 700; }
+
+.url-btn {
+  display: block; background: var(--g900); color: #fff;
+  border-radius: 6px; padding: 12px 16px; font-size: 13px; font-weight: 700;
+  text-align: center; letter-spacing: .04em; margin-top: 12px;
+}
+.url-btn-sub {
+  display: block; background: var(--g50); color: var(--g600);
+  border: 1px solid var(--g200); border-radius: 6px;
+  padding: 11px 16px; font-size: 12px; font-weight: 500;
+  text-align: center; margin-top: 8px;
+}
+
+.action-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.action-card { border: 1px solid var(--g200); border-radius: 10px; overflow: hidden; }
+.action-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; background: var(--g50); border-bottom: 1px solid var(--g200);
+}
+.action-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.action-num.form  { background: var(--gold); color: var(--g900); }
+.action-num.line  { background: var(--green); color: #fff; }
+.action-title { font-size: 13px; font-weight: 700; color: var(--g900); }
+.action-sub   { font-size: 10px; color: var(--g400); }
+.action-body  { padding: 14px 16px; }
+.form-btn {
+  display: block; background: var(--gold); color: var(--g900);
+  border-radius: 6px; padding: 13px 20px; font-size: 14px; font-weight: 700;
+  text-align: center; letter-spacing: .04em; margin-top: 12px;
+}
+
+.shot-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
+.shot-item { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--g600); }
+.shot-dot { flex-shrink: 0; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; margin-top: 8px; }
+
+.faq-list { display: flex; flex-direction: column; gap: 0; }
+.faq-item { border-bottom: 1px solid var(--g100); }
+.faq-q {
+  width: 100%; text-align: left; padding: 18px 0;
+  background: none; border: none; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  font-size: 14px; font-weight: 700; color: var(--g900);
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.faq-icon {
+  flex-shrink: 0; width: 20px; height: 20px;
+  border: 1px solid var(--g200); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--g400); font-size: 14px; transition: transform .3s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+.faq-a-inner { padding-bottom: 16px; font-size: 13px; color: var(--g600); line-height: 1.85; }
+.faq-a-inner strong { color: var(--g900); }
+
+.cta-dark {
+  background: var(--g900); color: #fff;
+  padding: 56px 24px; text-align: center;
+}
+.cta-dark .h2 { color: #fff; margin-bottom: 14px; }
+.cta-dark .h2 span { color: var(--gold-lt); }
+.cta-body { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.9; margin-bottom: 28px; }
+.cta-note { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 12px; line-height: 1.7; }
+
+.footer { padding: 28px 20px; background: #050508; text-align: center; border-top: 1px solid rgba(255,255,255,.06); }
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-bottom: 14px; }
+.footer-links a { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .06em; }
+.footer-copy { font-size: 11px; color: rgba(255,255,255,.2); margin-bottom: 12px; }
+.footer-disc { font-size: 11px; color: rgba(255,255,255,.18); line-height: 1.8; border-top: 1px solid rgba(255,255,255,.06); padding-top: 12px; }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <img src="barrage-logo.png" alt="BARRAGE" class="hero-logo">
+  <span class="hero-badge">XAUUSD Gold — Aggressive Auto Trading EA</span>
+  <p class="hero-catch">撃って、利確して、また撃つ。<br>弾幕のように連続して稼ぎ続ける。</p>
+  <h1 class="h1 hero-title">爆撃型ゴールドEA、<br><span>BARRAGE</span></h1>
+  <div class="hero-line"></div>
+  <p class="hero-sub">
+    XAUUSD（ゴールド）専用の攻撃型自動売買EA。<br>
+    買いと売りを独立管理し、<br>狭いナンピン幅で連続利確を積み上げます。
+  </p>
+  <a href="https://lin.ee/NQcEpNH" class="btn-line" style="max-width:300px;" target="_blank" rel="noopener">💬 LINEで無料相談・登録</a>
+  <p class="hero-ver">BARRAGE v2.7</p>
+</div>
+
+<!-- ── 商品概要 ── -->
+<div class="sec">
+  <div class="sec-title">
+    <span class="label">About</span>
+    <h2 class="h2">BARRAGEとは</h2>
+    <div class="divider"></div>
+  </div>
+  <p class="overview-lead">
+    弾幕（BARRAGE）という名が示す通り、<strong>ナンピンを連続で積んで利確を繰り返す</strong>攻撃型のゴールドEAです。<br>
+    安定型ではありません。その分、<strong>順調な日は1日10〜20万円規模の利益</strong>を生み出す爆発力があります。
+  </p>
+  <div class="overview-points">
+    <div class="overview-point">
+      <div class="op-icon"></div>
+      <div class="op-text"><strong>買いと売りを完全に独立管理。</strong>どちらかがハマっていても、もう片方が利確を積み続けます。</div>
+    </div>
+    <div class="overview-point">
+      <div class="op-icon"></div>
+      <div class="op-text"><strong>繰り返しのテストで導き出した独自のナンピン幅・ロット倍率。</strong>価格が動くたびに次の弾が入ります。</div>
+    </div>
+    <div class="overview-point">
+      <div class="op-icon"></div>
+      <div class="op-text"><strong>テストで導き出した最適な時間帯のみ稼働。</strong>急変リスクが高い時間帯には一切踏み込みません。</div>
+    </div>
+    <div class="overview-point">
+      <div class="op-icon"></div>
+      <div class="op-text"><strong>含み損・段数・急落を色で警告。</strong>チャート背景が赤くなったら判断するだけ。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 特徴 ── -->
+<div class="sec-gray">
+  <div class="sec-title">
+    <span class="label">Features</span>
+    <h2 class="h2">BARRAGEの武装</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">BUY/SELL独立ナンピン管理</div>
+      <div class="feat-card-body">買いと売りをマジックナンバーで完全に分離。片方がハマっていても、もう片方は利確サイクルを継続します。両建てで相場のどちらの方向にも対応する設計です。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">攻撃的ナンピン設計</div>
+      <div class="feat-card-body">繰り返しのテストで導き出した独自のナンピン幅・ロット倍率により、段数が積み上がるほど利確時の利益が大きくなります。平均取得価格を超えた瞬間に全段まとめて利確するスキャルピング型ロジックです。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">プラ転決済機能</div>
+      <div class="feat-card-body">深くハマった時でも、含み損益の合計がプラスに転じた瞬間に全ポジションを自動決済します。損失を確定させずに脱出するタイミングを逃しません。初期設定ではOFFです。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">背景色アラートシステム</div>
+      <div class="feat-card-body">段数・含み損・1分足の急落を常時監視。設定した閾値を超えるとチャート背景が黄色→赤と変化します。別画面で作業中でも視野の端で異常を察知できます。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">5営業日分の損益パネル</div>
+      <div class="feat-card-body">今日の確定日利・最大DDと過去4営業日分の実績をチャート上に常時表示。MT4を再起動しても数値が消えないよう内部に記録しています。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">ENTRY STOP / CLOSE ALLボタン</div>
+      <div class="feat-card-body">新規エントリーだけを停止する「ENTRY STOP」と全ポジションを即時決済する「CLOSE ALL」を搭載。CLOSE ALLを押すと自動でエントリー停止状態に移行します。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 基本仕様 ── -->
+<div class="sec">
+  <div class="sec-title">
+    <span class="label">Specification</span>
+    <h2 class="h2">基本仕様</h2>
+    <div class="divider"></div>
+  </div>
+  <table class="spec-table">
+    <tr><td class="sl">対応通貨ペア</td><td class="sv">XAUUSD（ゴールド）</td></tr>
+    <tr><td class="sl">プラットフォーム</td><td class="sv">MetaTrader 4（MT4）</td></tr>
+    <tr><td class="sl">対応ブローカー</td><td class="sv">XM / VT Markets</td></tr>
+    <tr><td class="sl">稼働時間</td><td class="sv">コミュニティ内で推奨している時間帯のみ<br>（繰り返しのテストで導き出した設定）</td></tr>
+    <tr><td class="sl">初期ロット</td><td class="sv">0.01ロット（調整可）</td></tr>
+    <tr><td class="sl">稼働方式</td><td class="sv">完全自動（VPS推奨）</td></tr>
+    <tr><td class="sl">認証方式</td><td class="sv">Web認証（オンライン必須）</td></tr>
+    <tr><td class="sl">バージョン</td><td class="sv">v2.7</td></tr>
+  </table>
+</div>
+
+<!-- ── 実績 ── -->
+<div class="sec-gray">
+  <div class="sec-title">
+    <span class="label">Results</span>
+    <h2 class="h2">運用実績</h2>
+    <div class="divider"></div>
+  </div>
+  <!-- 実績画像差し替えエリア：barrage-result.jpg に変更してください -->
+  <div class="result-img-area">
+    <div class="result-img-placeholder">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      <span>実績スクリーンショット<br>（barrage-result.jpg）</span>
+    </div>
+  </div>
+  <div class="result-grid">
+    <div class="result-card">
+      <div class="result-card-label">通常日の日利</div>
+      <div class="result-card-value plus">+10〜20万円</div>
+    </div>
+    <div class="result-card">
+      <div class="result-card-label">稼働時間</div>
+      <div class="result-card-value">約5時間</div>
+    </div>
+    <div class="result-card">
+      <div class="result-card-label">対象ブローカー</div>
+      <div class="result-card-value">XM / VT Markets</div>
+    </div>
+    <div class="result-card">
+      <div class="result-card-label">推奨口座残高</div>
+      <div class="result-card-value">100万円〜</div>
+    </div>
+  </div>
+  <p class="result-disc">※上記は過去の運用実績であり、将来の利益を保証するものではありません。相場環境によっては大幅な損失が生じる可能性があります。余裕資金での運用を推奨します。</p>
+</div>
+
+<!-- ── 始め方 ── -->
+<div class="sec">
+  <div class="sec-title">
+    <span class="label">How to Start</span>
+    <h2 class="h2">始め方</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="flow-wrap">
+
+    <!-- STEP 1 -->
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-content">
+        <div class="flow-title">推奨ブローカーで口座を開設する</div>
+        <p class="flow-body" style="margin-bottom:16px;"><strong>パートナーコードを必ず入力してください。</strong>事後変更はできません。</p>
+        <div class="broker-wrap">
+
+          <!-- XM -->
+          <div class="broker-card">
+            <div class="broker-head">
+              <span class="broker-badge">XM</span>
+              XMをお使いの方
+            </div>
+            <div class="broker-body">
+              <div class="check-list">
+                <div class="check-item">
+                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="check-txt"><strong>取引プラットフォーム：MT4</strong></div>
+                </div>
+                <div class="check-item">
+                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="check-txt"><strong>口座タイプ：KIWAMI極口座 または スタンダード</strong></div>
+                </div>
+                <div class="check-item">
+                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="check-txt"><strong>基本通貨：JPY（日本円）</strong></div>
+                </div>
+              </div>
+              <div class="code-box" style="margin-top:14px;">
+                <div class="code-box-warn">⚠ 必ず入力してください</div>
+                <div class="code-box-title">パートナーコードの入力</div>
+                <p style="font-size:12px;color:#9B1C1C;margin-bottom:10px;line-height:1.75;">登録画面の「パートナーコード」欄に必ず入力してください。</p>
+                <div class="code-display"><span class="code-val">FMDB2</span></div>
+                <div class="code-note">
+                  <p>！ 事後変更はできません。入れ忘れた場合はLINEにてご相談ください。</p>
+                </div>
+              </div>
+              <a href="https://affx.click/LH9hx" class="url-btn" target="_blank" rel="noopener">新規口座を開設する →</a>
+              <a href="https://clicks.affstrack.com/c?c=996903&l=en&p=22" class="url-btn-sub" target="_blank" rel="noopener">すでにXM口座をお持ちの方（追加口座）</a>
+            </div>
+          </div>
+
+          <!-- VT Markets -->
+          <div class="broker-card">
+            <div class="broker-head">
+              <span class="broker-badge">VT Markets</span>
+              VT Marketsをお使いの方
+            </div>
+            <div class="broker-body">
+              <div class="check-list">
+                <div class="check-item">
+                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="check-txt"><strong>取引プラットフォーム：MT4</strong></div>
+                </div>
+                <div class="check-item">
+                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="check-txt"><strong>口座タイプ：VIP口座</strong></div>
+                </div>
+                <div class="check-item">
+                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="check-txt"><strong>基本通貨：JPY（日本円）</strong></div>
+                </div>
+              </div>
+              <div class="code-box" style="margin-top:14px;">
+                <div class="code-box-warn">⚠ 必ず入力してください</div>
+                <div class="code-box-title">パートナーコードの入力</div>
+                <p style="font-size:12px;color:#9B1C1C;margin-bottom:10px;line-height:1.75;">登録画面の「パートナーコード」欄に必ず入力してください。</p>
+                <div class="code-display"><span class="code-val">C1EOpqxX</span></div>
+                <div class="code-note">
+                  <p>！ 入れ忘れた場合はLINEにてご相談ください。</p>
+                </div>
+              </div>
+              <a href="https://vtm.pro/la3-com/global/C1EOpqxX" class="url-btn" target="_blank" rel="noopener">VT Marketsで口座を開設する →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-content">
+        <div class="flow-title">口座番号を登録してスクショを送る</div>
+        <p class="flow-body" style="margin-bottom:16px;">フォームに口座番号を登録後、LINEに残高・口座番号が写ったスクショを1枚送ってください。</p>
+        <div class="action-cards">
+          <div class="action-card">
+            <div class="action-head">
+              <div class="action-num form">1</div>
+              <div>
+                <div class="action-title">口座番号をフォームに登録</div>
+                <div class="action-sub">EA認証に必要です・1分で完了</div>
+              </div>
+            </div>
+            <div class="action-body">
+              <a href="https://utlink.jp/l/36iOn8twP6M9" class="form-btn" target="_blank" rel="noopener">📝 口座番号を登録する</a>
+            </div>
+          </div>
+          <div class="action-card">
+            <div class="action-head">
+              <div class="action-num line">2</div>
+              <div>
+                <div class="action-title">LINEへスクショを1枚送る</div>
+                <div class="action-sub">残高・口座番号が写っていればOK</div>
+              </div>
+            </div>
+            <div class="action-body">
+              <div class="shot-list">
+                <div class="shot-item"><div class="shot-dot"></div>口座残高（入金後の金額）</div>
+                <div class="shot-item"><div class="shot-dot"></div>口座番号（MT4のログインID）</div>
+              </div>
+              <a href="https://lin.ee/NQcEpNH" class="btn-line" style="margin-top:12px;" target="_blank" rel="noopener">💬 LINEで報告する</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-content">
+        <div class="flow-title">EAを受け取って稼働開始</div>
+        <p class="flow-body">確認次第、<strong>GoogleドライブのマニュアルURLをLINEで送付</strong>します。マニュアル通りに設置するだけで自動稼働が始まります。わからないことはLINEでいつでも聞いてください。</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FAQ ── -->
+<div class="sec-gray">
+  <div class="sec-title">
+    <span class="label">FAQ</span>
+    <h2 class="h2">よくある質問</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>FX初心者でも使えますか？</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">ご利用いただけますが、<strong>BARRAGEはハイリスク・ハイリターン型のEAです。</strong>安定型ではなく、相場環境によっては大きな損失が生じる可能性があります。FX取引の基本的な仕組みや証拠金・ロスカットの概念をご理解いただいた上でのご利用を推奨します。LINE登録後に詳しいご説明も行っています。</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>VPS（仮想サーバー）は必要ですか？</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">必須ではありませんが、強く推奨しています。BARRAGEは稼働時間中に連続してエントリーを行うため、PCを切ってしまうと重要な局面を逃す可能性があります。月額1,000〜3,000円程度のVPSサービスをご利用ください。</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>推奨証拠金はいくらですか？</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">スタンダード口座・0.01ロット運用で<strong>100万円以上</strong>を推奨しています。ナンピンが積み上がるほど必要証拠金が増えるため、余裕を持った資金での運用をお願いします。余裕資金の範囲内でご利用ください。</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>元本は保証されますか？</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner"><strong>元本の保証はありません。</strong>BARRAGEは攻撃的な設計のため、突発的な急落・急騰時に大きな損失が生じる可能性があります。プラ転決済や段数自動損切り機能も搭載していますが、初期設定ではOFFです。リスクをご理解の上、余裕資金での運用を強くお勧めします。</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>パートナーコードを入れ忘れた場合は？</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">コードの事後変更はできません。入れ忘れに気づいた場合は、まずLINEでご相談ください。状況に応じて一緒に対応を考えます。</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>XMとVT Marketsどちらがおすすめですか？</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">BARRAGEのナンピン型ロジックとの相性でいうと、<strong>スプレッドが狭いほど有利</strong>です。VT MarketsのVIP口座はゴールドのスプレッドが約30（3pips相当）と安定しており、BARRAGEとの相性が良好です。詳しくはLINEでご相談ください。</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<div class="cta-dark">
+  <h2 class="h2 serif">弾幕のように稼ぎ続ける、<br><span>攻撃型EA。</span></h2>
+  <p class="cta-body" style="margin-top:12px;">
+    詳細・ご質問・お申し込みは<br>公式LINEよりお気軽にどうぞ。
+  </p>
+  <a href="https://lin.ee/NQcEpNH" class="btn-line" style="max-width:300px;margin:0 auto;" target="_blank" rel="noopener">💬 LINEで無料相談・登録</a>
+  <p class="cta-note">LINEアプリにて公式アカウントを登録後、担当者より折り返しご連絡いたします。</p>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+  <div class="footer-links">
+    <a href="https://fx.mkjpn.jp/p/cCFzyGkqMbNg" target="_blank" rel="noopener">特定商取引法に基づく表示</a>
+    <a href="https://fx.mkjpn.jp/p/pdFqazliCBgN" target="_blank" rel="noopener">プライバシーポリシー</a>
+    <a href="https://fx.mkjpn.jp/p/cCFzyGkqMbNg" target="_blank" rel="noopener">免責事項</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 MKJAPAN Co.,Ltd. All rights reserved.</div>
+  <div class="footer-disc">【リスク開示】本EAを使用したFX取引には元本損失のリスクがあります。過去の実績は将来の利益を保証するものではありません。余裕資金の範囲内で、自己責任においてご利用ください。金融商品取引法に基づく投資助言は行っておりません。</div>
+</div>
+
+<script>
+function toggleFaq(btn) {
+  var item = btn.closest('.faq-item');
+  var body = item.querySelector('.faq-a');
+  var open = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(el) {
+    el.classList.remove('open');
+    el.querySelector('.faq-a').style.maxHeight = '0';
+  });
+  if (!open) {
+    item.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+</script>
+</body>
+</html>
