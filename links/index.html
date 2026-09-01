@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKJAPAN｜リンク集</title>
+<meta name="description" content="MKJAPANの各種サービスへのリンク集です。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ── トークン ── */
+:root {
+  --white:    #FFFFFF;
+  --g50:      #FAFAFA;
+  --g100:     #F4F4F6;
+  --g200:     #E8E8EC;
+  --g400:     #9CA3AF;
+  --g600:     #6B7280;
+  --g900:     #111318;
+  --navy:     #1B2A4A;
+  --navy-dk:  #131F38;
+  --gold:     #C9A84C;
+  --gold-lt:  #EDD98A;
+}
+/* ── リセット ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--navy-dk); color: var(--g900);
+  font-size: 15px; line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  max-width: 640px; margin: 0 auto;
+  min-height: 100vh;
+}
+a { text-decoration: none; color: inherit; }
+.serif { font-family: 'Noto Serif JP', serif; }
+
+/* ── ヘッダー ── */
+.header {
+  background: var(--navy);
+  padding: 40px 24px 32px;
+  text-align: center;
+  border-bottom: 1px solid rgba(201,168,76,.25);
+}
+.logo {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--gold);
+}
+.logo span { color: var(--gold-lt); }
+.tagline {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+}
+
+/* ── メイン ── */
+.main {
+  background: var(--navy-dk);
+  padding: 40px 20px 56px;
+  min-height: 60vh;
+}
+.intro {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+  line-height: 1.9;
+  margin-bottom: 32px;
+}
+
+.links { display: flex; flex-direction: column; gap: 14px; }
+.link-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  background: var(--navy);
+  border: 1px solid rgba(201,168,76,.3);
+  border-left: 3px solid var(--gold);
+  border-radius: 10px;
+  padding: 20px 22px;
+  transition: background .2s ease, border-color .2s ease;
+}
+.link-card:active { background: #223458; }
+.link-info { display: flex; flex-direction: column; gap: 4px; }
+.link-name { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: .02em; }
+.link-desc { font-size: 12px; color: rgba(255,255,255,.5); line-height: 1.6; }
+.link-arrow {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border: 1px solid rgba(201,168,76,.5);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold-lt);
+  font-size: 14px;
+}
+
+/* ── フッター ── */
+.footer { padding: 28px 20px; background: #0A1122; text-align: center; border-top: 1px solid rgba(255,255,255,.06); }
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-bottom: 14px; }
+.footer-links a { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .06em; }
+.footer-copy { font-size: 11px; color: rgba(255,255,255,.2); }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="logo serif">MK<span>JAPAN</span></div>
+  <div class="tagline">Official Links</div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+  <p class="intro">各種サービス・SNSはこちらからご覧いただけます。</p>
+
+  <div class="links">
+    <a class="link-card" href="https://coconala.com/users/2155070" target="_blank" rel="noopener">
+      <div class="link-info">
+        <span class="link-name">ココナラ</span>
+        <span class="link-desc">サービス出品ページ</span>
+      </div>
+      <span class="link-arrow">↗</span>
+    </a>
+
+    <a class="link-card" href="https://www.amazon.co.jp/stores/author/B0FDLCRY8S" target="_blank" rel="noopener">
+      <div class="link-info">
+        <span class="link-name">Amazon Kindle</span>
+        <span class="link-desc">著者ページ</span>
+      </div>
+      <span class="link-arrow">↗</span>
+    </a>
+
+    <a class="link-card" href="https://note.com/masatomo_fx" target="_blank" rel="noopener">
+      <div class="link-info">
+        <span class="link-name">note</span>
+        <span class="link-desc">masatomo_fx</span>
+      </div>
+      <span class="link-arrow">↗</span>
+    </a>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+  <div class="footer-links">
+    <a href="/legal/" target="_blank" rel="noopener">特定商取引法に基づく表示</a>
+    <a href="/privacy/" target="_blank" rel="noopener">プライバシーポリシー</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 MKJAPAN Co.,Ltd. All rights reserved.</div>
+</div>
+
+</body>
+</html>
