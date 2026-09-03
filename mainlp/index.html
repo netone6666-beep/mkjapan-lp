@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MKJAPAN</title>
+<meta name="robots" content="noindex, nofollow">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7FAFC;
+    --text-main:#17212B;
+    --text-sub:#66717D;
+    --ai-blue:#55C8FF;
+    --human-gold:#F1C978;
+    --accent-connect:#58AFFF;
+    --line-thin:#B8DFF2;
+    --glass:rgba(255,255,255,0.55);
+    --cta-cyan:#7FE3FF;
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--bg);
+    color:var(--text-main);
+    font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif;
+    overflow-x:hidden;
+    width:100%;
+  }
+
+  body{
+    position:relative;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- 背景グラデーション ---------- */
+  .bg-layer{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background:linear-gradient(160deg,#FFFFFF 0%,#F7FAFC 45%,#EAF4FB 100%);
+  }
+  .bg-glow{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-glow span{
+    position:absolute;
+    width:60vmax;
+    height:60vmax;
+    top:-20vmax;
+    right:-20vmax;
+    border-radius:50%;
+    background:radial-gradient(circle at 50% 50%, rgba(85,200,255,0.16) 0%, rgba(85,200,255,0) 70%);
+    filter:blur(10px);
+  }
+  .js .bg-glow span{
+    animation:softDrift 11s ease-in-out infinite;
+  }
+
+  /* ---------- 共通レイアウト ---------- */
+  main{position:relative; z-index:1;}
+
+  .screen{
+    position:relative;
+    min-height:100svh;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding:64px 0;
+  }
+
+  .screen-inner{
+    position:relative;
+    z-index:2;
+    max-width:680px;
+    width:100%;
+    margin:0 auto;
+    padding:0 24px;
+    text-align:center;
+  }
+
+  .glass-panel{
+    background:var(--glass);
+    -webkit-backdrop-filter:blur(6px);
+    backdrop-filter:blur(6px);
+    border-radius:24px;
+    padding:40px 20px;
+  }
+
+  .copy{
+    margin:0;
+    font-weight:700;
+    line-height:1.55;
+    letter-spacing:0.02em;
+    color:var(--text-main);
+  }
+
+  .line{
+    display:inline-block;
+  }
+  .nowrap-seg{
+    white-space:nowrap;
+  }
+
+  /* 行アニメーション（JS有効時のみ初期非表示） */
+  .js .line{
+    opacity:0;
+    transform:translateY(12px);
+  }
+  .js .screen.in-view .line{
+    animation:fadeUp 0.7s ease forwards;
+  }
+
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(12px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* ---------- 第1画面 ---------- */
+  .screen-1 .copy{
+    font-size:clamp(26px, 8vw, 34px);
+  }
+  .accent-word{
+    color:var(--text-main);
+    text-shadow:0 0 14px rgba(85,200,255,0.55);
+  }
+  .js .screen-1.in-view .line[data-line="1"]{ animation-delay:0s; }
+  .js .screen-1.in-view .line[data-line="2"]{ animation-delay:0.6s; }
+
+  .scroll-cue{
+    position:absolute;
+    bottom:28px;
+    left:50%;
+    transform:translateX(-50%);
+    width:1px;
+    height:34px;
+    z-index:2;
+  }
+  .scroll-cue span{
+    display:block;
+    width:1px;
+    height:100%;
+    background:linear-gradient(to bottom, rgba(23,33,43,0) 0%, var(--line-thin) 60%, rgba(23,33,43,0) 100%);
+  }
+  .js .scroll-cue span{
+    animation:cueMove 2.6s ease-in-out infinite;
+  }
+  @keyframes cueMove{
+    0%{transform:scaleY(0.3); opacity:0.2; transform-origin:top;}
+    50%{transform:scaleY(1); opacity:0.9; transform-origin:top;}
+    100%{transform:scaleY(0.3); opacity:0.2; transform-origin:bottom;}
+  }
+
+  /* ---------- 第2〜5画面 共通 ---------- */
+  .screen-2 .copy, .screen-3 .copy, .screen-4 .copy, .screen-5 .copy{
+    font-size:clamp(26px, 7vw, 30px);
+  }
+
+  .stack{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:28px;
+  }
+
+  .diagram{
+    position:relative;
+    display:block;
+    width:min(72%, 300px);
+    height:auto;
+    z-index:1;
+    pointer-events:none;
+    flex-shrink:0;
+  }
+
+  .node{
+    fill:var(--accent-connect);
+    opacity:0.9;
+  }
+  .node-dim{
+    fill:var(--line-thin);
+    opacity:0.6;
+  }
+  .connect-line{
+    stroke:var(--line-thin);
+    stroke-width:1.6;
+    fill:none;
+    stroke-linecap:round;
+  }
+  .js .connect-line{
+    stroke-dashoffset:1;
+  }
+  .js .screen.in-view .connect-line{
+    animation:drawLine 0.8s ease forwards;
+  }
+  @keyframes drawLine{ to{ stroke-dashoffset:0; } }
+
+  .js .node{
+    opacity:0;
+    transform:scale(0.6);
+    transform-box:fill-box;
+    transform-origin:center;
+  }
+  .js .screen.in-view .node{
+    animation:dotPop 0.5s ease forwards;
+  }
+  @keyframes dotPop{
+    from{opacity:0; transform:scale(0.6);}
+    to{opacity:0.9; transform:scale(1);}
+  }
+
+  /* 第2画面：4本の線を順番に */
+  .s2-l1{ animation-delay:0.1s !important; }
+  .s2-l2{ animation-delay:0.4s !important; }
+  .s2-l3{ animation-delay:0.7s !important; }
+  .s2-l4{ animation-delay:1.0s !important; }
+  .s2-n1{ animation-delay:0s !important; }
+  .s2-n2{ animation-delay:0.3s !important; }
+  .s2-n3{ animation-delay:0.6s !important; }
+  .s2-n4{ animation-delay:0.9s !important; }
+  .s2-n5{ animation-delay:1.2s !important; }
+  .s2-n6{ animation-delay:1.4s !important; opacity:0; }
+  .js .screen-2.in-view .s2-n6{ animation:dotPopDim 0.5s ease forwards; animation-delay:1.4s; }
+  @keyframes dotPopDim{
+    from{opacity:0; transform:scale(0.6);}
+    to{opacity:0.55; transform:scale(1);}
+  }
+  .js .screen-2.in-view .line{ animation-delay:1.8s; }
+  .js .screen-2.in-view .line[data-line="2"]{ animation-delay:2.1s; }
+
+  /* 第3画面：接続を素早く引き継いでから静止 → 文章 */
+  .s3-l1{ animation-delay:0s !important; }
+  .s3-l2{ animation-delay:0.15s !important; }
+  .s3-l3{ animation-delay:0.3s !important; }
+  .s3-l4{ animation-delay:0.45s !important; }
+  .s3-n1,.s3-n2,.s3-n3,.s3-n4,.s3-n5{ animation-delay:0s !important; }
+  .s3-n6{ opacity:0.55; }
+  .js .screen-3.in-view .l1{ animation-delay:1.3s; }
+  .js .screen-3.in-view .l2{ animation-delay:2.1s; }
+  .js .screen-3.in-view .l3{ animation-delay:2.4s; }
+
+  /* ---------- 第4画面 ---------- */
+  .s4-l1,.s4-l2,.s4-l3,.s4-l4{ animation-delay:0s !important; }
+  .s4-n1,.s4-n2,.s4-n3,.s4-n4,.s4-n5{ animation-delay:0s !important; }
+
+  .s4-approach{
+    fill:var(--human-gold);
+    opacity:0;
+    filter:blur(3px);
+  }
+  .js .screen-4.in-view .s4-approach{
+    animation:goldApproach 1s ease forwards;
+    animation-delay:0.4s;
+  }
+  @keyframes goldApproach{
+    from{opacity:0; transform:translate(40px,-30px) scale(0.7);}
+    to{opacity:0.85; transform:translate(0,0) scale(1);}
+  }
+
+  .s4-finalline{
+    stroke:var(--human-gold);
+  }
+  .js .s4-finalline{ stroke-dashoffset:1; }
+  .js .screen-4.in-view .s4-finalline{
+    animation:drawLine 0.7s ease forwards;
+    animation-delay:1.2s;
+  }
+
+  .s4-finalnode{
+    fill:var(--human-gold);
+  }
+  .js .screen-4.in-view .s4-finalnode{
+    animation:dotPop 0.5s ease forwards;
+    animation-delay:1.7s;
+  }
+
+  .s4-bloom{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    background:radial-gradient(circle at 50% 42%, rgba(241,201,120,0.22) 0%, rgba(85,200,255,0.10) 45%, rgba(255,255,255,0) 72%);
+    opacity:0;
+  }
+  .js .screen-4.in-view .s4-bloom{
+    animation:glowBloom 1.4s ease forwards;
+    animation-delay:2.0s;
+  }
+  @keyframes glowBloom{ from{opacity:0;} to{opacity:1;} }
+
+  .js .screen-4.in-view .line[data-line="1"]{ animation-delay:0.6s; }
+  .js .screen-4.in-view .line[data-line="2"]{ animation-delay:1.0s; }
+
+  /* ---------- 第5画面 ---------- */
+  .screen-5 .screen-inner{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-top:0;
+  }
+  .orb-wrap{
+    position:relative;
+    display:block;
+    width:min(58%, 240px);
+    margin:0 auto;
+    z-index:1;
+    pointer-events:none;
+    flex-shrink:0;
+  }
+  .screen-5 .copy-gap{
+    height:56px;
+    flex-shrink:0;
+  }
+  .screen-5 .copy-group + .copy-group{
+    margin-top:22px;
+  }
+  .arc{
+    fill:none;
+    stroke-width:3;
+    stroke-linecap:round;
+  }
+  .arc-gold{ stroke:var(--human-gold); }
+  .arc-blue{ stroke:var(--ai-blue); }
+  .js .arc{ stroke-dashoffset:1; opacity:0; }
+  .js .screen-5.in-view .arc-gold{
+    animation:arcDraw 1s ease forwards;
+    animation-delay:0.3s;
+  }
+  .js .screen-5.in-view .arc-blue{
+    animation:arcDraw 1s ease forwards;
+    animation-delay:0.9s;
+  }
+  @keyframes arcDraw{
+    from{ opacity:0; stroke-dashoffset:1; }
+    to{ opacity:0.9; stroke-dashoffset:0; }
+  }
+
+  .ring-merged{
+    fill:none;
+    stroke:url(#ringGradient);
+    stroke-width:3;
+    opacity:0;
+    transform:scale(0.94);
+    transform-box:fill-box;
+    transform-origin:center;
+  }
+  .js .screen-5.in-view .ring-merged{
+    animation:ringMerge 1.1s ease forwards;
+    animation-delay:1.7s;
+  }
+  @keyframes ringMerge{
+    from{opacity:0; transform:scale(0.94);}
+    to{opacity:0.9; transform:scale(1);}
+  }
+
+  .js .screen-5.in-view .line[data-line="1"]{ animation-delay:0.1s; }
+  .js .screen-5.in-view .line[data-line="2"]{ animation-delay:0.7s; }
+  .js .screen-5.in-view .line[data-line="3"]{ animation-delay:1.9s; }
+  .js .screen-5.in-view .line[data-line="4"]{ animation-delay:2.2s; }
+
+  /* ---------- 第6画面 ---------- */
+  .screen-6{ padding-top:80px; padding-bottom:80px; }
+  .orb-bg-wrap{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:min(140%, 640px);
+    transform:translate(-50%,-50%);
+    z-index:0;
+    opacity:0.32;
+    pointer-events:none;
+  }
+  .js .orb-bg-wrap{
+    animation:ringRotate 60s linear infinite;
+  }
+  @keyframes ringRotate{ to{ transform:translate(-50%,-50%) rotate(360deg); } }
+
+  .screen-6 .copy{
+    font-size:clamp(26px, 7.5vw, 32px);
+    margin-bottom:40px;
+  }
+  .js .screen-6.in-view .line[data-line="1"]{ animation-delay:0s; }
+  .js .screen-6.in-view .line[data-line="2"]{ animation-delay:0.3s; }
+
+  .cta-button{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:min(78vw, 360px);
+    height:58px;
+    margin:0 auto;
+    border-radius:29px;
+    background:linear-gradient(90deg, var(--ai-blue) 0%, var(--cta-cyan) 100%);
+    color:#FFFFFF;
+    font-size:17px;
+    font-weight:700;
+    letter-spacing:0.02em;
+    text-decoration:none;
+    box-shadow:0 10px 24px rgba(85,200,255,0.32);
+    overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform 0.15s ease;
+  }
+  .cta-button:active{
+    transform:scale(0.97);
+  }
+  .js .cta-button{
+    opacity:0;
+    transform:translateY(14px);
+  }
+  .js .screen-6.in-view .cta-button{
+    animation:ctaRise 0.7s ease forwards;
+    animation-delay:1.1s;
+  }
+  @keyframes ctaRise{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .cta-button::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:40%;
+    height:100%;
+    background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%);
+    transform:translateX(-160%) skewX(-15deg);
+    opacity:0;
+  }
+  .js .screen-6.in-view .cta-button::after{
+    animation:shimmerSweep 1s ease forwards;
+    animation-delay:1.9s;
+  }
+  @keyframes shimmerSweep{
+    from{ transform:translateX(-160%) skewX(-15deg); opacity:0.9; }
+    to{ transform:translateX(220%) skewX(-15deg); opacity:0; }
+  }
+
+  /* ---------- フッター ---------- */
+  .site-footer{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    font-size:12px;
+    font-weight:400;
+    color:var(--text-sub);
+    padding:24px 24px 32px;
+  }
+
+  /* ---------- 動きを抑える設定 ---------- */
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration:0.01ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.01ms !important;
+    }
+    .js .line, .js .node, .js .connect-line, .js .arc, .js .ring-merged, .js .cta-button, .js .s4-bloom{
+      opacity:1 !important;
+      transform:none !important;
+      stroke-dashoffset:0 !important;
+    }
+  }
+
+  @media (min-width:768px){
+    .screen-inner{ padding:0 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer" aria-hidden="true"></div>
+<div class="bg-glow" aria-hidden="true"><span></span></div>
+
+<main>
+
+  <!-- 第1画面 -->
+  <section class="screen screen-1" id="s1">
+    <div class="screen-inner">
+      <div class="glass-panel">
+        <p class="copy">
+          <span class="line" data-line="1"><span class="nowrap-seg">AIに聞く</span><span class="nowrap-seg">時代から、</span></span><br>
+          <span class="line" data-line="2">AIが<span class="accent-word">動く</span>時代へ。</span>
+        </p>
+      </div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"><span></span></div>
+  </section>
+
+  <!-- 第2画面 -->
+  <section class="screen screen-2" id="s2">
+    <div class="screen-inner stack">
+      <svg class="diagram" viewBox="0 0 400 260" aria-hidden="true">
+        <line class="connect-line s2-l1" pathLength="1" stroke-dasharray="1" x1="50" y1="190" x2="115" y2="130"></line>
+        <line class="connect-line s2-l2" pathLength="1" stroke-dasharray="1" x1="115" y1="130" x2="185" y2="165"></line>
+        <line class="connect-line s2-l3" pathLength="1" stroke-dasharray="1" x1="185" y1="165" x2="255" y2="110"></line>
+        <line class="connect-line s2-l4" pathLength="1" stroke-dasharray="1" x1="255" y1="110" x2="315" y2="150"></line>
+        <circle class="node s2-n1" cx="50" cy="190" r="5"></circle>
+        <circle class="node s2-n2" cx="115" cy="130" r="5"></circle>
+        <circle class="node s2-n3" cx="185" cy="165" r="5"></circle>
+        <circle class="node s2-n4" cx="255" cy="110" r="5"></circle>
+        <circle class="node s2-n5" cx="315" cy="150" r="5"></circle>
+        <circle class="node node-dim s2-n6" cx="360" cy="95" r="5"></circle>
+      </svg>
+      <p class="copy">
+        <span class="line" data-line="1">あるものを、</span><br>
+        <span class="line" data-line="2"><span class="nowrap-seg">AIですべて</span><span class="nowrap-seg">自動化しようとした。</span></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- 第3画面 -->
+  <section class="screen screen-3" id="s3">
+    <div class="screen-inner stack">
+      <svg class="diagram" viewBox="0 0 400 260" aria-hidden="true">
+        <line class="connect-line s3-l1" pathLength="1" stroke-dasharray="1" x1="50" y1="190" x2="115" y2="130"></line>
+        <line class="connect-line s3-l2" pathLength="1" stroke-dasharray="1" x1="115" y1="130" x2="185" y2="165"></line>
+        <line class="connect-line s3-l3" pathLength="1" stroke-dasharray="1" x1="185" y1="165" x2="255" y2="110"></line>
+        <line class="connect-line s3-l4" pathLength="1" stroke-dasharray="1" x1="255" y1="110" x2="315" y2="150"></line>
+        <circle class="node s3-n1" cx="50" cy="190" r="5"></circle>
+        <circle class="node s3-n2" cx="115" cy="130" r="5"></circle>
+        <circle class="node s3-n3" cx="185" cy="165" r="5"></circle>
+        <circle class="node s3-n4" cx="255" cy="110" r="5"></circle>
+        <circle class="node s3-n5" cx="315" cy="150" r="5"></circle>
+        <circle class="node node-dim s3-n6" cx="360" cy="95" r="5"></circle>
+      </svg>
+      <p class="copy">
+        <span class="line l1" data-line="1">でも、</span><br>
+        <span class="line l2" data-line="2">AIだけでは</span><br>
+        <span class="line l3" data-line="3">完成しなかった。</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- 第4画面 -->
+  <section class="screen screen-4" id="s4">
+    <div class="s4-bloom" aria-hidden="true"></div>
+    <div class="screen-inner stack">
+      <svg class="diagram" viewBox="0 0 400 260" aria-hidden="true">
+        <line class="connect-line s4-l1" pathLength="1" stroke-dasharray="1" x1="50" y1="190" x2="115" y2="130"></line>
+        <line class="connect-line s4-l2" pathLength="1" stroke-dasharray="1" x1="115" y1="130" x2="185" y2="165"></line>
+        <line class="connect-line s4-l3" pathLength="1" stroke-dasharray="1" x1="185" y1="165" x2="255" y2="110"></line>
+        <line class="connect-line s4-l4" pathLength="1" stroke-dasharray="1" x1="255" y1="110" x2="315" y2="150"></line>
+        <line class="connect-line s4-finalline" pathLength="1" stroke-dasharray="1" x1="315" y1="150" x2="360" y2="95"></line>
+        <circle class="s4-approach" cx="360" cy="95" r="16"></circle>
+        <circle class="node s4-n1" cx="50" cy="190" r="5"></circle>
+        <circle class="node s4-n2" cx="115" cy="130" r="5"></circle>
+        <circle class="node s4-n3" cx="185" cy="165" r="5"></circle>
+        <circle class="node s4-n4" cx="255" cy="110" r="5"></circle>
+        <circle class="node s4-n5" cx="315" cy="150" r="5"></circle>
+        <circle class="node s4-finalnode" cx="360" cy="95" r="5"></circle>
+      </svg>
+      <p class="copy">
+        <span class="line" data-line="1"><span class="nowrap-seg">最後に</span><span class="nowrap-seg">必要だったのは、</span></span><br>
+        <span class="line" data-line="2">人の判断だった。</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- 第5画面 -->
+  <section class="screen screen-5" id="s5">
+    <div class="screen-inner">
+      <div class="orb-wrap">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <defs>
+            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#F1C978"></stop>
+              <stop offset="100%" stop-color="#55C8FF"></stop>
+            </linearGradient>
+          </defs>
+          <path class="arc arc-gold" pathLength="1" stroke-dasharray="1"
+            d="M 100 20 A 80 80 0 0 0 24.4 141.2"></path>
+          <path class="arc arc-blue" pathLength="1" stroke-dasharray="1"
+            d="M 24.4 141.2 A 80 80 0 0 0 100 180 A 80 80 0 0 0 175.6 141.2"></path>
+          <circle class="ring-merged" cx="100" cy="100" r="80"></circle>
+        </svg>
+      </div>
+      <div class="copy-gap" aria-hidden="true"></div>
+      <div class="copy-group">
+        <p class="copy">
+          <span class="line" data-line="1">人が考え、</span><br>
+          <span class="line" data-line="2">AIが動く。</span>
+        </p>
+      </div>
+      <div class="copy-group">
+        <p class="copy">
+          <span class="line" data-line="3">その組み合わせで、</span><br>
+          <span class="line" data-line="4"><span class="nowrap-seg">一つの仕組みが</span><span class="nowrap-seg">完成した。</span></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第6画面 -->
+  <section class="screen screen-6" id="s6">
+    <div class="orb-bg-wrap" aria-hidden="true">
+      <svg viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="ringGradientBg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#F1C978"></stop>
+            <stop offset="100%" stop-color="#55C8FF"></stop>
+          </linearGradient>
+        </defs>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="url(#ringGradientBg)" stroke-width="2"></circle>
+      </svg>
+    </div>
+    <div class="screen-inner">
+      <p class="copy">
+        <span class="line" data-line="1">では、人とAIは</span><br>
+        <span class="line" data-line="2">何を自動化したのか？</span>
+      </p>
+      <a id="cta-button" class="cta-button" href="#">続きを見る →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">© MKJAPAN Co., Ltd.</footer>
+
+<script>
+(function(){
+  // ============================================================
+  // 公式LINE URL 設定箇所
+  // 下の "" の中に公式LINEのURLを入力してください。
+  // 例: const OFFICIAL_LINE_URL = "https://lin.ee/xxxxxxx";
+  // ============================================================
+  var OFFICIAL_LINE_URL = "";
+  // ============================================================
+
+  var ctaButton = document.getElementById('cta-button');
+  if (ctaButton) {
+    if (OFFICIAL_LINE_URL) {
+      ctaButton.setAttribute('href', OFFICIAL_LINE_URL);
+    } else {
+      ctaButton.addEventListener('click', function(e){
+        e.preventDefault();
+      });
+    }
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    var screens = document.querySelectorAll('.screen');
+    for (var i = 0; i < screens.length; i++) {
+      screens[i].classList.add('in-view');
+    }
+    return;
+  }
+
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.35 });
+
+  document.querySelectorAll('.screen').forEach(function(el){
+    observer.observe(el);
+  });
+})();
+</script>
+
+</body>
+</html>
