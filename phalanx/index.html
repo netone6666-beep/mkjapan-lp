@@ -15,7 +15,7 @@
   --g100:     #F4F4F6;
   --g200:     #E8E8EC;
   --g400:     #9CA3AF;
-  --g600:     #6B7280;
+  --g600:     #4B5563;
   --g900:     #111318;
   --navy:     #1B2A4A;
   --gold:     #C9A84C;
@@ -94,10 +94,14 @@ a { text-decoration: none; color: inherit; }
   text-transform: uppercase; font-weight: 500;
 }
 .hero-logo { height: 52px; width: auto; margin: 0 auto 20px; opacity: .9; filter: saturate(.6) brightness(.95); }
-.hero-catch { font-family: 'Noto Serif JP', serif; font-size: 13px; color: rgba(255,255,255,.6); margin-bottom: 14px; line-height: 2; }
-.hero-title { margin-bottom: 12px; color: #fff; }
+.hero-catch { font-family: 'Noto Serif JP', serif; font-size: 13px; color: rgba(255,255,255,.72); margin-bottom: 14px; line-height: 2; }
+.hero-title { margin-bottom: 16px; color: #fff; }
 .hero-title span { color: var(--gold-lt); }
-.hero-sub { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.9; max-width: 400px; margin: 0 auto 32px; }
+.hero-product { font-size: 13px; letter-spacing: .04em; color: rgba(255,255,255,.78); line-height: 1.9; margin: 0 0 24px; }
+.hero-product strong { display: block; margin-top: 4px; font-family: 'Noto Serif JP', serif; font-size: 16px; font-weight: 700; color: var(--gold-lt); letter-spacing: .1em; }
+.hero-tagline { font-family: 'Noto Serif JP', serif; font-size: 17px; line-height: 1.6; font-weight: 700; color: rgba(255,255,255,.88); margin-bottom: 14px; }
+.hero-tagline span { color: var(--gold-lt); }
+.hero-sub { font-size: 13px; color: rgba(255,255,255,.78); line-height: 1.9; max-width: 400px; margin: 0 auto 32px; }
 .hero-line { width: 28px; height: 1px; background: var(--gold); margin: 0 auto 28px; opacity: .5; }
 .hero-ver { font-size: 10px; color: rgba(201,168,76,.5); letter-spacing: .2em; text-transform: uppercase; margin-top: 20px; }
 
@@ -254,6 +258,25 @@ a { text-decoration: none; color: inherit; }
 .shot-item { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--g600); }
 .shot-dot { flex-shrink: 0; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; margin-top: 8px; }
 
+/* ── 実稼働チャート ── */
+.chart-img-wrap { border-radius: 12px; overflow: hidden; border: 1px solid rgba(201,168,76,.25); background: #000; }
+.chart-img-wrap img { width: 100%; height: auto; display: block; }
+
+/* ── 利用者報告 ── */
+.voice-list { display: flex; flex-direction: column; gap: 16px; }
+.voice-card { border-radius: 12px; overflow: hidden; border: 1px solid var(--g200); background: var(--white); }
+.voice-card img { width: 100%; height: auto; display: block; }
+
+/* コードコピーボタン */
+.code-copy-btn {
+  display: block; width: 100%; background: var(--g900); color: var(--gold-lt);
+  border: 1px solid rgba(201,168,76,.4); border-radius: 6px;
+  padding: 13px 16px; font-size: 13px; font-weight: 700; letter-spacing: .04em;
+  margin: 4px 0 10px; cursor: pointer; text-align: center;
+  font-family: 'Noto Sans JP', sans-serif; transition: background .2s, color .2s, border-color .2s;
+}
+.code-copy-btn.copied { background: #16A34A; color: #fff; border-color: #16A34A; }
+
 /* ── FAQ ── */
 .faq-list { display: flex; flex-direction: column; gap: 0; }
 .faq-item { border-bottom: 1px solid var(--g100); }
@@ -300,81 +323,116 @@ a { text-decoration: none; color: inherit; }
   <img src="phalanx-logo.png"
        alt="PHALANX" class="hero-logo">
   <span class="hero-badge">XAUUSD Gold — Auto Trading EA</span>
-  <p class="hero-catch">守るだけでは、終わらせない。規律を持って、仕掛けていく。</p>
-  <h1 class="h1 hero-title">統制ある攻めで、<br><span>相場を捉える。</span></h1>
+  <p class="hero-catch">AIと人間が、自動化したもの。</p>
+  <h1 class="h1 hero-title">それは、<br><span>GOLDの<br>トレードでした。</span></h1>
+  <p class="hero-product">XAUUSD専用 自動売買EA<br><strong>PHALANX</strong></p>
   <div class="hero-line"></div>
-  <p class="hero-sub">
-    XAUUSD（ゴールド）専用の自動売買EA。<br>
-    独自の移動平均線クロスロジックに、<br>「一番危険の少ない時間帯だけ動かす」時間制御を組み合わせています。
-  </p>
-  <a href="https://lin.ee/NQcEpNH" class="btn-line" style="max-width:300px;" target="_blank" rel="noopener">💬 LINEで無料相談・登録</a>
+  <p class="hero-tagline">統制ある攻めで、<br><span>GOLDを捉える。</span></p>
+  <p class="hero-sub">独自クロスエントリー × 時間帯制御</p>
   <p class="hero-ver">PHALANX v1.15</p>
 </div>
 
-<!-- ── 商品概要 ── -->
+<!-- ── PHALANXとは / 開発背景 ── -->
 <div class="sec">
   <div class="sec-title">
     <span class="label">About</span>
-    <h2 class="h2">PHALANXとは</h2>
+    <h2 class="h2">EA開発は、ここまで進化した。</h2>
     <div class="divider"></div>
   </div>
   <p class="overview-lead">
-    攻めと守りの<strong>中間に立つ</strong>、XAUUSD専用の自動売買EAです。<br>
-    ファランクス（古代の密集陣形）の名前が示す通り、<strong>統制を保ちながら前に出る</strong>ことを軸に設計されています。
+    <strong>AIに作らせたEAではない。</strong><br>
+    AIと、<strong>一緒に作り上げた</strong>EAだ。
   </p>
-  <div class="overview-points">
-    <div class="overview-point">
-      <div class="op-icon"></div>
-      <div class="op-text"><strong>独自の移動平均線クロスロジックでエントリー。</strong>数値は非公開のPHALANX専用チューニングです。</div>
+  <div class="body">
+    <p>コードを書く。<br>動かす。<br>ダメなら戻す。<br>また考える。<br>また書き直す。</p>
+    <p>「ここは違う」<br>「これは現実的じゃない」<br>「もっと使いやすくできないか」</p>
+    <p>デモ環境で実際の動きを確認しながら、<br>何度も修正を重ねてきました。</p>
+    <p>そして完成したのが、<br>GOLD専用自動売買EA「PHALANX」です。</p>
+  </div>
+</div>
+
+<!-- ── 6つの統制装置 ── -->
+<div class="sec-gray">
+  <div class="sec-title">
+    <span class="label">Features</span>
+    <h2 class="h2">攻めるために、統制する。</h2>
+    <div class="divider"></div>
+  </div>
+  <p class="body" style="margin-bottom:24px;">
+    PHALANXは、ただエントリーを繰り返すEAではありません。<br>
+    GOLDを自動売買するために、エントリーから決済、ナンピン、スプレッド、稼働時間まで、複数の制御を組み合わせています。<br>
+    その中心となるのが、6つの統制装置です。
+  </p>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">1. 独自クロスエントリーロジック</div>
+      <div class="feat-card-body">独自の移動平均クロス条件をもとに、BUY・SELLのエントリーを判定。</div>
     </div>
-    <div class="overview-point">
-      <div class="op-icon"></div>
-      <div class="op-text"><strong>ナンピン段数に歯止めを設定可能。</strong>「新規停止」と「損切り」を別々に設定できます。</div>
+    <div class="feat-card">
+      <div class="feat-card-title">2. 3段階利確構造</div>
+      <div class="feat-card-body">保有ポジション数に応じて利確方法を切り替え、複数ポジション時には平均建値を基準に決済を管理。</div>
     </div>
-    <div class="overview-point">
-      <div class="op-icon"></div>
-      <div class="op-text"><strong>稼働時間を12:00〜17:00に絞り込み。</strong>ニューヨーク時間のような急変が起きやすい時間帯には一切踏み込みません。</div>
+    <div class="feat-card">
+      <div class="feat-card-title">3. ナンピン段数管理</div>
+      <div class="feat-card-body">ナンピンの最大段数を設定し、無制限にポジションを増やさないための上限を設けています。</div>
     </div>
-    <div class="overview-point">
-      <div class="op-icon"></div>
-      <div class="op-text"><strong>一度設置したら監視不要。</strong>週間の損益・最大DDも自動で見える化します。</div>
+    <div class="feat-card">
+      <div class="feat-card-title">4. 救済決済</div>
+      <div class="feat-card-body">一定のポジション数に達した状態で、BUY・SELLの合算損益が設定条件を満たした場合に両方向をまとめて決済できる機能。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">5. スプレッドフィルター</div>
+      <div class="feat-card-body">スプレッドが設定した上限を超えている間は、新規エントリーを抑制。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">6. 運用状況の可視化</div>
+      <div class="feat-card-body">日々の確定損益やドローダウンなど、運用判断に必要な情報をチャート上で確認できます。</div>
     </div>
   </div>
 </div>
 
-<!-- ── 特徴 ── -->
-<div class="sec-gray">
+<!-- ── 実際の自動売買チャート ── -->
+<div class="sec-dark">
   <div class="sec-title">
-    <span class="label">Features</span>
-    <h2 class="h2">6つの統制装置</h2>
+    <span class="label">Live Trading</span>
+    <h2 class="h2">PHALANXは、実際にこう動く。</h2>
     <div class="divider"></div>
   </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">独自クロスエントリーロジック</div>
-      <div class="feat-card-body">移動平均線のクロスポイントを捉え、相場の転換タイミングで新規エントリー。数値は非公開の、PHALANX専用チューニングです。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">3段階利確構造</div>
-      <div class="feat-card-body">ポジション数に応じて利確ラインを自動で切り替え。積み上がった時ほど、利益確定を優先する設計です。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">ナンピン段数の二重管理</div>
-      <div class="feat-card-body">「これ以上は新規停止」の段数と、「ここまで来たら損切り」の段数を別々に設定可能。初期設定ではどちらもOFFです。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">救済決済</div>
-      <div class="feat-card-body">買いと売りのポジション全体の損益がプラスに転じた瞬間、一括決済。片方が深く沈んでいても、もう片方の利益で救い出すタイミングを逃しません。初期設定ではOFFです。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">スプレッドフィルター</div>
-      <div class="feat-card-body">スプレッドが規定値を超えている間は、新規エントリー・ナンピンともに見送り。相場が荒れているタイミングでの不利な約定を回避します。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">週間損益の見える化</div>
-      <div class="feat-card-body">週間の日別損益・最大DDを表にして常時表示。含み損や急変時にはチャート背景色で警告します。</div>
-    </div>
+  <div class="chart-img-wrap">
+    <img src="rapture_20260827141205.jpg" alt="PHALANX 実際の自動売買チャート">
   </div>
+  <p class="body" style="color:rgba(255,255,255,.55);margin-top:16px;">
+    実際のPHALANX稼働チャート。<br>エントリーから決済まで、すべて自動で行われています。
+  </p>
+</div>
+
+<!-- ── 実運用・出金 ── -->
+<div class="sec">
+  <div class="sec-title">
+    <span class="label">Performance</span>
+    <h2 class="h2">利益だけではなく、実際に出金。</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="result-img-area">
+    <img src="232977_0.jpg" alt="PHALANX 実運用・出金履歴">
+  </div>
+  <p class="h3" style="text-align:center;">500万円から400万円を出金後も、<br>運用を継続。</p>
+  <p class="muted" style="text-align:center;margin-top:8px;">※ 将来の利益を保証するものではありません。相場状況により変動する可能性があります。</p>
+</div>
+
+<!-- ── 実際の利用者から届いた報告 ── -->
+<div class="sec-gray">
+  <div class="sec-title">
+    <span class="label">Report</span>
+    <h2 class="h2">実際の利用者から届いた報告</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="voice-list">
+    <div class="voice-card"><img src="232979.jpg" alt="利用者からのLINE運用報告"></div>
+    <div class="voice-card"><img src="231777_0.jpg" alt="利用者のOpenChat運用報告"></div>
+    <div class="voice-card"><img src="231778_0.jpg" alt="利用者のOpenChat運用報告"></div>
+  </div>
+  <p class="muted" style="margin-top:16px;">※利用者から共有された運用結果の一例です。運用結果は資金量・口座タイプ・設定・相場状況等によって異なり、将来の利益を保証するものではありません。</p>
 </div>
 
 <!-- ── 基本仕様 ── -->
@@ -385,61 +443,23 @@ a { text-decoration: none; color: inherit; }
     <div class="divider"></div>
   </div>
   <table class="spec-table">
-    <tr><td class="sl">対応通貨ペア</td><td class="sv">XAUUSD（ゴールド）</td></tr>
-    <tr><td class="sl">プラットフォーム</td><td class="sv">MetaTrader 4（MT4）</td></tr>
-    <tr><td class="sl">対応ブローカー</td><td class="sv">XM</td></tr>
-    <tr><td class="sl">稼働時間</td><td class="sv">月〜木 12:00〜17:00<br>金 12:00〜15:00（初期設定）</td></tr>
-    <tr><td class="sl">稼働方式</td><td class="sv">完全自動（VPS推奨）</td></tr>
-    <tr><td class="sl">認証方式</td><td class="sv">Web認証（オンライン必須）</td></tr>
-    <tr><td class="sl">バージョン</td><td class="sv">v1.15</td></tr>
+    <tr><td class="sl">対象銘柄</td><td class="sv">XAUUSD（GOLD）</td></tr>
+    <tr><td class="sl">対応プラットフォーム</td><td class="sv">MT4</td></tr>
+    <tr><td class="sl">対応ブローカー</td><td class="sv">XMTrading</td></tr>
+    <tr><td class="sl">稼働時間</td><td class="sv">月〜木 12:00〜17:00<br>金 12:00〜15:00</td></tr>
+    <tr><td class="sl">VPS</td><td class="sv">推奨</td></tr>
+    <tr><td class="sl">認証</td><td class="sv">専用認証</td></tr>
   </table>
 </div>
 
-<!-- ── 実績 ── -->
-<div class="sec-gray">
-  <div class="sec-title">
-    <span class="label">Performance</span>
-    <h2 class="h2">参考実績</h2>
-    <div class="divider"></div>
-  </div>
-
-  <!-- 画像エリア（実績スクリーンショットがあれば ./phalanx-result.jpg に差し替え） -->
-  <div class="result-img-area">
-    <img src="result.jpg" alt="MT4運用画面" onerror="this.parentElement.innerHTML='<div class=\'result-img-placeholder\'><span style=\'font-size:36px;\'>📱</span><span>実績スクリーンショット</span></div>'">
-  </div>
-
-  <!-- 実績カード -->
-  <div class="result-grid">
-    <div class="result-card">
-      <div class="result-card-label">実質運用元本</div>
-      <div class="result-card-value" style="font-size:15px;">5,000,000<span style="font-size:12px;font-weight:400;color:var(--g600);">円</span></div>
-    </div>
-    <div class="result-card">
-      <div class="result-card-label">累計損益</div>
-      <div class="result-card-value plus">+1,582,215<span style="font-size:12px;font-weight:400;color:#16A34A;">円</span></div>
-    </div>
-    <div class="result-card">
-      <div class="result-card-label">残高</div>
-      <div class="result-card-value">2,582,215<span style="font-size:12px;font-weight:400;color:var(--g600);">円</span></div>
-    </div>
-    <div class="result-card">
-      <div class="result-card-label">運用期間</div>
-      <div class="result-card-value" style="font-size:13px;line-height:1.5;">2026年7月21日<br>〜2026年8月21日</div>
-    </div>
-  </div>
-  <div class="result-disc">
-    ※ 入金500万円のうち400万円を出金し、実質100万円スタートとして運用した結果です。<br>
-    ※ 将来の利益を保証するものではありません。相場状況により大きく変動し、元本を割り込む可能性があります。
-  </div>
-</div>
-
-<!-- ── 利用開始までの流れ ── -->
+<!-- ── PHALANXを始める ── -->
 <div class="sec">
   <div class="sec-title">
     <span class="label">How To Start</span>
-    <h2 class="h2">利用開始までの流れ</h2>
+    <h2 class="h2">PHALANXを始める</h2>
     <div class="divider"></div>
   </div>
+  <p class="body" style="margin-bottom:8px;">PHALANXは、XMTradingのMT4口座でご利用いただけます。</p>
 
   <div class="flow-wrap">
 
@@ -447,49 +467,44 @@ a { text-decoration: none; color: inherit; }
     <div class="flow-step">
       <div class="flow-num">1</div>
       <div class="flow-content">
-        <div class="flow-title">口座を開設する</div>
-        <p class="flow-body" style="margin-bottom:16px;">XMでご利用いただけます。以下の手順に沿って進めてください。</p>
+        <div class="flow-title">XMTradingの口座を準備</div>
 
         <div class="broker-wrap">
-          <!-- XM -->
           <div class="broker-card">
             <div class="broker-head">
               <span class="broker-badge">XM</span>
-              XMをお使いの方
+              初めてXMTradingを利用する方
             </div>
             <div class="broker-body">
-              <div class="check-list">
-                <div class="check-item">
-                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                  <div class="check-txt"><strong>取引プラットフォーム：MT4</strong>（MT5ではなくMT4を選択）</div>
-                </div>
-                <div class="check-item">
-                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                  <div class="check-txt"><strong>口座タイプ：スタンダード・マイクロ口座</strong>（KIWAMI口座は不可）</div>
-                </div>
-                <div class="check-item">
-                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                  <div class="check-txt"><strong>レバレッジ：1000倍</strong></div>
-                </div>
-                <div class="check-item">
-                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                  <div class="check-txt"><strong>基本通貨：JPY（日本円）</strong></div>
-                </div>
-              </div>
-              <div class="code-box" style="margin-top:14px;">
-                <div class="code-box-warn">⚠ 必ず入力してください</div>
-                <div class="code-box-title">パートナーコードの入力</div>
-                <p style="font-size:12px;color:#9B1C1C;margin-bottom:10px;line-height:1.75;">登録画面の「パートナーコード（任意）」欄に必ず入力してください。</p>
-                <div class="code-display"><span class="code-val">FMDB2</span></div>
-                <div class="code-note">
-                  <p>！ 事後変更はできません。入れ忘れた場合はLINEにてご相談ください。</p>
-                </div>
-              </div>
-              <a href="https://affx.click/LH9hx" class="url-btn" target="_blank" rel="noopener">新規口座を開設する →</a>
-              <a href="https://clicks.affstrack.com/c?c=996903&l=en&p=22" class="url-btn-sub" target="_blank" rel="noopener">すでにXM口座をお持ちの方（追加口座）</a>
+              <a href="https://affx.click/LH9hx" class="url-btn" target="_blank" rel="noopener">XMTradingで口座を開設する →</a>
+            </div>
+          </div>
+          <div class="broker-card">
+            <div class="broker-head">
+              <span class="broker-badge">XM</span>
+              すでにXM口座をお持ちの方
+            </div>
+            <div class="broker-body">
+              <a href="https://clicks.affstrack.com/c?c=996903&l=en&p=22" class="url-btn" target="_blank" rel="noopener">追加口座を開設する →</a>
             </div>
           </div>
         </div>
+
+        <div class="check-list" style="margin-top:16px;">
+          <div class="check-item">
+            <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="check-txt"><strong>取引プラットフォーム：MT4</strong>／<strong>基本通貨：JPY</strong>／<strong>最大レバレッジ：1,000倍</strong></div>
+          </div>
+          <div class="check-item">
+            <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="check-txt"><strong>MICRO口座：</strong>10万円以上を目安</div>
+          </div>
+          <div class="check-item">
+            <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="check-txt"><strong>STANDARD口座：</strong>100万円以上を目安</div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:10px;">※入金前に、口座タイプを必ずご確認ください。KIWAMI口座は対象外です。</p>
       </div>
     </div>
 
@@ -497,36 +512,15 @@ a { text-decoration: none; color: inherit; }
     <div class="flow-step">
       <div class="flow-num">2</div>
       <div class="flow-content">
-        <div class="flow-title">口座番号を登録してスクショを送る</div>
-        <p class="flow-body" style="margin-bottom:16px;">フォームに口座番号を登録後、LINEに残高・口座番号が写ったスクショを1枚送ってください。</p>
-        <div class="action-cards">
-          <div class="action-card">
-            <div class="action-head">
-              <div class="action-num form">1</div>
-              <div>
-                <div class="action-title">口座番号をフォームに登録</div>
-                <div class="action-sub">EA認証に必要です・1分で完了</div>
-              </div>
-            </div>
-            <div class="action-body">
-              <a href="https://utlink.jp/l/36iOn8twP6M9" class="form-btn" target="_blank" rel="noopener">📝 口座番号を登録する</a>
-            </div>
-          </div>
-          <div class="action-card">
-            <div class="action-head">
-              <div class="action-num line">2</div>
-              <div>
-                <div class="action-title">LINEへスクショを1枚送る</div>
-                <div class="action-sub">残高・口座番号が写っていればOK</div>
-              </div>
-            </div>
-            <div class="action-body">
-              <div class="shot-list">
-                <div class="shot-item"><div class="shot-dot"></div>口座残高（入金後の金額）</div>
-                <div class="shot-item"><div class="shot-dot"></div>口座番号（MT4のログインID）</div>
-              </div>
-              <a href="https://lin.ee/NQcEpNH" class="btn-line" style="margin-top:12px;" target="_blank" rel="noopener">💬 LINEで報告する</a>
-            </div>
+        <div class="flow-title">パートナーコードを入力</div>
+        <p class="flow-body" style="margin-bottom:16px;">口座開設時の「パートナーコード（任意）」欄に、以下のコードを入力してください。</p>
+        <div class="code-box">
+          <div class="code-box-warn">⚠ 必ず入力してください</div>
+          <div class="code-box-title">パートナーコードの入力</div>
+          <div class="code-display"><span class="code-val">FMDB2</span></div>
+          <button type="button" class="code-copy-btn" onclick="copyCode(this)">コードをコピー</button>
+          <div class="code-note">
+            <p>！ 事後変更はできません。入れ忘れた場合は公式LINEにてご相談ください。</p>
           </div>
         </div>
       </div>
@@ -536,8 +530,23 @@ a { text-decoration: none; color: inherit; }
     <div class="flow-step">
       <div class="flow-num">3</div>
       <div class="flow-content">
-        <div class="flow-title">EAを受け取って稼働開始</div>
-        <p class="flow-body">確認次第、<strong>GoogleドライブのマニュアルURLをLINEで送付</strong>します。マニュアル通りに設置するだけで自動稼働が始まります。わからないことはLINEでいつでも聞いてください。</p>
+        <div class="flow-title">口座情報を申請</div>
+        <p class="flow-body" style="margin-bottom:16px;">口座開設後、以下のフォームより口座情報をご申請ください。</p>
+        <a href="https://forms.gle/sUBRSxy6hs4LQmQc6" class="form-btn" target="_blank" rel="noopener">📝 PHALANX利用申請フォームへ</a>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="flow-step">
+      <div class="flow-num">4</div>
+      <div class="flow-content">
+        <div class="flow-title">入金後の画面をLINEへ送信</div>
+        <div class="result-img-area" style="max-height:360px;margin-bottom:14px;">
+          <img src="口座番号、入金確認スクリーンショット.jpg" alt="口座番号・入金確認画面の見本">
+        </div>
+        <p class="flow-body" style="margin-bottom:16px;">赤く隠している部分が口座番号です。このように「口座番号」と「入金後の残高」が確認できる画面を公式LINEへ送ってください。</p>
+        <a href="https://lin.ee/W3LDlAL" class="btn-line" target="_blank" rel="noopener">💬 公式LINEで画像を送る</a>
+        <p class="muted" style="margin-top:12px;">画像送信後のお手続きは、公式LINE上で進みます。確認後のご案内は、公式LINEからお送りします。</p>
       </div>
     </div>
 
@@ -554,45 +563,35 @@ a { text-decoration: none; color: inherit; }
   <div class="faq-list">
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        <span>FX初心者でも使えますか？</span><span class="faq-icon">+</span>
+        <span>FX初心者でも利用できますか？</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a"><div class="faq-a-inner">はい、ご利用いただけます。EAを設置すれば売買判断はすべて自動です。ただし、FX取引の基本的な仕組みや証拠金・ロスカットの概念はご理解いただいた上でご利用ください。LINE登録後に詳しい説明も行っています。</div></div>
+      <div class="faq-a"><div class="faq-a-inner">利用できます。ただし、FXには元本割れやロスカットのリスクがあります。基本的な仕組みをご理解のうえでご利用ください。</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        <span>VPS（仮想サーバー）は必要ですか？</span><span class="faq-icon">+</span>
+        <span>VPSは必要ですか？</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a"><div class="faq-a-inner">必須ではありませんが、強く推奨しています。VPSを利用すると24時間365日、PCの電源を切っても稼働し続けます。自宅PCの場合、PC停止中はEAも止まります。月額1,000〜3,000円程度が目安です。</div></div>
+      <div class="faq-a"><div class="faq-a-inner">必須ではありませんが、安定稼働のため推奨しています。ご自身のPCで稼働する場合は、MT4を起動した状態を維持する必要があります。</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        <span>元本は保証されますか？</span><span class="faq-icon">+</span>
+        <span>MICROとSTANDARD、どちらを選べばいいですか？</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a"><div class="faq-a-inner"><strong>元本の保証はありません。</strong>損切り段数・救済決済で歯止めをかけることもできますが、初期設定ではOFFです。このEAが最も重視しているのは、稼働時間そのものを危険の少ない時間帯（12:00〜17:00）に絞ることであり、余裕資金での運用を強くお勧めします。</div></div>
+      <div class="faq-a"><div class="faq-a-inner">少額から始める場合はMICROを推奨しています。目安はMICRO 10万円以上、STANDARD 100万円以上です。</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        <span>パートナーコードを入れ忘れた場合は？</span><span class="faq-icon">+</span>
+        <span>パートナーコードを入力し忘れました。</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a"><div class="faq-a-inner">コードの事後変更はできません。入れ忘れに気づいた場合は、まずLINEでご相談ください。状況に応じて一緒に対応を考えます。</div></div>
+      <div class="faq-a"><div class="faq-a-inner">すでに作成した口座はそのままでも問題ありません。パートナーコード「FMDB2」を入力して、もう一度新しい口座を作成してください。</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        <span>設定が難しそうです。サポートはありますか？</span><span class="faq-icon">+</span>
+        <span>設置方法が分かりません。</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a"><div class="faq-a-inner">LINE登録後、初期設定のサポートを行っています。デフォルト設定のままでも稼働できる設計ですが、口座規模やリスク許容度に合わせた個別の調整もご相談いただけます。</div></div>
+      <div class="faq-a"><div class="faq-a-inner">確認完了後に設置マニュアルをご案内します。不明点は公式LINEからお問い合わせいただけます。</div></div>
     </div>
   </div>
-</div>
-
-<!-- ── CTA ── -->
-<div class="cta-dark">
-  <h2 class="h2 serif">統制ある攻めで、<br><span>相場を捉える。</span></h2>
-  <p class="cta-body" style="margin-top:12px;">
-    詳細・ご質問・お申し込みは<br>公式LINEよりお気軽にどうぞ。
-  </p>
-  <a href="https://lin.ee/NQcEpNH" class="btn-line" style="max-width:300px;margin:0 auto;" target="_blank" rel="noopener">💬 LINEで無料相談・登録</a>
-  <p class="cta-note">LINEアプリにて公式アカウントを登録後、担当者より折り返しご連絡いたします。</p>
 </div>
 
 <!-- ── FOOTER ── -->
@@ -618,6 +617,37 @@ function toggleFaq(btn) {
   if (!open) {
     item.classList.add('open');
     body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+function copyCode(btn) {
+  var code = 'FMDB2';
+  function showCopied() {
+    var original = btn.dataset.label || btn.textContent;
+    btn.dataset.label = original;
+    btn.textContent = '✓ コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = btn.dataset.label;
+      btn.classList.remove('copied');
+    }, 2000);
+  }
+  function fallbackCopy() {
+    var ta = document.createElement('textarea');
+    ta.value = code;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    showCopied();
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(showCopied).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
   }
 }
 </script>
