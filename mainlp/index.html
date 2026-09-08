@@ -102,6 +102,10 @@
     .story:nth-of-type(3){--ring-duration:46s;--orb-duration:6.2s;--orb-grad:radial-gradient(circle at 40% 35%,#eaf6ff,var(--blue) 48%,var(--navy) 92%);--orb-glow:0 0 38px rgba(27,109,168,.35),0 0 90px rgba(27,109,168,.16)}
     .story:nth-of-type(4){--ring-duration:30s;--orb-duration:3.6s;--orb-grad:radial-gradient(circle at 30% 25%,#fff,var(--led) 28%,var(--blue) 60%,var(--navy) 100%);--orb-glow:0 0 62px rgba(69,199,255,.55),0 0 130px rgba(69,199,255,.24)}
     .story:nth-of-type(5){--ring-duration:22s;--orb-duration:2.8s;--orb-grad:radial-gradient(circle at 50% 40%,#fff,var(--led) 22%,var(--blue) 52%,var(--navy) 88%);--orb-glow:0 0 70px rgba(69,199,255,.62),0 0 150px rgba(69,199,255,.3)}
+    /* Section 04: the long "あなたが別のことをしている間も、" line doesn't wrap (word-break:keep-all),
+       so it must be capped independently of h2's vw-based growth to avoid overlapping the orb */
+    .story:nth-of-type(5) h2{font-size:clamp(1.9rem,3.6vw,3.6rem)}
+    .story:nth-of-type(5) h2 .phrase-context{font-size:clamp(1rem,1.7vw,1.55rem);line-height:1.7}
 
     .telemetry{position:absolute;z-index:3;left:-22px;bottom:10%;min-width:145px;padding:12px 15px;border-left:2px solid var(--led);background:rgba(255,255,255,.8);backdrop-filter:blur(10px);box-shadow:0 9px 28px rgba(33,101,150,.1);font-size:.56rem;letter-spacing:.18em;color:#56738a}
     .telemetry b{display:block;color:var(--navy);font-size:.72rem;letter-spacing:.08em}
