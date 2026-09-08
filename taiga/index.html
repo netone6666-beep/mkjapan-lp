@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f7fbff">
+  <meta name="description" content="AIに聞く時代から、AIが動く時代へ。人とAIが自動化したものとは。">
+  <title>IMPERIUM｜Human × AI</title>
+  <style>
+    :root{
+      --ink:#07172b;--navy:#092443;--blue:#1b6da8;--led:#45c7ff;
+      --ice:#eaf6ff;--mist:#f7fbff;--line:rgba(7,23,43,.13);--white:#fff;
+      --serif:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;
+      --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Yu Gothic",Meiryo,sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;width:100%;max-width:100%;overflow-x:hidden}
+    body{width:100%;max-width:100%;overflow-x:hidden;margin:0;color:var(--ink);background:#fff;font-family:var(--sans);font-size:16px;line-height:1.9}
+    body.intro-lock{overflow:hidden}
+    body:before{content:"";position:fixed;z-index:80;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#28baff 25%,#fff 50%,#28baff 75%,transparent);box-shadow:0 0 12px #2ab9ff,0 0 30px rgba(42,185,255,.72);pointer-events:none}
+    a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
+    .progress{position:fixed;z-index:79;left:0;top:0;width:0;height:3px;background:linear-gradient(90deg,#1e9fe4,#dff8ff,#3c8cff);box-shadow:0 0 14px #25b8ff;pointer-events:none}
+    .wrap{width:min(1160px,calc(100% - 48px));margin:auto}
+    header{position:fixed;z-index:60;left:0;right:0;top:2px;transition:.35s}
+    header.scrolled{background:rgba(255,255,255,.86);backdrop-filter:blur(18px);box-shadow:0 1px 0 var(--line)}
+    .nav{height:80px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:13px;font:500 1.05rem/1.2 var(--serif);letter-spacing:.2em}
+    .brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;box-shadow:0 5px 18px rgba(32,111,166,.16)}
+    .brand small{display:block;margin-top:6px;color:#70869a;font:600 .52rem/1 var(--sans);letter-spacing:.28em}
+    .nav-link{display:flex;align-items:center;justify-content:center;min-width:150px;height:46px;padding:0 24px;border:1px solid rgba(27,109,168,.19);border-radius:999px;background:rgba(255,255,255,.72);font-size:.78rem;font-weight:700;letter-spacing:.08em;box-shadow:0 9px 28px rgba(35,114,172,.12);transition:.3s}
+    .nav-link:hover{color:#fff;background:var(--navy);border-color:var(--navy);box-shadow:0 0 26px rgba(48,180,247,.32)}
+    .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:122px 0 82px;background:linear-gradient(145deg,#fff 0%,#f4faff 42%,#e9f4fb 100%)}
+    .hero:before{content:"";position:absolute;left:-18vw;top:-28vw;width:78vw;height:78vw;border:1px solid rgba(46,155,219,.13);border-radius:50%;box-shadow:0 0 0 65px rgba(75,175,231,.025),0 0 0 150px rgba(75,175,231,.018)}
+    .hero:after{content:"";position:absolute;right:-14%;bottom:-26%;width:62vw;height:62vw;border-radius:50%;background:radial-gradient(circle,rgba(78,193,250,.2),rgba(216,240,253,.1) 38%,transparent 68%);filter:blur(2px)}
+    .scan-grid{position:absolute;inset:0;opacity:.22;background-image:linear-gradient(rgba(35,131,190,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(35,131,190,.09) 1px,transparent 1px);background-size:58px 58px;mask-image:linear-gradient(90deg,#000,transparent 68%)}
+    .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.04fr .96fr;gap:68px;align-items:center}
+    .eyebrow{display:flex;align-items:center;gap:12px;color:var(--blue);font-size:.7rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
+    .eyebrow:before{content:"";width:58px;height:1px;background:var(--led);box-shadow:0 0 10px var(--led)}
+    h1,h2,h3,p{margin-top:0}
+    h1{margin:24px 0 25px;font:500 clamp(2.9rem,6.5vw,6rem)/1.28 var(--serif);letter-spacing:.08em}
+    h1 strong{display:block;color:var(--blue);font-weight:500;text-shadow:0 0 22px rgba(57,182,244,.18)}
+    .hero-lead{max-width:570px;margin:0;color:#5a7083;font-size:1rem;line-height:2.05;letter-spacing:.04em}
+    .hero-actions{display:flex;align-items:center;gap:24px;margin-top:38px}
+    .primary{position:relative;display:flex;align-items:center;justify-content:center;width:min(360px,100%);height:64px;padding:0 28px;overflow:hidden;border:1px solid rgba(60,188,247,.55);border-radius:3px;color:#fff;background:linear-gradient(115deg,#071d35,#0d3b61);font-weight:700;letter-spacing:.09em;box-shadow:0 14px 38px rgba(7,36,67,.22),0 0 22px rgba(51,184,246,.14);transition:.32s}
+    .primary:before{content:"";position:absolute;top:0;left:-70%;width:42%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-24deg);transition:.65s}
+    .primary:hover:before{left:130%}.primary:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(7,36,67,.28),0 0 30px rgba(51,184,246,.24)}
+    .hero-orbit{position:relative;width:min(520px,42vw);aspect-ratio:1;margin:auto;display:grid;place-items:center}
+    .hero-orbit:before,.hero-orbit:after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+    .hero-orbit:before{inset:0;border:1px solid rgba(44,155,218,.28);box-shadow:0 0 35px rgba(58,186,246,.1) inset;animation:spin 28s linear infinite}
+    .hero-orbit:after{inset:9%;border:1px dashed rgba(44,155,218,.35);animation:spinBack 22s linear infinite}
+    .orbit-tick{position:absolute;inset:-4%;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(26,109,168,.34) 0 1deg,transparent 1deg 6deg);mask:radial-gradient(circle,transparent 69%,#000 70%,#000 71%,transparent 72%);opacity:.4;animation:spin 70s linear infinite}
+    .hero-logo{position:relative;z-index:2;width:73%;aspect-ratio:1;object-fit:cover;border-radius:50%;filter:drop-shadow(0 25px 45px rgba(44,123,180,.2));animation:float 5s ease-in-out infinite}
+    .status{position:absolute;right:0;bottom:14%;z-index:3;padding:10px 16px;border:1px solid rgba(29,119,180,.14);background:rgba(255,255,255,.78);backdrop-filter:blur(12px);color:#56738a;font-size:.58rem;letter-spacing:.18em;box-shadow:0 8px 25px rgba(50,120,170,.1)}
+    .status i{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:#38c4ff;box-shadow:0 0 9px #38c4ff}
+    .scroll-cue{position:absolute;z-index:3;bottom:28px;left:50%;color:#7590a5;font-size:.55rem;letter-spacing:.32em;writing-mode:vertical-rl}
+    .scroll-cue:after{content:"";display:block;width:1px;height:52px;margin:13px auto 0;background:linear-gradient(#5bcaff,transparent);animation:scan 1.8s ease-in-out infinite}
+    .story{position:relative;min-height:92svh;display:flex;align-items:center;padding:120px 0;overflow:hidden;background:#fff}
+    .story:nth-of-type(odd){background:linear-gradient(145deg,#f7fbfe,#fff)}
+    .story:after{content:"";position:absolute;left:50%;bottom:-55px;height:110px;border-left:2px dotted rgba(49,156,220,.28)}
+    .story-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center}
+    .story:nth-of-type(even) .visual{order:-1}
+    .index{font:italic 5rem/1 Georgia,serif;color:#dbe6ee;letter-spacing:-.04em}
+    .story h2{max-width:680px;margin:20px 0 26px;font:500 clamp(2.2rem,4.2vw,4.4rem)/1.48 var(--serif);letter-spacing:.055em;text-wrap:balance}
+    .story h2 em{font-style:normal;color:var(--blue);text-shadow:0 0 20px rgba(64,185,241,.14)}
+    .phrase{display:block;word-break:keep-all}
+    .phrase + .phrase{margin-top:.08em}
+    .story h2 .phrase-context{font-size:.78em;line-height:1.68;color:#38566d}
+    .reveal.show .phrase{animation:phraseRise .72s cubic-bezier(.2,.75,.2,1) both}
+    .reveal.show .phrase:nth-child(2){animation-delay:.12s}.reveal.show .phrase:nth-child(3){animation-delay:.24s}.reveal.show .phrase:nth-child(4){animation-delay:.36s}
+    .story p{max-width:520px;margin:0;color:#607487;line-height:2.15}
+    .visual{position:relative;width:min(410px,82vw);aspect-ratio:1;margin:auto;display:grid;place-items:center}
+    .visual:before,.visual:after{content:"";position:absolute;border-radius:50%}
+    .visual:before{inset:-19px;border:1px dashed rgba(40,145,207,.3);animation:spin 36s linear infinite}
+    .visual:after{inset:-39px;border:1px solid rgba(92,181,231,.15);box-shadow:0 0 36px rgba(71,184,241,.08)}
+    .visual img{position:relative;z-index:2;width:100%;height:100%;object-fit:cover;border-radius:50%;filter:drop-shadow(0 23px 38px rgba(40,111,162,.16))}
+    .telemetry{position:absolute;z-index:3;left:-22px;bottom:10%;min-width:145px;padding:12px 15px;border-left:2px solid var(--led);background:rgba(255,255,255,.8);backdrop-filter:blur(10px);box-shadow:0 9px 28px rgba(33,101,150,.1);font-size:.56rem;letter-spacing:.18em;color:#56738a}
+    .telemetry b{display:block;color:var(--navy);font-size:.72rem;letter-spacing:.08em}
+    .final{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;padding:130px 24px 100px;text-align:center;color:#fff;background:linear-gradient(150deg,#04111f,#082946 62%,#06192d)}
+    .final:before{content:"";position:absolute;width:min(760px,92vw);aspect-ratio:1;border-radius:50%;border:1px solid rgba(93,205,255,.24);box-shadow:0 0 0 65px rgba(70,181,238,.035),0 0 0 140px rgba(70,181,238,.022),0 0 95px rgba(54,183,246,.13) inset;animation:pulse 6s ease-in-out infinite}
+    .final:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 48%,rgba(40,159,224,.21),transparent 38%),linear-gradient(90deg,transparent 49.95%,rgba(83,204,255,.09) 50%,transparent 50.05%)}
+    .final-inner{position:relative;z-index:2;width:min(800px,100%)}
+    .final .eyebrow{justify-content:center;color:#74d5ff}.final .eyebrow:before{display:none}
+    .final h2{margin:24px 0 26px;font:500 clamp(2.45rem,5.3vw,5rem)/1.5 var(--serif);letter-spacing:.08em}
+    .final h2 em{display:block;color:#8ddcff;font-style:normal;text-shadow:0 0 30px rgba(67,193,251,.3)}
+    .final p{margin:0 0 34px;color:#a9bed0;letter-spacing:.06em}
+    .final .primary{margin:auto;border-color:rgba(103,211,255,.55);background:linear-gradient(115deg,#fff,#e6f6ff);color:var(--navy)}
+    footer{padding:42px 24px 96px;background:#03101d;color:#8ea3b5}
+    .footer-inner{width:min(1160px,100%);margin:auto;display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
+    .footer-brand{color:#fff;font:500 1.3rem/1.4 var(--serif);letter-spacing:.2em}.footer-brand small{display:block;margin-top:7px;color:#71899e;font:600 .55rem/1.4 var(--sans);letter-spacing:.3em}
+    .legal{max-width:720px;text-align:right;font-size:.66rem;line-height:1.9}.legal-links{color:#b8c8d5}
+    .mobile-cta{display:none}
+    .reveal{opacity:1;transform:none;transition:opacity .85s ease,transform .9s cubic-bezier(.2,.75,.2,1)}
+    .animations-ready .reveal{opacity:0;transform:translateY(30px)}.animations-ready .reveal.show{opacity:1;transform:none}
+    .type-line .cursor{display:inline-block;width:1px;height:1em;margin-left:5px;background:var(--blue);vertical-align:-.08em;animation:blink .75s step-end infinite}
+    .logo-intro{position:fixed;z-index:1000;inset:0;display:none;place-items:center;overflow:hidden;color:#fff;background:radial-gradient(circle at 50% 46%,#0b3557 0%,#061d34 34%,#020c16 72%);animation:introLeave .72s cubic-bezier(.7,0,.25,1) 2.05s forwards;pointer-events:none}
+    .animations-ready .logo-intro{display:grid}
+    .logo-intro:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(78,196,250,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(78,196,250,.06) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(circle,#000,transparent 70%);animation:introGrid 2.1s ease-out both}
+    .intro-stage{position:relative;width:min(360px,78vw);aspect-ratio:1;display:grid;place-items:center}
+    .intro-stage:before,.intro-stage:after{content:"";position:absolute;border-radius:50%}
+    .intro-stage:before{inset:0;border:1px solid rgba(102,211,255,.28);box-shadow:0 0 45px rgba(67,193,250,.16),0 0 55px rgba(74,199,255,.12) inset;animation:introRing 1.65s cubic-bezier(.2,.75,.2,1) both}
+    .intro-stage:after{inset:11%;border:1px dashed rgba(117,220,255,.38);animation:introSpin 5s linear infinite,introFade 1.2s ease-out both}
+    .intro-sweep{position:absolute;inset:-4%;border-radius:50%;background:conic-gradient(from 220deg,transparent 0 68%,rgba(94,214,255,.05) 78%,#b9efff 82%,transparent 85%);mask:radial-gradient(circle,transparent 70%,#000 71%,#000 73%,transparent 74%);filter:drop-shadow(0 0 8px #51caff);animation:introSpin 1.35s cubic-bezier(.22,.7,.25,1) both}
+    .intro-emblem{position:relative;z-index:2;width:55%;aspect-ratio:1;object-fit:cover;border-radius:50%;filter:drop-shadow(0 24px 35px rgba(0,0,0,.28));animation:emblemRise 1.25s cubic-bezier(.16,.82,.25,1) .18s both}
+    .intro-beam{position:absolute;z-index:3;left:18%;right:18%;top:50%;height:1px;background:linear-gradient(90deg,transparent,#dcf7ff,transparent);box-shadow:0 0 8px #7cddff,0 0 26px #4fcaff;animation:beamSweep 1.25s ease-in-out .38s both}
+    .intro-name{position:absolute;z-index:4;left:50%;bottom:-24px;transform:translateX(-50%);font:500 1.05rem/1 var(--serif);letter-spacing:.5em;text-indent:.5em;white-space:nowrap;text-shadow:0 0 18px rgba(113,218,255,.45);animation:nameRise .8s ease-out 1s both}
+    .intro-code{position:absolute;z-index:4;left:50%;bottom:-58px;transform:translateX(-50%);color:#6fcff7;font-size:.55rem;font-weight:700;letter-spacing:.3em;text-indent:.3em;white-space:nowrap;animation:nameRise .8s ease-out 1.2s both}
+    /* v2: curiosity-led cinematic layer */
+    .hero-copy{position:relative;padding:42px 42px 44px;border:1px solid rgba(56,172,232,.16);border-left:2px solid rgba(69,199,255,.75);background:linear-gradient(115deg,rgba(255,255,255,.82),rgba(255,255,255,.28));backdrop-filter:blur(12px);box-shadow:-10px 0 30px rgba(61,183,243,.1),0 24px 70px rgba(19,80,123,.08)}
+    .hero-copy:before{content:"";display:block;width:88px;height:2px;margin-bottom:26px;background:#52c9ff;box-shadow:0 0 11px #4cc8ff,0 0 28px rgba(76,200,255,.65)}
+    .hero h1{max-width:720px;font-size:clamp(2.7rem,5.7vw,5.3rem);line-height:1.38;text-wrap:balance}
+    .hero h1 strong{margin-top:.08em;font-size:.82em}
+    .hero-lead{min-height:3.8em;font-weight:500;color:#4e6e84}
+    .story .copy{position:relative;padding:30px 10px 32px 38px;border-left:1px solid rgba(52,167,226,.26)}
+    .story .copy:before{content:"";position:absolute;left:-1px;top:0;width:2px;height:76px;background:linear-gradient(#50caff,transparent);box-shadow:0 0 12px #43c4ff;animation:copyScan 3.8s ease-in-out infinite}
+    .story:before{position:absolute;right:clamp(24px,6vw,90px);bottom:34px;color:rgba(24,96,143,.35);font:600 .62rem/1 var(--sans);letter-spacing:.28em}
+    .story:nth-of-type(2):before{content:"DISCOVER 01 / 04"}.story:nth-of-type(3):before{content:"DISCOVER 02 / 04"}.story:nth-of-type(4):before{content:"DISCOVER 03 / 04"}.story:nth-of-type(5):before{content:"DISCOVER 04 / 04"}
+    .visual{transition:transform .9s cubic-bezier(.2,.7,.2,1)}.story:hover .visual{transform:translateY(-5px)}
+    .final .primary{animation:ctaGlow 2.8s ease-in-out infinite}.final .primary:after{content:"↗";margin-left:18px;font-size:1rem}
+    @keyframes copyScan{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(190px);opacity:1}}
+    @keyframes ctaGlow{50%{box-shadow:0 18px 48px rgba(0,0,0,.28),0 0 34px rgba(70,202,255,.36)}}
+    @keyframes phraseRise{from{opacity:0;transform:translateY(.36em);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
+    @keyframes introRing{0%{opacity:0;transform:scale(.55) rotate(-20deg)}70%{opacity:1}100%{transform:scale(1) rotate(0)}}
+    @keyframes introSpin{to{transform:rotate(360deg)}}@keyframes introFade{from{opacity:0}to{opacity:1}}
+    @keyframes emblemRise{0%{opacity:0;transform:scale(.58);filter:blur(18px) drop-shadow(0 24px 35px rgba(0,0,0,.28))}65%{opacity:1;transform:scale(1.045);filter:blur(0) drop-shadow(0 24px 35px rgba(0,0,0,.28))}100%{opacity:1;transform:scale(1)}}
+    @keyframes beamSweep{0%{opacity:0;transform:translateY(-130px) scaleX(.15)}45%{opacity:1;transform:translateY(0) scaleX(1)}100%{opacity:0;transform:translateY(130px) scaleX(.2)}}
+    @keyframes nameRise{from{opacity:0;transform:translate(-50%,14px);letter-spacing:.75em}to{opacity:1;transform:translate(-50%,0);letter-spacing:.5em}}
+    @keyframes introGrid{from{opacity:0;transform:scale(1.12)}to{opacity:1;transform:scale(1)}}
+    @keyframes introLeave{0%{opacity:1;clip-path:inset(0 0 0 0)}100%{opacity:0;clip-path:inset(0 0 100% 0);visibility:hidden}}
+    @keyframes spin{to{transform:rotate(360deg)}}@keyframes spinBack{to{transform:rotate(-360deg)}}
+    @keyframes float{50%{transform:translateY(-10px)}}@keyframes pulse{50%{transform:scale(1.035);opacity:.78}}
+    @keyframes scan{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}@keyframes blink{50%{opacity:0}}
+    @media(max-width:860px){
+      .wrap{width:min(680px,calc(100% - 34px))}.nav{height:68px}.brand img{width:36px;height:36px}.nav-link{min-width:0;height:42px;padding:0 17px}
+      .hero{padding:105px 0 90px}.hero-grid{grid-template-columns:1fr;gap:42px;text-align:center}.hero-copy{order:2;padding:34px 28px 38px}.hero-copy:before{margin:0 auto 24px}.eyebrow{justify-content:center}.eyebrow:before{display:none}.hero-lead{margin:auto}.hero-actions{justify-content:center}.hero-orbit{width:min(400px,76vw)}.status{right:-2%;bottom:10%}
+      .story{min-height:auto;padding:105px 0}.story-grid{grid-template-columns:1fr;gap:60px;text-align:center}.story:nth-of-type(even) .visual{order:0}.story h2{margin-left:auto;margin-right:auto}.story p{margin:auto}.visual{width:min(360px,76vw)}.telemetry{left:-8px;text-align:left}
+      .footer-inner{display:block}.legal{margin-top:30px;text-align:left}.mobile-cta{display:flex;position:fixed;z-index:70;left:17px;right:17px;bottom:calc(14px + env(safe-area-inset-bottom));height:58px;align-items:center;justify-content:center;border:1px solid rgba(90,204,255,.5);border-radius:3px;background:rgba(6,31,55,.93);backdrop-filter:blur(14px);color:#fff;font-weight:700;letter-spacing:.08em;box-shadow:0 10px 38px rgba(3,20,37,.28),0 0 22px rgba(45,183,248,.17)}
+    }
+    @media(max-width:520px){
+      h1,.hero h1{font-size:clamp(1.9rem,8.7vw,2.38rem);line-height:1.5;letter-spacing:.035em}.hero-copy{padding:30px 18px 34px}.hero-lead{font-size:.92rem;min-height:4.5em}.hero-actions .primary{width:100%}.story h2{font-size:clamp(1.58rem,7.2vw,1.92rem);line-height:1.52;letter-spacing:.025em}.story h2 .phrase-context{font-size:.73em;line-height:1.75}.story .copy{padding:24px 3px 26px 18px}.index{font-size:4rem}.visual{width:min(292px,74vw)}.visual:after{inset:-25px}.visual:before{inset:-12px}.telemetry{left:-12px;bottom:4%;min-width:126px;padding:9px 11px}.final h2{font-size:clamp(1.8rem,8.2vw,2.15rem);line-height:1.56;letter-spacing:.035em}.final p{font-size:.9rem}.brand{font-size:.91rem;letter-spacing:.16em}.nav-link{font-size:.7rem}
+    }
+    @media(max-width:350px){.phrase{word-break:normal}.story h2{font-size:1.48rem}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.animations-ready .logo-intro{display:none}.hero-logo,.hero-orbit:before,.hero-orbit:after,.orbit-tick,.visual:before,.final:before,.scroll-cue:after,.story .copy:before,.final .primary,.reveal.show .phrase{animation:none}.animations-ready .reveal{opacity:1;transform:none;transition:none}}
+  </style>
+</head>
+<body>
+  <script>document.documentElement.classList.add('animations-ready');document.body.classList.add('intro-lock')</script>
+  <div class="logo-intro" id="logoIntro" aria-hidden="true">
+    <div class="intro-stage">
+      <div class="intro-sweep"></div>
+      <img class="intro-emblem" src="assets/imperium-logo.jpg" alt="">
+      <div class="intro-beam"></div>
+      <div class="intro-name">IMPERIUM</div>
+      <div class="intro-code">HUMAN × AI / INITIALIZED</div>
+    </div>
+  </div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <header id="header">
+    <div class="wrap nav">
+      <a class="brand" href="#top"><img src="assets/imperium-logo.jpg" alt=""><span>IMPERIUM<small>HUMAN × AI</small></span></a>
+      <a class="nav-link" href="https://lin.ee/pWn4ioB" target="_blank" rel="noopener noreferrer">続きを見る&nbsp; →</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="scan-grid" aria-hidden="true"></div>
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">HUMAN × ARTIFICIAL INTELLIGENCE</div>
+          <h1><span class="phrase">AIに聞く時代から、</span><strong class="phrase">AIが動く時代へ。</strong></h1>
+          <p class="hero-lead type-line" data-type="人とAIが、あるものを自動化した。">人とAIが、あるものを自動化した。</p>
+          <div class="hero-actions"><a class="primary" href="#story">物語を進める&nbsp; →</a></div>
+        </div>
+        <div class="hero-orbit reveal" aria-label="IMPERIUM">
+          <div class="orbit-tick" aria-hidden="true"></div>
+          <img class="hero-logo" src="assets/imperium-logo.jpg" alt="IMPERIUM">
+          <div class="status"><i></i>HUMAN × SYSTEM / ONLINE</div>
+        </div>
+      </div>
+      <div class="scroll-cue">SCROLL</div>
+    </section>
+
+    <section class="story" id="story">
+      <div class="wrap story-grid">
+        <div class="copy reveal"><div class="index">01</div><h2><span class="phrase">あるものを、</span><em class="phrase">AIですべて</em><span class="phrase">自動化しようとした。</span></h2></div>
+        <div class="visual reveal"><img src="assets/story-2.png" alt="時を示す時計"><div class="telemetry">AUTOMATION<b>THE BEGINNING</b></div></div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="wrap story-grid">
+        <div class="copy reveal"><div class="index">02</div><h2><span class="phrase">でも、</span><em class="phrase">AIだけでは</em><span class="phrase">完成しなかった。</span></h2></div>
+        <div class="visual reveal"><img src="assets/story-3.png" alt="AIシステムのイメージ"><div class="telemetry">AI<b>NOT ENOUGH</b></div></div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="wrap story-grid">
+        <div class="copy reveal"><div class="index">03</div><h2><span class="phrase phrase-context">最後に必要だったのは、</span><em class="phrase">人の判断だった。</em></h2></div>
+        <div class="visual reveal"><img src="assets/story-4.png" alt="考える人"><div class="telemetry">HUMAN<b>JUDGMENT</b></div></div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="wrap story-grid">
+        <div class="copy reveal"><div class="index">04</div><h2><span class="phrase">人が考え、</span><em class="phrase">AIが動く。</em><span class="phrase phrase-context">あなたが別のことをしている間も、</span><span class="phrase">それは止まらない。</span></h2></div>
+        <div class="visual reveal"><img src="assets/imperium-logo.jpg" alt="IMPERIUM"><div class="telemetry">HUMAN × AI<b>IT CONTINUES</b></div></div>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="final-inner reveal">
+        <div class="eyebrow">THE QUESTION</div>
+        <h2><span class="phrase">では、人とAIは</span><em class="phrase type-final" data-type="何を自動化したのか？">何を自動化したのか？</em></h2>
+        <p>その答えを、公式LINEで。</p>
+        <a class="primary" href="https://lin.ee/pWn4ioB" target="_blank" rel="noopener noreferrer">答えを見る</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="legal">
+    <div class="footer-inner">
+      <div class="footer-brand">IMPERIUM<small>HUMAN × AI</small></div>
+      <div class="legal"><div class="legal-links">プライバシーポリシー　 免責事項</div>© 2026 IMPERIUM. All rights reserved.</div>
+    </div>
+  </footer>
+  <a class="mobile-cta" href="https://lin.ee/pWn4ioB" target="_blank" rel="noopener noreferrer">答えを見る&nbsp; →</a>
+
+  <script>
+    (()=>{
+      const intro=document.getElementById('logoIntro');
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.classList.remove('intro-lock');intro.remove()}
+      else setTimeout(()=>{document.body.classList.remove('intro-lock');intro.remove()},2900);
+      const header=document.getElementById('header');
+      const progress=document.getElementById('progress');
+      const onScroll=()=>{
+        const y=window.scrollY, max=document.documentElement.scrollHeight-innerHeight;
+        header.classList.toggle('scrolled',y>30);
+        progress.style.width=(max>0?y/max*100:0)+'%';
+      };
+      addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+      const reveal=document.querySelectorAll('.reveal');
+      if('IntersectionObserver' in window){
+        const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('show');io.unobserve(entry.target)}}),{threshold:.14,rootMargin:'0px 0px -7% 0px'});
+        reveal.forEach(el=>io.observe(el));
+      }else reveal.forEach(el=>el.classList.add('show'));
+
+      const type=(el,text,speed=62)=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.append(cursor);let i=0;const tick=()=>{if(i<text.length){cursor.before(text[i++]);setTimeout(tick,speed)}else setTimeout(()=>cursor.remove(),900)};tick()};
+      const heroLine=document.querySelector('.type-line');
+      setTimeout(()=>type(heroLine,heroLine.dataset.type,45),550);
+      const finalLine=document.querySelector('.type-final');
+      if('IntersectionObserver' in window){const tio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){type(finalLine,finalLine.dataset.type,82);tio.disconnect()}}),{threshold:.7});tio.observe(finalLine)}
+    })();
+  </script>
+</body>
+</html>
