@@ -1,672 +1,275 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MKJAPAN</title>
-<meta name="robots" content="noindex, nofollow">
-<script>document.documentElement.classList.add('js');</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#F7FAFC;
-    --text-main:#17212B;
-    --text-sub:#66717D;
-    --ai-blue:#55C8FF;
-    --human-gold:#F1C978;
-    --accent-connect:#58AFFF;
-    --line-thin:#B8DFF2;
-    --glass:rgba(255,255,255,0.55);
-    --cta-cyan:#7FE3FF;
-  }
-
-  *{box-sizing:border-box;}
-
-  html,body{
-    margin:0;
-    padding:0;
-    background:var(--bg);
-    color:var(--text-main);
-    font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif;
-    overflow-x:hidden;
-    width:100%;
-  }
-
-  body{
-    position:relative;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  /* ---------- 背景グラデーション ---------- */
-  .bg-layer{
-    position:fixed;
-    inset:0;
-    z-index:-2;
-    background:linear-gradient(160deg,#FFFFFF 0%,#F7FAFC 45%,#EAF4FB 100%);
-  }
-  .bg-glow{
-    position:fixed;
-    inset:0;
-    z-index:-1;
-    pointer-events:none;
-    overflow:hidden;
-  }
-  .bg-glow span{
-    position:absolute;
-    width:60vmax;
-    height:60vmax;
-    top:-20vmax;
-    right:-20vmax;
-    border-radius:50%;
-    background:radial-gradient(circle at 50% 50%, rgba(85,200,255,0.16) 0%, rgba(85,200,255,0) 70%);
-    filter:blur(10px);
-  }
-  .js .bg-glow span{
-    animation:softDrift 11s ease-in-out infinite;
-  }
-
-  /* ---------- 共通レイアウト ---------- */
-  main{position:relative; z-index:1;}
-
-  .screen{
-    position:relative;
-    min-height:100svh;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    padding:64px 0;
-  }
-
-  .screen-inner{
-    position:relative;
-    z-index:2;
-    max-width:680px;
-    width:100%;
-    margin:0 auto;
-    padding:0 24px;
-    text-align:center;
-  }
-
-  .glass-panel{
-    background:var(--glass);
-    -webkit-backdrop-filter:blur(6px);
-    backdrop-filter:blur(6px);
-    border-radius:24px;
-    padding:40px 20px;
-  }
-
-  .copy{
-    margin:0;
-    font-weight:700;
-    line-height:1.55;
-    letter-spacing:0.02em;
-    color:var(--text-main);
-  }
-
-  .line{
-    display:inline-block;
-  }
-  .nowrap-seg{
-    white-space:nowrap;
-  }
-
-  /* 行アニメーション（JS有効時のみ初期非表示） */
-  .js .line{
-    opacity:0;
-    transform:translateY(12px);
-  }
-  .js .screen.in-view .line{
-    animation:fadeUp 0.7s ease forwards;
-  }
-
-  @keyframes fadeUp{
-    from{opacity:0; transform:translateY(12px);}
-    to{opacity:1; transform:translateY(0);}
-  }
-
-  /* ---------- 第1画面 ---------- */
-  .screen-1 .copy{
-    font-size:clamp(26px, 8vw, 34px);
-  }
-  .accent-word{
-    color:var(--text-main);
-    text-shadow:0 0 14px rgba(85,200,255,0.55);
-  }
-  .js .screen-1.in-view .line[data-line="1"]{ animation-delay:0s; }
-  .js .screen-1.in-view .line[data-line="2"]{ animation-delay:0.6s; }
-
-  .scroll-cue{
-    position:absolute;
-    bottom:28px;
-    left:50%;
-    transform:translateX(-50%);
-    width:1px;
-    height:34px;
-    z-index:2;
-  }
-  .scroll-cue span{
-    display:block;
-    width:1px;
-    height:100%;
-    background:linear-gradient(to bottom, rgba(23,33,43,0) 0%, var(--line-thin) 60%, rgba(23,33,43,0) 100%);
-  }
-  .js .scroll-cue span{
-    animation:cueMove 2.6s ease-in-out infinite;
-  }
-  @keyframes cueMove{
-    0%{transform:scaleY(0.3); opacity:0.2; transform-origin:top;}
-    50%{transform:scaleY(1); opacity:0.9; transform-origin:top;}
-    100%{transform:scaleY(0.3); opacity:0.2; transform-origin:bottom;}
-  }
-
-  /* ---------- 第2〜5画面 共通 ---------- */
-  .screen-2 .copy, .screen-3 .copy, .screen-4 .copy, .screen-5 .copy{
-    font-size:clamp(26px, 7vw, 30px);
-  }
-
-  .stack{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:28px;
-  }
-
-  .diagram{
-    position:relative;
-    display:block;
-    width:min(72%, 300px);
-    height:auto;
-    z-index:1;
-    pointer-events:none;
-    flex-shrink:0;
-  }
-
-  .node{
-    fill:var(--accent-connect);
-    opacity:0.9;
-  }
-  .node-dim{
-    fill:var(--line-thin);
-    opacity:0.6;
-  }
-  .connect-line{
-    stroke:var(--line-thin);
-    stroke-width:1.6;
-    fill:none;
-    stroke-linecap:round;
-  }
-  .js .connect-line{
-    stroke-dashoffset:1;
-  }
-  .js .screen.in-view .connect-line{
-    animation:drawLine 0.8s ease forwards;
-  }
-  @keyframes drawLine{ to{ stroke-dashoffset:0; } }
-
-  .js .node{
-    opacity:0;
-    transform:scale(0.6);
-    transform-box:fill-box;
-    transform-origin:center;
-  }
-  .js .screen.in-view .node{
-    animation:dotPop 0.5s ease forwards;
-  }
-  @keyframes dotPop{
-    from{opacity:0; transform:scale(0.6);}
-    to{opacity:0.9; transform:scale(1);}
-  }
-
-  /* 第2画面：4本の線を順番に */
-  .s2-l1{ animation-delay:0.1s !important; }
-  .s2-l2{ animation-delay:0.4s !important; }
-  .s2-l3{ animation-delay:0.7s !important; }
-  .s2-l4{ animation-delay:1.0s !important; }
-  .s2-n1{ animation-delay:0s !important; }
-  .s2-n2{ animation-delay:0.3s !important; }
-  .s2-n3{ animation-delay:0.6s !important; }
-  .s2-n4{ animation-delay:0.9s !important; }
-  .s2-n5{ animation-delay:1.2s !important; }
-  .s2-n6{ animation-delay:1.4s !important; opacity:0; }
-  .js .screen-2.in-view .s2-n6{ animation:dotPopDim 0.5s ease forwards; animation-delay:1.4s; }
-  @keyframes dotPopDim{
-    from{opacity:0; transform:scale(0.6);}
-    to{opacity:0.55; transform:scale(1);}
-  }
-  .js .screen-2.in-view .line{ animation-delay:1.8s; }
-  .js .screen-2.in-view .line[data-line="2"]{ animation-delay:2.1s; }
-
-  /* 第3画面：接続を素早く引き継いでから静止 → 文章 */
-  .s3-l1{ animation-delay:0s !important; }
-  .s3-l2{ animation-delay:0.15s !important; }
-  .s3-l3{ animation-delay:0.3s !important; }
-  .s3-l4{ animation-delay:0.45s !important; }
-  .s3-n1,.s3-n2,.s3-n3,.s3-n4,.s3-n5{ animation-delay:0s !important; }
-  .s3-n6{ opacity:0.55; }
-  .js .screen-3.in-view .l1{ animation-delay:1.3s; }
-  .js .screen-3.in-view .l2{ animation-delay:2.1s; }
-  .js .screen-3.in-view .l3{ animation-delay:2.4s; }
-
-  /* ---------- 第4画面 ---------- */
-  .s4-l1,.s4-l2,.s4-l3,.s4-l4{ animation-delay:0s !important; }
-  .s4-n1,.s4-n2,.s4-n3,.s4-n4,.s4-n5{ animation-delay:0s !important; }
-
-  .s4-approach{
-    fill:var(--human-gold);
-    opacity:0;
-    filter:blur(3px);
-  }
-  .js .screen-4.in-view .s4-approach{
-    animation:goldApproach 1s ease forwards;
-    animation-delay:0.4s;
-  }
-  @keyframes goldApproach{
-    from{opacity:0; transform:translate(40px,-30px) scale(0.7);}
-    to{opacity:0.85; transform:translate(0,0) scale(1);}
-  }
-
-  .s4-finalline{
-    stroke:var(--human-gold);
-  }
-  .js .s4-finalline{ stroke-dashoffset:1; }
-  .js .screen-4.in-view .s4-finalline{
-    animation:drawLine 0.7s ease forwards;
-    animation-delay:1.2s;
-  }
-
-  .s4-finalnode{
-    fill:var(--human-gold);
-  }
-  .js .screen-4.in-view .s4-finalnode{
-    animation:dotPop 0.5s ease forwards;
-    animation-delay:1.7s;
-  }
-
-  .s4-bloom{
-    position:absolute;
-    inset:0;
-    z-index:0;
-    background:radial-gradient(circle at 50% 42%, rgba(241,201,120,0.22) 0%, rgba(85,200,255,0.10) 45%, rgba(255,255,255,0) 72%);
-    opacity:0;
-  }
-  .js .screen-4.in-view .s4-bloom{
-    animation:glowBloom 1.4s ease forwards;
-    animation-delay:2.0s;
-  }
-  @keyframes glowBloom{ from{opacity:0;} to{opacity:1;} }
-
-  .js .screen-4.in-view .line[data-line="1"]{ animation-delay:0.6s; }
-  .js .screen-4.in-view .line[data-line="2"]{ animation-delay:1.0s; }
-
-  /* ---------- 第5画面 ---------- */
-  .screen-5 .screen-inner{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding-top:0;
-  }
-  .orb-wrap{
-    position:relative;
-    display:block;
-    width:min(46%, 190px);
-    margin:0 auto;
-    z-index:1;
-    pointer-events:none;
-    flex-shrink:0;
-  }
-  .screen-5 .copy-gap{
-    height:36px;
-    flex-shrink:0;
-  }
-  .screen-5 .copy-group + .copy-group{
-    margin-top:22px;
-  }
-  .arc{
-    fill:none;
-    stroke-width:3;
-    stroke-linecap:round;
-  }
-  .arc-gold{ stroke:var(--human-gold); }
-  .arc-blue{ stroke:var(--ai-blue); }
-  .js .arc{ stroke-dashoffset:1; opacity:0; }
-  .js .screen-5.in-view .arc-gold{
-    animation:arcDraw 1s ease forwards;
-    animation-delay:0s;
-  }
-  .js .screen-5.in-view .arc-blue{
-    animation:arcDraw 1s ease forwards;
-    animation-delay:0.5s;
-  }
-  @keyframes arcDraw{
-    from{ opacity:0; stroke-dashoffset:1; }
-    to{ opacity:0.9; stroke-dashoffset:0; }
-  }
-
-  .ring-merged{
-    fill:none;
-    stroke:url(#ringGradient);
-    stroke-width:3;
-    opacity:0;
-    transform:scale(0.94);
-    transform-box:fill-box;
-    transform-origin:center;
-  }
-  .js .screen-5.in-view .ring-merged{
-    animation:ringMerge 1.1s ease forwards;
-    animation-delay:1.1s;
-  }
-  @keyframes ringMerge{
-    from{opacity:0; transform:scale(0.94);}
-    to{opacity:0.9; transform:scale(1);}
-  }
-
-  .js .screen-5.in-view .line[data-line="1"]{ animation-delay:2.2s; }
-  .js .screen-5.in-view .line[data-line="2"]{ animation-delay:2.6s; }
-  .js .screen-5.in-view .line[data-line="3"]{ animation-delay:3.3s; }
-  .js .screen-5.in-view .line[data-line="4"]{ animation-delay:4.2s; }
-
-  /* ---------- 第6画面 ---------- */
-  .screen-6{ padding-top:80px; padding-bottom:80px; }
-  .orb-bg-wrap{
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:min(140%, 640px);
-    transform:translate(-50%,-50%);
-    z-index:0;
-    opacity:0.32;
-    pointer-events:none;
-  }
-  .js .orb-bg-wrap{
-    animation:ringRotate 60s linear infinite;
-  }
-  @keyframes ringRotate{ to{ transform:translate(-50%,-50%) rotate(360deg); } }
-
-  .screen-6 .copy{
-    font-size:clamp(26px, 7.5vw, 32px);
-    margin-bottom:40px;
-  }
-  .js .screen-6.in-view .line[data-line="1"]{ animation-delay:0s; }
-  .js .screen-6.in-view .line[data-line="2"]{ animation-delay:0.3s; }
-
-  .cta-button{
-    position:relative;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:min(78vw, 360px);
-    height:58px;
-    margin:0 auto;
-    border-radius:29px;
-    background:linear-gradient(90deg, var(--ai-blue) 0%, var(--cta-cyan) 100%);
-    color:#FFFFFF;
-    font-size:17px;
-    font-weight:700;
-    letter-spacing:0.02em;
-    text-decoration:none;
-    box-shadow:0 10px 24px rgba(85,200,255,0.32);
-    overflow:hidden;
-    -webkit-tap-highlight-color:transparent;
-    transition:transform 0.15s ease;
-  }
-  .cta-button:active{
-    transform:scale(0.97);
-  }
-  .js .cta-button{
-    opacity:0;
-    transform:translateY(14px);
-  }
-  .js .screen-6.in-view .cta-button{
-    animation:ctaRise 0.7s ease forwards;
-    animation-delay:1.1s;
-  }
-  @keyframes ctaRise{
-    from{opacity:0; transform:translateY(14px);}
-    to{opacity:1; transform:translateY(0);}
-  }
-  .cta-button::after{
-    content:"";
-    position:absolute;
-    top:0;
-    left:0;
-    width:40%;
-    height:100%;
-    background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%);
-    transform:translateX(-160%) skewX(-15deg);
-    opacity:0;
-  }
-  .js .screen-6.in-view .cta-button::after{
-    animation:shimmerSweep 1s ease forwards;
-    animation-delay:1.9s;
-  }
-  @keyframes shimmerSweep{
-    from{ transform:translateX(-160%) skewX(-15deg); opacity:0.9; }
-    to{ transform:translateX(220%) skewX(-15deg); opacity:0; }
-  }
-
-  /* ---------- フッター ---------- */
-  .site-footer{
-    position:relative;
-    z-index:1;
-    text-align:center;
-    font-size:12px;
-    font-weight:400;
-    color:var(--text-sub);
-    padding:24px 24px 32px;
-  }
-
-  /* ---------- 動きを抑える設定 ---------- */
-  @media (prefers-reduced-motion: reduce){
-    *, *::before, *::after{
-      animation-duration:0.01ms !important;
-      animation-iteration-count:1 !important;
-      transition-duration:0.01ms !important;
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f7fbff">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="AIに聞く時代から、AIが動く時代へ。人とAIが自動化したものとは。">
+  <title>MKJAPAN｜Human × AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#07172b;--navy:#092443;--blue:#1b6da8;--led:#45c7ff;
+      --ice:#eaf6ff;--mist:#f7fbff;--line:rgba(7,23,43,.13);--white:#fff;
+      --serif:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;
+      --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Yu Gothic",Meiryo,sans-serif;
     }
-    .js .line, .js .node, .js .connect-line, .js .arc, .js .ring-merged, .js .cta-button, .js .s4-bloom{
-      opacity:1 !important;
-      transform:none !important;
-      stroke-dashoffset:0 !important;
-    }
-  }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;width:100%;max-width:100%;overflow-x:hidden}
+    body{width:100%;max-width:100%;overflow-x:hidden;margin:0;color:var(--ink);background:#fff;font-family:var(--sans);font-size:16px;line-height:1.9}
+    body.intro-lock{overflow:hidden}
+    body:before{content:"";position:fixed;z-index:80;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#28baff 25%,#fff 50%,#28baff 75%,transparent);box-shadow:0 0 12px #2ab9ff,0 0 30px rgba(42,185,255,.72);pointer-events:none}
+    a{color:inherit;text-decoration:none}
+    .progress{position:fixed;z-index:79;left:0;top:0;width:0;height:3px;background:linear-gradient(90deg,#1e9fe4,#dff8ff,#3c8cff);box-shadow:0 0 14px #25b8ff;pointer-events:none}
+    .wrap{width:min(1160px,calc(100% - 48px));margin:auto}
 
-  @media (min-width:768px){
-    .screen-inner{ padding:0 40px; }
-  }
-</style>
+    /* ---------- header ---------- */
+    header{position:fixed;z-index:60;left:0;right:0;top:2px;transition:.35s}
+    header.scrolled{background:rgba(255,255,255,.86);backdrop-filter:blur(18px);box-shadow:0 1px 0 var(--line)}
+    .nav{height:80px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:13px;font:500 1.05rem/1.2 var(--serif);letter-spacing:.2em}
+    .brand-orb{position:relative;width:34px;height:34px;flex:none;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--led) 42%,var(--blue) 78%,var(--navy) 100%);box-shadow:0 0 14px rgba(69,199,255,.6),0 0 26px rgba(69,199,255,.28);animation:pulse 4.5s ease-in-out infinite}
+    .nav-link{display:flex;align-items:center;justify-content:center;min-width:150px;height:46px;padding:0 24px;border:1px solid rgba(27,109,168,.19);border-radius:999px;background:rgba(255,255,255,.72);font-size:.78rem;font-weight:700;letter-spacing:.08em;box-shadow:0 9px 28px rgba(35,114,172,.12);transition:.3s}
+    .nav-link:hover{color:#fff;background:var(--navy);border-color:var(--navy);box-shadow:0 0 26px rgba(48,180,247,.32)}
+
+    /* ---------- hero ---------- */
+    .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:122px 0 82px;background:linear-gradient(145deg,#fff 0%,#f4faff 42%,#e9f4fb 100%)}
+    .hero:before{content:"";position:absolute;left:-18vw;top:-28vw;width:78vw;height:78vw;border:1px solid rgba(46,155,219,.13);border-radius:50%;box-shadow:0 0 0 65px rgba(75,175,231,.025),0 0 0 150px rgba(75,175,231,.018)}
+    .hero:after{content:"";position:absolute;right:-14%;bottom:-26%;width:62vw;height:62vw;border-radius:50%;background:radial-gradient(circle,rgba(78,193,250,.2),rgba(216,240,253,.1) 38%,transparent 68%);filter:blur(2px)}
+    .scan-grid{position:absolute;inset:0;opacity:.22;background-image:linear-gradient(rgba(35,131,190,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(35,131,190,.09) 1px,transparent 1px);background-size:58px 58px;mask-image:linear-gradient(90deg,#000,transparent 68%)}
+    .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.04fr .96fr;gap:68px;align-items:center}
+    .eyebrow{display:flex;align-items:center;gap:12px;color:var(--blue);font-size:.7rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
+    .eyebrow:before{content:"";width:58px;height:1px;background:var(--led);box-shadow:0 0 10px var(--led)}
+    h1,h2,h3,p{margin-top:0}
+    h1{margin:24px 0 25px;font:500 clamp(2.9rem,6.5vw,6rem)/1.28 var(--serif);letter-spacing:.08em}
+    h1 strong{display:block;color:var(--blue);font-weight:500;text-shadow:0 0 22px rgba(57,182,244,.18)}
+    .hero-lead{max-width:570px;margin:0;min-height:3.8em;color:#4e6e84;font-weight:500;font-size:1rem;line-height:2.05;letter-spacing:.04em}
+    .hero-actions{display:flex;align-items:center;gap:24px;margin-top:38px}
+    .primary{position:relative;display:flex;align-items:center;justify-content:center;width:min(360px,100%);height:64px;padding:0 28px;overflow:hidden;border:1px solid rgba(60,188,247,.55);border-radius:3px;color:#fff;background:linear-gradient(115deg,#071d35,#0d3b61);font-weight:700;letter-spacing:.09em;box-shadow:0 14px 38px rgba(7,36,67,.22),0 0 22px rgba(51,184,246,.14);transition:.32s}
+    .primary:before{content:"";position:absolute;top:0;left:-70%;width:42%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-24deg);transition:.65s}
+    .primary:hover:before{left:130%}.primary:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(7,36,67,.28),0 0 30px rgba(51,184,246,.24)}
+
+    .hero-copy{position:relative;padding:42px 42px 44px;border:1px solid rgba(56,172,232,.16);border-left:2px solid rgba(69,199,255,.75);background:linear-gradient(115deg,rgba(255,255,255,.82),rgba(255,255,255,.28));backdrop-filter:blur(12px);box-shadow:-10px 0 30px rgba(61,183,243,.1),0 24px 70px rgba(19,80,123,.08)}
+    .hero-copy:before{content:"";display:block;width:88px;height:2px;margin-bottom:26px;background:#52c9ff;box-shadow:0 0 11px #4cc8ff,0 0 28px rgba(76,200,255,.65)}
+    .hero h1{max-width:720px;font-size:clamp(2.7rem,5.7vw,5.3rem);line-height:1.38;text-wrap:balance}
+    .hero h1 strong{margin-top:.08em;font-size:.82em}
+
+    /* ---------- CSS orb (shared visual language) ---------- */
+    .hero-orbit{position:relative;width:min(520px,42vw);aspect-ratio:1;margin:auto;display:grid;place-items:center}
+    .hero-orbit:before,.hero-orbit:after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+    .hero-orbit:before{inset:0;border:1px solid rgba(44,155,218,.28);box-shadow:0 0 35px rgba(58,186,246,.1) inset;animation:spin 28s linear infinite}
+    .hero-orbit:after{inset:9%;border:1px dashed rgba(44,155,218,.35);animation:spinBack 22s linear infinite}
+    .orbit-tick{position:absolute;inset:-4%;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(26,109,168,.34) 0 1deg,transparent 1deg 6deg);mask:radial-gradient(circle,transparent 69%,#000 70%,#000 71%,transparent 72%);opacity:.4;animation:spin 70s linear infinite}
+    .orb-core{position:relative;z-index:2;width:64%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--led) 38%,var(--blue) 72%,var(--navy) 100%);box-shadow:0 0 60px rgba(69,199,255,.5),0 0 130px rgba(69,199,255,.22),0 25px 45px rgba(44,123,180,.22);filter:drop-shadow(0 25px 45px rgba(44,123,180,.2));animation:pulse 5s ease-in-out infinite}
+    .orb-core:after{content:"";position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.85),transparent 55%);mix-blend-mode:screen}
+    .status{position:absolute;right:0;bottom:14%;z-index:3;padding:10px 16px;border:1px solid rgba(29,119,180,.14);background:rgba(255,255,255,.78);backdrop-filter:blur(12px);color:#56738a;font-size:.58rem;letter-spacing:.18em;box-shadow:0 8px 25px rgba(50,120,170,.1)}
+    .status i{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:#38c4ff;box-shadow:0 0 9px #38c4ff}
+    .scroll-cue{position:absolute;z-index:3;bottom:28px;left:50%;color:#7590a5;font-size:.55rem;letter-spacing:.32em;writing-mode:vertical-rl}
+    .scroll-cue:after{content:"";display:block;width:1px;height:52px;margin:13px auto 0;background:linear-gradient(#5bcaff,transparent);animation:scan 1.8s ease-in-out infinite}
+
+    /* ---------- story sections ---------- */
+    .story{position:relative;min-height:92svh;display:flex;align-items:center;padding:120px 0;overflow:hidden;background:#fff}
+    .story:nth-of-type(odd){background:linear-gradient(145deg,#f7fbfe,#fff)}
+    .story:after{content:"";position:absolute;left:50%;bottom:-55px;height:110px;border-left:2px dotted rgba(49,156,220,.28)}
+    .story-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center}
+    .story:nth-of-type(even) .visual{order:-1}
+    .index{font:italic 5rem/1 Georgia,serif;color:#dbe6ee;letter-spacing:-.04em}
+    .story h2{max-width:680px;margin:20px 0 26px;font:500 clamp(2.2rem,4.2vw,4.4rem)/1.48 var(--serif);letter-spacing:.055em;text-wrap:balance}
+    .story h2 em{font-style:normal;color:var(--blue);text-shadow:0 0 20px rgba(64,185,241,.14)}
+    .phrase{display:block;word-break:keep-all}
+    .phrase + .phrase{margin-top:.08em}
+    .story h2 .phrase-context{font-size:.78em;line-height:1.68;color:#38566d}
+    .reveal.show .phrase{animation:phraseRise .72s cubic-bezier(.2,.75,.2,1) both}
+    .reveal.show .phrase:nth-child(2){animation-delay:.12s}.reveal.show .phrase:nth-child(3){animation-delay:.24s}.reveal.show .phrase:nth-child(4){animation-delay:.36s}
+    .story p{max-width:520px;margin:0;color:#607487;line-height:2.15}
+    .story .copy{position:relative;padding:30px 10px 32px 38px;border-left:1px solid rgba(52,167,226,.26)}
+    .story .copy:before{content:"";position:absolute;left:-1px;top:0;width:2px;height:76px;background:linear-gradient(#50caff,transparent);box-shadow:0 0 12px #43c4ff;animation:copyScan 3.8s ease-in-out infinite}
+    .story:before{position:absolute;right:clamp(24px,6vw,90px);bottom:34px;color:rgba(24,96,143,.35);font:600 .62rem/1 var(--sans);letter-spacing:.28em}
+    .story:nth-of-type(2):before{content:"DISCOVER 01 / 04"}.story:nth-of-type(3):before{content:"DISCOVER 02 / 04"}.story:nth-of-type(4):before{content:"DISCOVER 03 / 04"}.story:nth-of-type(5):before{content:"DISCOVER 04 / 04"}
+
+    .visual{position:relative;width:min(410px,82vw);aspect-ratio:1;margin:auto;display:grid;place-items:center;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+    .story:hover .visual{transform:translateY(-5px)}
+    .visual:before,.visual:after{content:"";position:absolute;border-radius:50%}
+    .visual:before{inset:-19px;border:1px dashed rgba(40,145,207,.3);animation:spin var(--ring-duration,36s) linear infinite}
+    .visual:after{inset:-39px;border:1px solid rgba(92,181,231,.15);box-shadow:0 0 36px rgba(71,184,241,.08)}
+    .visual-orb{position:relative;z-index:2;width:62%;aspect-ratio:1;border-radius:50%;background:var(--orb-grad);box-shadow:var(--orb-glow);filter:drop-shadow(0 23px 38px rgba(40,111,162,.16));animation:pulse var(--orb-duration,4.6s) ease-in-out infinite}
+    .visual-orb:after{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.85),transparent 55%);mix-blend-mode:screen}
+    /* section-by-section rhythm: hue/speed vary slightly to punctuate the story */
+    .story:nth-of-type(2){--ring-duration:36s;--orb-duration:4.6s;--orb-grad:radial-gradient(circle at 35% 30%,#fff,var(--led) 40%,var(--blue) 75%,var(--navy) 100%);--orb-glow:0 0 50px rgba(69,199,255,.42),0 0 110px rgba(69,199,255,.18)}
+    .story:nth-of-type(3){--ring-duration:46s;--orb-duration:6.2s;--orb-grad:radial-gradient(circle at 40% 35%,#eaf6ff,var(--blue) 48%,var(--navy) 92%);--orb-glow:0 0 38px rgba(27,109,168,.35),0 0 90px rgba(27,109,168,.16)}
+    .story:nth-of-type(4){--ring-duration:30s;--orb-duration:3.6s;--orb-grad:radial-gradient(circle at 30% 25%,#fff,var(--led) 28%,var(--blue) 60%,var(--navy) 100%);--orb-glow:0 0 62px rgba(69,199,255,.55),0 0 130px rgba(69,199,255,.24)}
+    .story:nth-of-type(5){--ring-duration:22s;--orb-duration:2.8s;--orb-grad:radial-gradient(circle at 50% 40%,#fff,var(--led) 22%,var(--blue) 52%,var(--navy) 88%);--orb-glow:0 0 70px rgba(69,199,255,.62),0 0 150px rgba(69,199,255,.3)}
+
+    .telemetry{position:absolute;z-index:3;left:-22px;bottom:10%;min-width:145px;padding:12px 15px;border-left:2px solid var(--led);background:rgba(255,255,255,.8);backdrop-filter:blur(10px);box-shadow:0 9px 28px rgba(33,101,150,.1);font-size:.56rem;letter-spacing:.18em;color:#56738a}
+    .telemetry b{display:block;color:var(--navy);font-size:.72rem;letter-spacing:.08em}
+
+    /* ---------- final ---------- */
+    .final{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;padding:130px 24px 100px;text-align:center;color:#fff;background:linear-gradient(150deg,#04111f,#082946 62%,#06192d)}
+    .final:before{content:"";position:absolute;width:min(760px,92vw);aspect-ratio:1;border-radius:50%;border:1px solid rgba(93,205,255,.24);box-shadow:0 0 0 65px rgba(70,181,238,.035),0 0 0 140px rgba(70,181,238,.022),0 0 95px rgba(54,183,246,.13) inset;animation:pulse 6s ease-in-out infinite}
+    .final:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 48%,rgba(40,159,224,.21),transparent 38%),linear-gradient(90deg,transparent 49.95%,rgba(83,204,255,.09) 50%,transparent 50.05%)}
+    .final-inner{position:relative;z-index:2;width:min(800px,100%)}
+    .final .eyebrow{justify-content:center;color:#74d5ff}.final .eyebrow:before{display:none}
+    .final h2{margin:24px 0 26px;font:500 clamp(2.45rem,5.3vw,5rem)/1.5 var(--serif);letter-spacing:.08em}
+    .final h2 em{display:block;color:#8ddcff;font-style:normal;text-shadow:0 0 30px rgba(67,193,251,.3)}
+    .final p{margin:0 0 34px;color:#a9bed0;letter-spacing:.06em}
+    .final .primary{margin:34px auto 0;border-color:rgba(103,211,255,.55);background:linear-gradient(115deg,#fff,#e6f6ff);color:var(--navy);animation:ctaGlow 2.8s ease-in-out infinite}
+
+    /* ---------- footer ---------- */
+    footer{padding:56px 24px;background:#03101d;color:#8ea3b5;text-align:center;font-size:.72rem;letter-spacing:.1em}
+    .mobile-cta{display:none}
+
+    .reveal{opacity:1;transform:none;transition:opacity .85s ease,transform .9s cubic-bezier(.2,.75,.2,1)}
+    .animations-ready .reveal{opacity:0;transform:translateY(30px)}.animations-ready .reveal.show{opacity:1;transform:none}
+    .type-line .cursor{display:inline-block;width:1px;height:1em;margin-left:5px;background:var(--blue);vertical-align:-.08em;animation:blink .75s step-end infinite}
+
+    /* ---------- intro (CSS-only light sphere, no logo) ---------- */
+    .logo-intro{position:fixed;z-index:1000;inset:0;display:none;place-items:center;overflow:hidden;color:#fff;background:radial-gradient(circle at 50% 46%,#0b3557 0%,#061d34 34%,#020c16 72%);animation:introLeave .72s cubic-bezier(.7,0,.25,1) 2.05s forwards;pointer-events:none}
+    .animations-ready .logo-intro{display:grid}
+    .logo-intro:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(78,196,250,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(78,196,250,.06) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(circle,#000,transparent 70%);animation:introGrid 2.1s ease-out both}
+    .intro-stage{position:relative;width:min(360px,78vw);aspect-ratio:1;display:grid;place-items:center}
+    .intro-stage:before,.intro-stage:after{content:"";position:absolute;border-radius:50%}
+    .intro-stage:before{inset:0;border:1px solid rgba(102,211,255,.28);box-shadow:0 0 45px rgba(67,193,250,.16),0 0 55px rgba(74,199,255,.12) inset;animation:introRing 1.65s cubic-bezier(.2,.75,.2,1) both}
+    .intro-stage:after{inset:11%;border:1px dashed rgba(117,220,255,.38);animation:introSpin 5s linear infinite,introFade 1.2s ease-out both}
+    .intro-sweep{position:absolute;inset:-4%;border-radius:50%;background:conic-gradient(from 220deg,transparent 0 68%,rgba(94,214,255,.05) 78%,#b9efff 82%,transparent 85%);mask:radial-gradient(circle,transparent 70%,#000 71%,#000 73%,transparent 74%);filter:drop-shadow(0 0 8px #51caff);animation:introSpin 1.35s cubic-bezier(.22,.7,.25,1) both}
+    .intro-orb{position:relative;z-index:2;width:52%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--led) 34%,var(--blue) 70%,var(--navy) 100%);box-shadow:0 0 70px rgba(69,199,255,.6),0 0 140px rgba(69,199,255,.3);filter:drop-shadow(0 24px 35px rgba(0,0,0,.28));animation:emblemRise 1.25s cubic-bezier(.16,.82,.25,1) .18s both}
+    .intro-beam{position:absolute;z-index:3;left:18%;right:18%;top:50%;height:1px;background:linear-gradient(90deg,transparent,#dcf7ff,transparent);box-shadow:0 0 8px #7cddff,0 0 26px #4fcaff;animation:beamSweep 1.25s ease-in-out .38s both}
+    .intro-code{position:absolute;z-index:4;left:50%;bottom:-40px;transform:translateX(-50%);color:#6fcff7;font-size:.58rem;font-weight:700;letter-spacing:.34em;text-indent:.34em;white-space:nowrap;animation:nameRise .8s ease-out 1.1s both}
+
+    @keyframes copyScan{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(190px);opacity:1}}
+    @keyframes ctaGlow{50%{box-shadow:0 18px 48px rgba(0,0,0,.28),0 0 34px rgba(70,202,255,.36)}}
+    @keyframes phraseRise{from{opacity:0;transform:translateY(.36em);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
+    @keyframes introRing{0%{opacity:0;transform:scale(.55) rotate(-20deg)}70%{opacity:1}100%{transform:scale(1) rotate(0)}}
+    @keyframes introSpin{to{transform:rotate(360deg)}}@keyframes introFade{from{opacity:0}to{opacity:1}}
+    @keyframes emblemRise{0%{opacity:0;transform:scale(.58);filter:blur(18px)}65%{opacity:1;transform:scale(1.045);filter:blur(0)}100%{opacity:1;transform:scale(1)}}
+    @keyframes beamSweep{0%{opacity:0;transform:translateY(-130px) scaleX(.15)}45%{opacity:1;transform:translateY(0) scaleX(1)}100%{opacity:0;transform:translateY(130px) scaleX(.2)}}
+    @keyframes nameRise{from{opacity:0;transform:translate(-50%,14px);letter-spacing:.5em}to{opacity:1;transform:translate(-50%,0);letter-spacing:.34em}}
+    @keyframes introGrid{from{opacity:0;transform:scale(1.12)}to{opacity:1;transform:scale(1)}}
+    @keyframes introLeave{0%{opacity:1;clip-path:inset(0 0 0 0)}100%{opacity:0;clip-path:inset(0 0 100% 0);visibility:hidden}}
+    @keyframes spin{to{transform:rotate(360deg)}}@keyframes spinBack{to{transform:rotate(-360deg)}}
+    @keyframes pulse{50%{transform:scale(1.045);opacity:.86}}
+    @keyframes scan{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+    @keyframes blink{50%{opacity:0}}
+
+    @media(max-width:860px){
+      .wrap{width:min(680px,calc(100% - 34px))}.nav{height:68px}.brand-orb{width:30px;height:30px}.nav-link{display:none}
+      .hero{padding:105px 0 90px}.hero-grid{grid-template-columns:1fr;gap:42px;text-align:center}.hero-copy{order:2;padding:34px 28px 38px}.hero-copy:before{margin:0 auto 24px}.eyebrow{justify-content:center}.eyebrow:before{display:none}.hero-lead{margin:auto}.hero-actions{justify-content:center}.hero-orbit{width:min(400px,76vw)}.status{right:-2%;bottom:10%}
+      .story{min-height:auto;padding:105px 0}.story-grid{grid-template-columns:1fr;gap:60px;text-align:center}.story:nth-of-type(even) .visual{order:0}.story h2{margin-left:auto;margin-right:auto}.story p{margin:auto}.story .copy{padding:24px 3px 26px 18px}.visual{width:min(360px,76vw)}.telemetry{left:-8px;text-align:left}
+      .mobile-cta{display:flex;position:fixed;z-index:70;left:17px;right:17px;bottom:calc(14px + env(safe-area-inset-bottom));height:58px;align-items:center;justify-content:center;border:1px solid rgba(90,204,255,.5);border-radius:3px;background:rgba(6,31,55,.93);backdrop-filter:blur(14px);color:#fff;font-weight:700;letter-spacing:.08em;box-shadow:0 10px 38px rgba(3,20,37,.28),0 0 22px rgba(45,183,248,.17)}
+      footer{padding-bottom:96px}
+    }
+    @media(max-width:520px){
+      h1,.hero h1{font-size:clamp(1.9rem,8.7vw,2.38rem);line-height:1.5;letter-spacing:.035em}.hero-copy{padding:30px 18px 34px}.hero-lead{font-size:.92rem;min-height:4.5em}.hero-actions .primary{width:100%}.story h2{font-size:clamp(1.58rem,7.2vw,1.92rem);line-height:1.52;letter-spacing:.025em}.story h2 .phrase-context{font-size:.73em;line-height:1.75}.visual{width:min(292px,74vw)}.visual:after{inset:-25px}.visual:before{inset:-12px}.telemetry{left:-12px;bottom:4%;min-width:126px;padding:9px 11px}.final h2{font-size:clamp(1.8rem,8.2vw,2.15rem);line-height:1.56;letter-spacing:.035em}.final p{font-size:.9rem}.brand{font-size:.91rem;letter-spacing:.16em}
+    }
+    @media(max-width:350px){.phrase{word-break:normal}.story h2{font-size:1.48rem}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.animations-ready .logo-intro{display:none}.orb-core,.hero-orbit:before,.hero-orbit:after,.orbit-tick,.visual:before,.visual-orb,.final:before,.scroll-cue:after,.story .copy:before,.final .primary,.brand-orb,.reveal.show .phrase{animation:none}.animations-ready .reveal{opacity:1;transform:none;transition:none}}
+  </style>
 </head>
 <body>
+  <script>document.documentElement.classList.add('animations-ready');document.body.classList.add('intro-lock')</script>
+  <div class="logo-intro" id="logoIntro" aria-hidden="true">
+    <div class="intro-stage">
+      <div class="intro-sweep"></div>
+      <div class="intro-orb"></div>
+      <div class="intro-beam"></div>
+      <div class="intro-code">HUMAN × AI / INITIALIZING</div>
+    </div>
+  </div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <header id="header">
+    <div class="wrap nav">
+      <a class="brand" href="#top"><span class="brand-orb" aria-hidden="true"></span><span>HUMAN × AI</span></a>
+      <a class="nav-link" href="https://lin.ee/W3LDlAL" target="_blank" rel="noopener noreferrer">続きを見る&nbsp; →</a>
+    </div>
+  </header>
 
-<div class="bg-layer" aria-hidden="true"></div>
-<div class="bg-glow" aria-hidden="true"><span></span></div>
-
-<main>
-
-  <!-- 第1画面 -->
-  <section class="screen screen-1" id="s1">
-    <div class="screen-inner">
-      <div class="glass-panel">
-        <p class="copy">
-          <span class="line" data-line="1"><span class="nowrap-seg">AIに聞く</span><span class="nowrap-seg">時代から、</span></span><br>
-          <span class="line" data-line="2">AIが<span class="accent-word">動く</span>時代へ。</span>
-        </p>
+  <main id="top">
+    <section class="hero">
+      <div class="scan-grid" aria-hidden="true"></div>
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">HUMAN × ARTIFICIAL INTELLIGENCE</div>
+          <h1><span class="phrase">AIに聞く時代から、</span><strong class="phrase">AIが動く時代へ。</strong></h1>
+          <p class="hero-lead type-line" data-type="人とAIが、あるものを自動化した。">人とAIが、あるものを自動化した。</p>
+          <div class="hero-actions"><a class="primary" href="#story">物語を進める&nbsp; →</a></div>
+        </div>
+        <div class="hero-orbit reveal" aria-hidden="true">
+          <div class="orbit-tick"></div>
+          <div class="orb-core"></div>
+          <div class="status"><i></i>HUMAN × SYSTEM / ONLINE</div>
+        </div>
       </div>
-    </div>
-    <div class="scroll-cue" aria-hidden="true"><span></span></div>
-  </section>
+      <div class="scroll-cue">SCROLL</div>
+    </section>
 
-  <!-- 第2画面 -->
-  <section class="screen screen-2" id="s2">
-    <div class="screen-inner stack">
-      <svg class="diagram" viewBox="0 0 400 260" aria-hidden="true">
-        <line class="connect-line s2-l1" pathLength="1" stroke-dasharray="1" x1="50" y1="190" x2="115" y2="130"></line>
-        <line class="connect-line s2-l2" pathLength="1" stroke-dasharray="1" x1="115" y1="130" x2="185" y2="165"></line>
-        <line class="connect-line s2-l3" pathLength="1" stroke-dasharray="1" x1="185" y1="165" x2="255" y2="110"></line>
-        <line class="connect-line s2-l4" pathLength="1" stroke-dasharray="1" x1="255" y1="110" x2="315" y2="150"></line>
-        <circle class="node s2-n1" cx="50" cy="190" r="5"></circle>
-        <circle class="node s2-n2" cx="115" cy="130" r="5"></circle>
-        <circle class="node s2-n3" cx="185" cy="165" r="5"></circle>
-        <circle class="node s2-n4" cx="255" cy="110" r="5"></circle>
-        <circle class="node s2-n5" cx="315" cy="150" r="5"></circle>
-        <circle class="node node-dim s2-n6" cx="360" cy="95" r="5"></circle>
-      </svg>
-      <p class="copy">
-        <span class="line" data-line="1">あるものを、</span><br>
-        <span class="line" data-line="2"><span class="nowrap-seg">AIですべて</span><span class="nowrap-seg">自動化しようとした。</span></span>
-      </p>
-    </div>
-  </section>
-
-  <!-- 第3画面 -->
-  <section class="screen screen-3" id="s3">
-    <div class="screen-inner stack">
-      <svg class="diagram" viewBox="0 0 400 260" aria-hidden="true">
-        <line class="connect-line s3-l1" pathLength="1" stroke-dasharray="1" x1="50" y1="190" x2="115" y2="130"></line>
-        <line class="connect-line s3-l2" pathLength="1" stroke-dasharray="1" x1="115" y1="130" x2="185" y2="165"></line>
-        <line class="connect-line s3-l3" pathLength="1" stroke-dasharray="1" x1="185" y1="165" x2="255" y2="110"></line>
-        <line class="connect-line s3-l4" pathLength="1" stroke-dasharray="1" x1="255" y1="110" x2="315" y2="150"></line>
-        <circle class="node s3-n1" cx="50" cy="190" r="5"></circle>
-        <circle class="node s3-n2" cx="115" cy="130" r="5"></circle>
-        <circle class="node s3-n3" cx="185" cy="165" r="5"></circle>
-        <circle class="node s3-n4" cx="255" cy="110" r="5"></circle>
-        <circle class="node s3-n5" cx="315" cy="150" r="5"></circle>
-        <circle class="node node-dim s3-n6" cx="360" cy="95" r="5"></circle>
-      </svg>
-      <p class="copy">
-        <span class="line l1" data-line="1">でも、</span><br>
-        <span class="line l2" data-line="2">AIだけでは</span><br>
-        <span class="line l3" data-line="3">完成しなかった。</span>
-      </p>
-    </div>
-  </section>
-
-  <!-- 第4画面 -->
-  <section class="screen screen-4" id="s4">
-    <div class="s4-bloom" aria-hidden="true"></div>
-    <div class="screen-inner stack">
-      <svg class="diagram" viewBox="0 0 400 260" aria-hidden="true">
-        <line class="connect-line s4-l1" pathLength="1" stroke-dasharray="1" x1="50" y1="190" x2="115" y2="130"></line>
-        <line class="connect-line s4-l2" pathLength="1" stroke-dasharray="1" x1="115" y1="130" x2="185" y2="165"></line>
-        <line class="connect-line s4-l3" pathLength="1" stroke-dasharray="1" x1="185" y1="165" x2="255" y2="110"></line>
-        <line class="connect-line s4-l4" pathLength="1" stroke-dasharray="1" x1="255" y1="110" x2="315" y2="150"></line>
-        <line class="connect-line s4-finalline" pathLength="1" stroke-dasharray="1" x1="315" y1="150" x2="360" y2="95"></line>
-        <circle class="s4-approach" cx="360" cy="95" r="16"></circle>
-        <circle class="node s4-n1" cx="50" cy="190" r="5"></circle>
-        <circle class="node s4-n2" cx="115" cy="130" r="5"></circle>
-        <circle class="node s4-n3" cx="185" cy="165" r="5"></circle>
-        <circle class="node s4-n4" cx="255" cy="110" r="5"></circle>
-        <circle class="node s4-n5" cx="315" cy="150" r="5"></circle>
-        <circle class="node s4-finalnode" cx="360" cy="95" r="5"></circle>
-      </svg>
-      <p class="copy">
-        <span class="line" data-line="1"><span class="nowrap-seg">最後に</span><span class="nowrap-seg">必要だったのは、</span></span><br>
-        <span class="line" data-line="2">人の判断だった。</span>
-      </p>
-    </div>
-  </section>
-
-  <!-- 第5画面 -->
-  <section class="screen screen-5" id="s5">
-    <div class="screen-inner">
-      <div class="orb-wrap">
-        <svg viewBox="0 0 200 200" aria-hidden="true">
-          <defs>
-            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#F1C978"></stop>
-              <stop offset="100%" stop-color="#55C8FF"></stop>
-            </linearGradient>
-          </defs>
-          <path class="arc arc-gold" pathLength="1" stroke-dasharray="1"
-            d="M 100 20 A 80 80 0 0 0 24.4 141.2"></path>
-          <path class="arc arc-blue" pathLength="1" stroke-dasharray="1"
-            d="M 24.4 141.2 A 80 80 0 0 0 100 180 A 80 80 0 0 0 175.6 141.2"></path>
-          <circle class="ring-merged" cx="100" cy="100" r="80"></circle>
-        </svg>
+    <section class="story" id="story">
+      <div class="wrap story-grid">
+        <div class="copy reveal"><div class="index">01</div><h2><span class="phrase">あるものを、</span><em class="phrase">AIですべて</em><span class="phrase">自動化しようとした。</span></h2></div>
+        <div class="visual reveal" aria-hidden="true"><div class="visual-orb"></div><div class="telemetry">AUTOMATION<b>THE BEGINNING</b></div></div>
       </div>
-      <div class="copy-gap" aria-hidden="true"></div>
-      <div class="copy-group">
-        <p class="copy">
-          <span class="line" data-line="1">人が考え、</span><br>
-          <span class="line" data-line="2">AIが動く。</span><br>
-          <span class="line" data-line="3">あなたが別のことをしている間も、</span><br>
-          <span class="line" data-line="4">それは止まらない。</span>
-        </p>
+    </section>
+
+    <section class="story">
+      <div class="wrap story-grid">
+        <div class="copy reveal"><div class="index">02</div><h2><span class="phrase">でも、</span><em class="phrase">AIだけでは</em><span class="phrase">完成しなかった。</span></h2></div>
+        <div class="visual reveal" aria-hidden="true"><div class="visual-orb"></div><div class="telemetry">AI<b>NOT ENOUGH</b></div></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- 第6画面 -->
-  <section class="screen screen-6" id="s6">
-    <div class="orb-bg-wrap" aria-hidden="true">
-      <svg viewBox="0 0 200 200">
-        <defs>
-          <linearGradient id="ringGradientBg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#F1C978"></stop>
-            <stop offset="100%" stop-color="#55C8FF"></stop>
-          </linearGradient>
-        </defs>
-        <circle cx="100" cy="100" r="80" fill="none" stroke="url(#ringGradientBg)" stroke-width="2"></circle>
-      </svg>
-    </div>
-    <div class="screen-inner">
-      <p class="copy">
-        <span class="line" data-line="1">では、人とAIは</span><br>
-        <span class="line" data-line="2">何を自動化したのか？</span>
-      </p>
-      <a id="cta-button" class="cta-button" href="#">続きを見る →</a>
-    </div>
-  </section>
+    <section class="story">
+      <div class="wrap story-grid">
+        <div class="copy reveal"><div class="index">03</div><h2><span class="phrase phrase-context">最後に必要だったのは、</span><em class="phrase">人の判断だった。</em></h2></div>
+        <div class="visual reveal" aria-hidden="true"><div class="visual-orb"></div><div class="telemetry">HUMAN<b>JUDGMENT</b></div></div>
+      </div>
+    </section>
 
-</main>
+    <section class="story">
+      <div class="wrap story-grid">
+        <div class="copy reveal"><div class="index">04</div><h2><span class="phrase">人が考え、</span><em class="phrase">AIが動く。</em><span class="phrase phrase-context">あなたが別のことをしている間も、</span><span class="phrase">それは止まらない。</span></h2></div>
+        <div class="visual reveal" aria-hidden="true"><div class="visual-orb"></div><div class="telemetry">HUMAN × AI<b>IT CONTINUES</b></div></div>
+      </div>
+    </section>
 
-<footer class="site-footer">© MKJAPAN Co., Ltd.</footer>
+    <section class="final">
+      <div class="final-inner reveal">
+        <div class="eyebrow">THE QUESTION</div>
+        <h2><span class="phrase">では、人とAIは</span><em class="phrase type-final" data-type="何を自動化したのか？">何を自動化したのか？</em></h2>
+        <a class="primary" href="https://lin.ee/W3LDlAL" target="_blank" rel="noopener noreferrer">続きを見る&nbsp; →</a>
+      </div>
+    </section>
+  </main>
 
-<script>
-(function(){
-  // ============================================================
-  // 公式LINE URL 設定箇所
-  // 下の "" の中に公式LINEのURLを入力してください。
-  // 例: const OFFICIAL_LINE_URL = "https://lin.ee/xxxxxxx";
-  // ============================================================
-  var OFFICIAL_LINE_URL = "https://lin.ee/W3LDlAL";
-  // ============================================================
+  <footer>© MKJAPAN Co., Ltd.</footer>
+  <a class="mobile-cta" href="https://lin.ee/W3LDlAL" target="_blank" rel="noopener noreferrer">続きを見る&nbsp; →</a>
 
-  var ctaButton = document.getElementById('cta-button');
-  if (ctaButton) {
-    if (OFFICIAL_LINE_URL) {
-      ctaButton.setAttribute('href', OFFICIAL_LINE_URL);
-    } else {
-      ctaButton.addEventListener('click', function(e){
-        e.preventDefault();
-      });
-    }
-  }
+  <script>
+    (()=>{
+      const intro=document.getElementById('logoIntro');
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.classList.remove('intro-lock');intro.remove()}
+      else setTimeout(()=>{document.body.classList.remove('intro-lock');intro.remove()},2900);
+      const header=document.getElementById('header');
+      const progress=document.getElementById('progress');
+      const onScroll=()=>{
+        const y=window.scrollY, max=document.documentElement.scrollHeight-innerHeight;
+        header.classList.toggle('scrolled',y>30);
+        progress.style.width=(max>0?y/max*100:0)+'%';
+      };
+      addEventListener('scroll',onScroll,{passive:true});onScroll();
 
-  if (!('IntersectionObserver' in window)) {
-    var screens = document.querySelectorAll('.screen');
-    for (var i = 0; i < screens.length; i++) {
-      screens[i].classList.add('in-view');
-    }
-    return;
-  }
+      const reveal=document.querySelectorAll('.reveal');
+      if('IntersectionObserver' in window){
+        const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('show');io.unobserve(entry.target)}}),{threshold:.14,rootMargin:'0px 0px -7% 0px'});
+        reveal.forEach(el=>io.observe(el));
+      }else reveal.forEach(el=>el.classList.add('show'));
 
-  var observer = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.35 });
-
-  document.querySelectorAll('.screen').forEach(function(el){
-    observer.observe(el);
-  });
-})();
-</script>
-
+      const type=(el,text,speed=62)=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.append(cursor);let i=0;const tick=()=>{if(i<text.length){cursor.before(text[i++]);setTimeout(tick,speed)}else setTimeout(()=>cursor.remove(),900)};tick()};
+      const heroLine=document.querySelector('.type-line');
+      setTimeout(()=>type(heroLine,heroLine.dataset.type,45),550);
+      const finalLine=document.querySelector('.type-final');
+      if('IntersectionObserver' in window){const tio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){type(finalLine,finalLine.dataset.type,82);tio.disconnect()}}),{threshold:.7});tio.observe(finalLine)}
+    })();
+  </script>
 </body>
 </html>
