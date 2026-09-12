@@ -1,625 +1,115 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PHALANX｜統制ある攻めのゴールドEA</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-/* ── トークン ── */
-:root {
-  --white:    #FFFFFF;
-  --g50:      #FAFAFA;
-  --g100:     #F4F4F6;
-  --g200:     #E8E8EC;
-  --g400:     #9CA3AF;
-  --g600:     #6B7280;
-  --g900:     #111318;
-  --navy:     #1B2A4A;
-  --gold:     #C9A84C;
-  --gold-lt:  #EDD98A;
-  --green:    #06C755;
-  --r:        1rem;
-}
-/* ── リセット ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  background: var(--white); color: var(--g900);
-  font-size: 15px; line-height: 1.75;
-  -webkit-font-smoothing: antialiased;
-  max-width: 640px; margin: 0 auto;
-}
-img { max-width: 100%; height: auto; display: block; }
-a { text-decoration: none; color: inherit; }
-
-/* ── タイポグラフィ ── */
-.serif { font-family: 'Noto Serif JP', serif; }
-.label {
-  display: block; font-size: 11px; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase; color: var(--gold);
-  margin-bottom: .6rem;
-}
-.h1 { font-family: 'Noto Serif JP', serif; font-size: clamp(26px, 7vw, 34px); line-height: 1.3; font-weight: 700; }
-.h2 { font-family: 'Noto Serif JP', serif; font-size: 22px; line-height: 1.4; font-weight: 700; }
-.h3 { font-size: 16px; font-weight: 700; line-height: 1.45; }
-.body { font-size: 14px; color: var(--g600); line-height: 1.85; }
-.body p + p { margin-top: .9rem; }
-.body strong { color: var(--g900); font-weight: 700; }
-.muted { font-size: 12px; color: var(--g400); line-height: 1.7; }
-
-/* ── ボタン ── */
-.btn-line {
-  display: flex; align-items: center; justify-content: center; gap: .5rem;
-  background: var(--green); color: #fff; border-radius: 6px;
-  padding: 14px 24px; font-size: 15px; font-weight: 700;
-  letter-spacing: .04em; width: 100%;
-}
-.btn-outline {
-  display: flex; align-items: center; justify-content: center;
-  border: 1.5px solid var(--gold); color: var(--gold);
-  border-radius: 6px; padding: 13px 24px; font-size: 14px; font-weight: 700;
-  width: 100%; background: transparent; letter-spacing: .04em;
-}
-.btn-outline-dark {
-  border-color: rgba(255,255,255,.3); color: #fff;
-}
-
-/* ── セクション ── */
-.sec        { padding: 56px 20px; background: var(--white); }
-.sec-gray   { padding: 56px 20px; background: var(--g50); }
-.sec-navy   { padding: 56px 20px; background: var(--navy); color: #fff; }
-.sec-dark   { padding: 56px 20px; background: var(--g900); color: #fff; }
-.sec-title  { margin-bottom: 28px; }
-.divider    { width: 32px; height: 2px; background: var(--gold); margin: 12px 0 0; }
-
-/* ── ヒーロー ── */
-.hero {
-  position: relative; min-height: 520px;
-  background:
-    linear-gradient(rgba(17,19,24,.68), rgba(17,19,24,.78)),
-    url('hero-bg.jpg')
-    center center / cover no-repeat;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 64px 24px 56px;
-  color: #fff;
-}
-.hero-badge {
-  display: inline-block; border: 1px solid rgba(201,168,76,.6);
-  color: var(--gold-lt); font-size: 10px; letter-spacing: .18em;
-  padding: 4px 14px; border-radius: 2px; margin-bottom: 24px;
-  text-transform: uppercase; font-weight: 500;
-}
-.hero-logo { height: 52px; width: auto; margin: 0 auto 20px; opacity: .9; filter: saturate(.6) brightness(.95); }
-.hero-catch { font-family: 'Noto Serif JP', serif; font-size: 13px; color: rgba(255,255,255,.6); margin-bottom: 14px; line-height: 2; }
-.hero-title { margin-bottom: 12px; color: #fff; }
-.hero-title span { color: var(--gold-lt); }
-.hero-sub { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.9; max-width: 400px; margin: 0 auto 32px; }
-.hero-line { width: 28px; height: 1px; background: var(--gold); margin: 0 auto 28px; opacity: .5; }
-.hero-ver { font-size: 10px; color: rgba(201,168,76,.5); letter-spacing: .2em; text-transform: uppercase; margin-top: 20px; }
-
-/* ── 商品概要 ── */
-.overview-lead { font-size: 15px; line-height: 1.9; color: var(--g600); margin-bottom: 24px; }
-.overview-lead strong { color: var(--g900); }
-.overview-points { display: flex; flex-direction: column; gap: 1px; background: var(--g200); border-radius: 8px; overflow: hidden; }
-.overview-point { background: var(--white); padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start; }
-.op-icon { flex-shrink: 0; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; margin-top: 8px; }
-.op-text { font-size: 14px; color: var(--g600); line-height: 1.7; }
-.op-text strong { color: var(--g900); font-weight: 700; }
-
-/* ── 特徴 ── */
-.feat-grid { display: flex; flex-direction: column; gap: 14px; }
-.feat-card {
-  background: var(--white); border-radius: 10px;
-  border: 1px solid var(--g200); padding: 22px 20px;
-  border-left: 3px solid var(--gold);
-}
-.feat-card-title { font-size: 15px; font-weight: 700; color: var(--g900); margin-bottom: 8px; line-height: 1.4; }
-.feat-card-body { font-size: 13px; color: var(--g600); line-height: 1.8; }
-
-/* ── 仕様 ── */
-.spec-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-.spec-table tr { border-bottom: 1px solid var(--g100); }
-.spec-table tr:first-child { border-top: 1px solid var(--g100); }
-.spec-table td { padding: 14px 4px; vertical-align: top; line-height: 1.6; }
-.spec-table .sl { color: var(--g400); font-size: 12px; font-weight: 500; width: 42%; padding-left: 0; }
-.spec-table .sv { color: var(--g900); font-weight: 700; }
-
-/* ── 実績 ── */
-.result-img-area {
-  background: var(--g100); border-radius: 12px;
-  aspect-ratio: 9/16; max-height: 520px;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden; margin-bottom: 20px;
-}
-.result-img-area img { width: 100%; height: 100%; object-fit: contain; }
-.result-img-placeholder {
-  width: 100%; height: 100%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 10px; color: var(--g400);
-}
-.result-img-placeholder span { font-size: 13px; }
-
-.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.result-card {
-  background: var(--white); border: 1px solid var(--g200); border-radius: 8px;
-  padding: 16px 14px; border-top: 2px solid var(--gold);
-}
-.result-card-label { font-size: 11px; color: var(--g400); letter-spacing: .06em; margin-bottom: 6px; }
-.result-card-value { font-family: 'Noto Serif JP', serif; font-size: 17px; font-weight: 700; color: var(--g900); line-height: 1.3; }
-.result-card-value.plus { color: #16A34A; }
-.result-disc { font-size: 11px; color: var(--g400); line-height: 1.7; padding: 12px 0; border-top: 1px solid var(--g100); }
-
-/* ── 流れ ── */
-.flow-wrap { display: flex; flex-direction: column; gap: 0; }
-.flow-step { display: flex; gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--g100); }
-.flow-step:last-child { border-bottom: none; }
-.flow-num {
-  flex-shrink: 0; width: 32px; height: 32px;
-  background: var(--navy); color: var(--gold-lt);
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-family: 'Noto Serif JP', serif; font-size: 14px; font-weight: 700;
-  margin-top: 2px;
-}
-.flow-content { flex: 1; }
-.flow-title { font-size: 15px; font-weight: 700; color: var(--g900); margin-bottom: 8px; line-height: 1.45; }
-.flow-body { font-size: 13px; color: var(--g600); line-height: 1.8; }
-.flow-body strong { color: var(--g900); }
-
-/* ── ブローカーカード ── */
-.broker-wrap { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
-.broker-card { border: 1px solid var(--g200); border-radius: 10px; overflow: hidden; }
-.broker-head {
-  background: var(--g50); padding: 12px 16px;
-  font-size: 13px; font-weight: 700; color: var(--g900);
-  border-bottom: 1px solid var(--g200);
-  display: flex; align-items: center; gap: 8px;
-}
-.broker-badge {
-  font-size: 10px; font-weight: 700; background: var(--navy);
-  color: var(--gold-lt); padding: 2px 8px; border-radius: 2px; letter-spacing: .06em;
-}
-.broker-body { padding: 16px; background: var(--white); }
-
-/* パートナーコードボックス */
-.code-box {
-  background: #FFF5F5; border: 1.5px solid #FCA5A5;
-  border-radius: 6px; padding: 14px 16px; margin: 12px 0;
-  animation: pulse-red 3s ease-in-out infinite;
-}
-@keyframes pulse-red {
-  0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0);}
-  50%{box-shadow:0 0 10px 2px rgba(220,38,38,0.12);}
-}
-.code-box-warn { font-size: 10px; font-weight: 700; color: #DC2626; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
-.code-box-title { font-size: 13px; font-weight: 700; color: #7F1D1D; margin-bottom: 10px; }
-.code-display { text-align: center; margin-bottom: 8px; }
-.code-val {
-  display: inline-block; font-size: 22px; font-weight: 700; letter-spacing: .3em;
-  background: linear-gradient(135deg, #fff7ed, #ffffff); border: 1px solid #FCA5A5;
-  color: #7F1D1D; padding: 6px 20px; border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.1); user-select: all;
-}
-.code-note { font-size: 11px; color: #9B1C1C; line-height: 1.75; }
-.code-note strong { color: #7F1D1D; }
-
-/* チェックリスト */
-.check-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
-.check-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--g600); }
-.check-dot { flex-shrink: 0; width: 16px; height: 16px; background: #D1FAE5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
-.check-dot svg { width: 8px; height: 8px; }
-.check-txt strong { color: var(--g900); font-weight: 700; }
-
-/* URLボタン */
-.url-btn {
-  display: block; background: var(--g900); color: #fff;
-  border-radius: 6px; padding: 12px 16px; font-size: 13px; font-weight: 700;
-  text-align: center; letter-spacing: .04em; margin-top: 12px;
-}
-.url-btn-sub {
-  display: block; background: #1B2A4A; color: #fff;
-  border: 1px solid #1B2A4A; border-radius: 6px;
-  padding: 11px 16px; font-size: 12px; font-weight: 500;
-  text-align: center; margin-top: 8px;
-}
-
-/* アクション（フォーム・LINE） */
-.action-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.action-card { border: 1px solid var(--g200); border-radius: 10px; overflow: hidden; }
-.action-head {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 16px; background: var(--g50); border-bottom: 1px solid var(--g200);
-}
-.action-num {
-  width: 24px; height: 24px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; flex-shrink: 0;
-}
-.action-num.form  { background: var(--gold); color: var(--g900); }
-.action-num.line  { background: var(--green); color: #fff; }
-.action-title { font-size: 13px; font-weight: 700; color: var(--g900); }
-.action-sub   { font-size: 10px; color: var(--g400); }
-.action-body  { padding: 14px 16px; }
-.form-btn {
-  display: block; background: var(--gold); color: var(--g900);
-  border-radius: 6px; padding: 13px 20px; font-size: 14px; font-weight: 700;
-  text-align: center; letter-spacing: .04em; margin-top: 12px;
-}
-
-/* shot list */
-.shot-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
-.shot-item { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--g600); }
-.shot-dot { flex-shrink: 0; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; margin-top: 8px; }
-
-/* ── FAQ ── */
-.faq-list { display: flex; flex-direction: column; gap: 0; }
-.faq-item { border-bottom: 1px solid var(--g100); }
-.faq-q {
-  width: 100%; text-align: left; padding: 18px 0;
-  background: none; border: none; cursor: pointer;
-  display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  font-size: 14px; font-weight: 700; color: var(--g900);
-  font-family: 'Noto Sans JP', sans-serif;
-}
-.faq-icon {
-  flex-shrink: 0; width: 20px; height: 20px;
-  border: 1px solid var(--g200); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--g400); font-size: 14px; transition: transform .3s;
-}
-.faq-item.open .faq-icon { transform: rotate(45deg); }
-.faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
-.faq-a-inner { padding-bottom: 16px; font-size: 13px; color: var(--g600); line-height: 1.85; }
-.faq-a-inner strong { color: var(--g900); }
-
-/* ── CTA（ダーク） ── */
-.cta-dark {
-  background: var(--g900); color: #fff;
-  padding: 56px 24px; text-align: center;
-}
-.cta-dark .h2 { color: #fff; margin-bottom: 14px; }
-.cta-dark .h2 span { color: var(--gold-lt); }
-.cta-body { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.9; margin-bottom: 28px; }
-.cta-note { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 12px; line-height: 1.7; }
-
-/* ── フッター ── */
-.footer { padding: 28px 20px; background: #050508; text-align: center; border-top: 1px solid rgba(255,255,255,.06); }
-.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-bottom: 14px; }
-.footer-links a { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .06em; }
-.footer-copy { font-size: 11px; color: rgba(255,255,255,.2); margin-bottom: 12px; }
-.footer-disc { font-size: 11px; color: rgba(255,255,255,.18); line-height: 1.8; border-top: 1px solid rgba(255,255,255,.06); padding-top: 12px; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="IMPERIUMが展開するXAUUSD自動売買システム LEGION。人が戦略を考え、システムが遂行する。">
+  <meta name="theme-color" content="#07172b">
+  <title>LEGION｜IMPERIUM</title>
+  <style>
+    :root{--ink:#07172b;--navy:#092443;--blue:#1b6da8;--ice:#eaf6ff;--line:rgba(7,23,43,.14);--gold:#b88a43;--wine:#681b25;--white:#fff;--serif:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;--sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Yu Gothic",Meiryo,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}html,body{width:100%;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}body{position:relative;margin:0;color:var(--ink);background:#fff;font-family:var(--sans);font-size:16px;line-height:1.9}a{color:inherit;text-decoration:none}img{max-width:100%;display:block}.wrap{width:min(1180px,calc(100% - 48px));margin:auto}.eyebrow{font:600 .76rem/1.4 var(--sans);letter-spacing:.28em;text-transform:uppercase;color:var(--blue)}.section{padding:112px 0}#howto{scroll-margin-top:82px}.section-head{max-width:760px;margin-bottom:54px}.section-head h2{font:500 clamp(2rem,4vw,3.5rem)/1.35 var(--serif);letter-spacing:.08em;margin:12px 0 18px}.section-head p{color:#506276;margin:0}.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}.reveal.show{opacity:1;transform:none}
+    header{position:fixed;z-index:20;top:0;left:0;width:100%;transition:.35s}header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--line)}.nav{height:82px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:13px;font-family:var(--serif);letter-spacing:.16em;font-size:1.15rem}.brand-mark{width:42px;height:42px;border:1px solid rgba(7,23,43,.2);border-radius:50%;background:url('assets/imperium-master.jpeg') center/cover}.brand small{display:block;font:500 .55rem/1.2 var(--sans);letter-spacing:.32em;color:#53677d;margin-top:3px}.links{display:flex;align-items:center;gap:30px;font-size:.74rem;font-weight:650;letter-spacing:.1em}.nav-cta,.btn{color:#fff;background:linear-gradient(135deg,#06172b,#123a60);border:1px solid rgba(255,255,255,.16);box-shadow:0 12px 30px rgba(4,23,43,.19);transition:.25s}.nav-cta{padding:12px 24px;border-radius:999px}.nav-cta:hover,.btn:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(4,23,43,.26)}
+    .hero{min-height:780px;height:100svh;max-height:940px;position:relative;display:flex;align-items:center;background:url('assets/hero-city.png') center/cover;overflow:hidden}.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.98) 0%,rgba(255,255,255,.87) 34%,rgba(255,255,255,.2) 66%,rgba(4,20,39,.08) 100%)}.hero:after{content:"";position:absolute;left:-15%;bottom:-55%;width:72vw;height:72vw;border-radius:50%;border:1px solid rgba(39,116,174,.25);box-shadow:0 0 0 40px rgba(108,190,245,.045),0 0 0 90px rgba(108,190,245,.035)}.hero-inner{position:relative;z-index:2;padding-top:70px}.hero-copy{width:min(590px,100%)}.hero-kicker{font:500 .72rem/1.5 var(--sans);letter-spacing:.34em;color:#52687d;margin-bottom:18px}.hero h1{font:500 clamp(3.9rem,8.4vw,7.3rem)/.94 Georgia,var(--serif);letter-spacing:.08em;margin:0;background:linear-gradient(150deg,#081526 20%,#41546a 54%,#9d7438 82%);-webkit-background-clip:text;color:transparent}.hero h1 small{display:block;font:500 clamp(.7rem,1.2vw,.94rem)/1.5 var(--sans);letter-spacing:.48em;color:var(--ink);margin:20px 0 0}.hero-ja{font:500 clamp(1.5rem,2.5vw,2.25rem)/1.65 var(--serif);letter-spacing:.12em;margin:30px 0 10px}.type-line{min-height:36px;color:#3d5368;letter-spacing:.08em}.caret{border-right:1px solid var(--blue);animation:blink 1s steps(1) infinite}@keyframes blink{50%{border-color:transparent}}.hero-actions{display:flex;align-items:center;gap:20px;margin-top:34px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:18px;min-width:250px;padding:17px 26px;border-radius:4px;letter-spacing:.1em;font-size:.9rem}.btn span{font-size:1.2rem}.text-link{font-size:.78rem;letter-spacing:.1em;border-bottom:1px solid var(--ink)}.hero-seal{position:absolute;z-index:3;right:7vw;bottom:7vh;width:clamp(160px,18vw,250px);padding:10px;border-radius:50%;background:rgba(255,255,255,.78);box-shadow:0 25px 70px rgba(7,23,43,.2);backdrop-filter:blur(7px)}.hero-seal img{border-radius:50%}.scroll{position:absolute;right:22px;bottom:28px;z-index:3;writing-mode:vertical-rl;font-size:.62rem;letter-spacing:.24em}.scroll:after{content:"";display:block;width:1px;height:54px;background:var(--ink);margin:12px auto 0}
+    .manifesto{background:linear-gradient(180deg,#f7fbff,#fff);position:relative}.manifesto:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,#73caff,#fff,#73caff,transparent);box-shadow:0 0 12px #61c2ff,0 0 30px rgba(73,177,243,.7)}.manifesto-grid{display:grid;grid-template-columns:.65fr 1.35fr;gap:80px;align-items:center}.legion-card{width:min(300px,75%);justify-self:center;background:transparent;border:0;padding:0;box-shadow:none;position:relative}.legion-card:before{content:"IMPERIUM / 01";position:absolute;top:-26px;right:0;font-size:.66rem;letter-spacing:.24em;color:#6e8295}.legion-card img{display:block;width:100%;height:auto;filter:drop-shadow(0 16px 24px rgba(30,77,118,.16))}.statement blockquote{font:500 clamp(2rem,4.2vw,4rem)/1.48 var(--serif);letter-spacing:.08em;margin:0 0 30px}.statement blockquote em{font-style:normal;color:var(--blue)}.statement p{color:#4b6073}.signature{display:flex;align-items:center;gap:16px;margin-top:30px;font:.7rem/1.5 var(--sans);letter-spacing:.22em}.signature:before{content:"";width:70px;height:1px;background:var(--gold)}
+    .concept{background:var(--ink);color:#fff;position:relative;overflow:hidden}.concept:before{content:"";position:absolute;inset:-40% -20%;background:radial-gradient(circle,rgba(33,126,192,.22),transparent 45%);pointer-events:none}.concept .section-head p{color:#b4c4d4}.concept-grid{position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(255,255,255,.18)}.concept-item{padding:48px 34px;min-height:285px;border-right:1px solid rgba(255,255,255,.18)}.concept-item:last-child{border:0}.num{font:400 .78rem/1 Georgia,serif;color:#75b8e9;letter-spacing:.16em}.concept-item h3{font:500 1.45rem/1.5 var(--serif);letter-spacing:.08em;margin:40px 0 15px}.concept-item p{font-size:.9rem;color:#b9c7d3;margin:0}
+    .precision{background:linear-gradient(135deg,#fff 10%,#edf7ff 100%)}.precision-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center}.orbit{aspect-ratio:1;border-radius:50%;position:relative;display:grid;place-items:center;background:radial-gradient(circle,#fff 0 27%,transparent 28%),repeating-radial-gradient(circle,transparent 0 15%,rgba(22,104,163,.17) 15.2% 15.5%);border:1px solid rgba(19,93,147,.18)}.orbit:before,.orbit:after{content:"";position:absolute;inset:8%;border-radius:50%;border:1px dashed rgba(10,86,142,.27);animation:spin 25s linear infinite}.orbit:after{inset:23%;animation-direction:reverse;animation-duration:18s}@keyframes spin{to{transform:rotate(360deg)}}.orbit-core{z-index:2;text-align:center}.orbit-core strong{font:500 3.2rem/1 Georgia,serif;letter-spacing:.15em}.orbit-core span{display:block;font-size:.62rem;letter-spacing:.26em;color:#45627a;margin-top:12px}.precision-list{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}.precision-row{display:grid;grid-template-columns:60px 1fr;background:rgba(255,255,255,.92);padding:26px}.precision-row b{font:500 1.4rem/1.4 var(--serif);letter-spacing:.08em}.precision-row p{grid-column:2;color:#5d6c7a;margin:7px 0 0;font-size:.88rem}
+    .steps{background:#fff}.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.step{border:1px solid var(--line);padding:40px 32px;background:linear-gradient(145deg,#fff,#f6fbff);position:relative;overflow:hidden}.step:before{content:"";position:absolute;left:0;top:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,#4fc3ff,transparent);box-shadow:0 0 14px #4fc3ff}.step:after{content:attr(data-step);position:absolute;right:-6px;bottom:-35px;font:400 8rem/1 Georgia,serif;color:rgba(17,87,138,.055)}.step small{color:var(--blue);letter-spacing:.22em}.step h3{font:500 1.35rem/1.5 var(--serif);letter-spacing:.08em;margin:18px 0 12px}.step p{font-size:.9rem;color:#5b6d7e;margin:0}.feature-stack{display:grid;gap:12px}.feature{display:grid;grid-template-columns:72px 1fr;gap:20px;padding:28px;background:linear-gradient(100deg,rgba(255,255,255,.98),rgba(236,248,255,.92));border:1px solid rgba(39,129,190,.22);box-shadow:inset 0 1px 0 #fff,0 0 20px rgba(61,176,244,.09);position:relative}.feature:after{content:"";position:absolute;left:0;top:22%;bottom:22%;width:2px;background:#55c6ff;box-shadow:0 0 10px #55c6ff,0 0 24px #248fd0}.feature-num{font:500 1.5rem/1 var(--serif);color:#3a9bd5}.feature h3{margin:0 0 7px;font:500 1.2rem/1.5 var(--serif);letter-spacing:.05em}.feature p{margin:0;color:#5a6c7d;font-size:.9rem}.showcase{background:#061629;color:#fff;position:relative;overflow:hidden}.showcase:before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(67,182,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(67,182,255,.08) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,transparent,#000,transparent)}.showcase-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:26px}.screen{min-height:310px;border:1px solid rgba(103,202,255,.35);background:linear-gradient(145deg,rgba(10,35,61,.9),rgba(3,13,26,.96));padding:34px;box-shadow:inset 0 0 35px rgba(29,139,210,.12),0 0 22px rgba(55,180,255,.12);position:relative}.screen:before,.screen:after{content:"";position:absolute;width:65px;height:2px;background:#70d5ff;box-shadow:0 0 10px #5dcaff}.screen:before{left:-1px;top:-1px}.screen:after{right:-1px;bottom:-1px}.screen .eyebrow{color:#81d7ff}.screen h3{font:500 2rem/1.5 var(--serif);letter-spacing:.08em}.screen p{color:#b5c7d6}.metric{font:500 clamp(2.7rem,6vw,5.8rem)/1 Georgia,serif;color:#fff;text-shadow:0 0 20px rgba(83,197,255,.55);margin:20px 0}.metric small{font-size:1rem;color:#93c9e7}.report-note{font-size:.78rem;color:#8fa4b7}.spec-table{width:100%;border-collapse:collapse;background:#fff;box-shadow:0 25px 70px rgba(18,76,118,.1)}.spec-table th,.spec-table td{padding:20px 24px;border-bottom:1px solid var(--line);text-align:left}.spec-table th{width:34%;color:#64788a;font-size:.8rem;letter-spacing:.08em}.spec-table td{font-weight:650}.account-box{margin-top:22px;padding:24px;border:1px solid rgba(39,129,190,.22);background:#f5fbff}.account-links{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}.mini-btn{display:block;padding:15px;background:#0b2744;color:#fff;text-align:center;font-size:.84rem}.code-box{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:17px 20px;background:#07172b;color:#fff;margin:16px 0}.code-box strong{font:500 1.5rem/1 Georgia,serif;letter-spacing:.18em}.note{font-size:.78rem;color:#67798a}
+    body:before{content:"";position:fixed;z-index:30;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#28baff 24%,#fff 50%,#28baff 76%,transparent);box-shadow:0 0 10px #25b7ff,0 0 26px rgba(34,176,255,.85);pointer-events:none}.hero .hero-copy{padding:34px 38px;background:linear-gradient(110deg,rgba(255,255,255,.82),rgba(255,255,255,.26));border-left:1px solid rgba(70,190,255,.65);box-shadow:-8px 0 24px rgba(63,181,255,.2);backdrop-filter:blur(8px)}.hero .hero-copy:before{content:"";display:block;width:84px;height:2px;margin-bottom:22px;background:#51c8ff;box-shadow:0 0 10px #44c3ff,0 0 26px #44c3ff}.section-head{position:relative}.section-head:after{content:"";display:block;width:130px;height:1px;margin-top:26px;background:linear-gradient(90deg,#27b5fb,transparent);box-shadow:0 0 9px #2ab8ff}.feature{backdrop-filter:blur(9px);transition:.28s}.feature:hover{transform:translateX(5px);border-color:rgba(38,181,255,.65);box-shadow:0 0 35px rgba(45,177,255,.18)}.showcase{background-color:#020b15;background-image:radial-gradient(circle at 15% 30%,rgba(0,170,255,.18),transparent 32%),radial-gradient(circle at 88% 72%,rgba(46,111,255,.16),transparent 30%)}.screen{padding:0;overflow:hidden;display:flex;flex-direction:column}.screen-copy{padding:34px}.screen-media{margin-top:auto;position:relative;border-top:1px solid rgba(87,200,255,.35);background:#000}.screen-media:after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 32px rgba(63,193,255,.22);pointer-events:none}.screen-media img{width:100%;max-height:500px;object-fit:contain;background:#05090d}.screen:first-child .screen-media img{aspect-ratio:16/9;object-fit:cover}.screen:nth-child(2) .screen-media img{height:500px}.evidence{position:absolute;right:16px;top:14px;z-index:2;padding:6px 10px;background:rgba(5,19,33,.76);border:1px solid rgba(86,202,255,.42);color:#8edbff;font-size:.64rem;letter-spacing:.16em;backdrop-filter:blur(8px)}.report-panel{max-width:760px;margin:auto;padding:34px;border:1px solid rgba(63,180,246,.22);background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(231,247,255,.9));box-shadow:0 0 40px rgba(45,172,244,.14);text-align:center}.vps-btn{display:inline-flex;align-items:center;gap:12px;margin-left:14px;padding:10px 18px;background:linear-gradient(135deg,#07192e,#0e4672);color:#fff;border:1px solid rgba(76,198,255,.5);box-shadow:0 0 18px rgba(52,183,255,.22);font-size:.78rem}.mini-btn,.copy-btn{transition:.25s;border:1px solid rgba(77,194,255,.42);box-shadow:0 0 16px rgba(52,178,255,.15)}.mini-btn:hover,.copy-btn:hover{background:#125281;box-shadow:0 0 25px rgba(55,190,255,.36);transform:translateY(-2px)}.copy-btn{appearance:none;cursor:pointer;background:#0d3d63;color:#fff;padding:10px 16px;font:inherit;font-size:.75rem}.code-value{font:500 1.7rem/1 Georgia,serif;letter-spacing:.18em;text-shadow:0 0 13px rgba(89,198,255,.8)}.account-proof{width:min(540px,100%);margin:24px auto 6px;border:1px solid rgba(48,164,229,.34);padding:10px;background:#fff;box-shadow:0 0 28px rgba(55,181,247,.17)}.account-proof img{width:100%}.copy-toast{position:fixed;z-index:60;left:50%;bottom:90px;transform:translate(-50%,20px);padding:12px 22px;border:1px solid rgba(95,211,255,.6);background:rgba(3,19,34,.94);color:#fff;box-shadow:0 0 24px rgba(43,181,255,.35);opacity:0;pointer-events:none;transition:.3s}.copy-toast.show{opacity:1;transform:translate(-50%,0)}
+    .scroll-progress{position:fixed;z-index:55;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,#18aefa,#e9fbff,#3a8dff);box-shadow:0 0 12px #2ab9ff,0 0 28px #2ab9ff;pointer-events:none}.hero{background-position:center 48%;background-size:cover;animation:heroFade 1.2s ease-out both}.hero:before{background:linear-gradient(90deg,rgba(3,16,32,.72) 0%,rgba(8,34,58,.48) 35%,rgba(255,255,255,.05) 72%,rgba(3,16,32,.08) 100%);pointer-events:none}.hero:after{pointer-events:none;animation:orbitPulse 6s ease-in-out infinite}.hero .hero-copy{color:#fff;background:linear-gradient(115deg,rgba(4,22,41,.84),rgba(6,33,57,.48));border:1px solid rgba(87,205,255,.33);border-left:2px solid #63d2ff;box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,0 0 38px rgba(25,160,236,.24),18px 28px 70px rgba(2,15,29,.25);animation:heroPanelIn 1s cubic-bezier(.2,.75,.2,1) .15s both;position:relative;overflow:hidden}.hero .hero-copy:after{content:"";position:absolute;left:-20%;right:-20%;top:-4px;height:2px;background:linear-gradient(90deg,transparent,#7cddff,#fff,#7cddff,transparent);box-shadow:0 0 12px #53caff;animation:ledSweep 3.4s linear infinite;pointer-events:none}.hero h1{background:linear-gradient(120deg,#fff 12%,#cdeeff 35%,#fff 54%,#d7a95e 82%);background-size:220% auto;-webkit-background-clip:text;color:transparent;animation:textShine 6s linear infinite}.hero h1 small,.hero-kicker,.hero-ja,.type-line{color:#fff}.hero-kicker{opacity:.78}.hero-seal{animation:sealFloat 5s ease-in-out infinite;box-shadow:0 0 35px rgba(87,199,255,.38),0 30px 70px rgba(7,23,43,.22)}.hero-scan{position:absolute;z-index:1;inset:0;pointer-events:none;overflow:hidden}.hero-scan:before{content:"";position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(110,220,255,.95),transparent);box-shadow:0 0 16px rgba(78,199,255,.8);animation:scanDown 7s linear infinite}.nav-cta,.btn,.mini-btn,.vps-btn,.copy-btn,a[href]{position:relative;z-index:8;pointer-events:auto!important;touch-action:manipulation;cursor:pointer}.step:before,.step:after,.manifesto:after,.showcase:before,.screen:before,.screen:after,.feature:after,.section-head:after{pointer-events:none}.step>*{position:relative;z-index:2}.auto-reveal{opacity:0;transform:translateY(34px) scale(.985);transition:opacity .85s ease,transform .85s cubic-bezier(.18,.75,.2,1);transition-delay:var(--delay,0ms)}.auto-reveal.in-view{opacity:1;transform:none}.feature.auto-reveal:nth-child(even){transform:translateX(36px)}.feature.auto-reveal:nth-child(even).in-view{transform:none}.screen.auto-reveal:first-child{transform:translateX(-38px)}.screen.auto-reveal:last-child{transform:translateX(38px)}.screen.auto-reveal.in-view{transform:none}.screen-media:before{content:"";position:absolute;z-index:3;top:0;bottom:0;width:30%;left:-38%;background:linear-gradient(90deg,transparent,rgba(103,217,255,.16),transparent);transform:skewX(-12deg);animation:mediaScan 5.2s ease-in-out infinite}.feature-num{animation:numGlow 2.8s ease-in-out infinite}.typing-view:after{content:"";display:inline-block;height:1em;border-right:1px solid currentColor;margin-left:4px;vertical-align:-.1em;animation:blink 1s steps(1) infinite}@keyframes heroFade{from{opacity:.4;filter:saturate(.6) brightness(1.2)}to{opacity:1;filter:none}}@keyframes heroPanelIn{from{opacity:0;transform:translateX(-55px);clip-path:inset(0 100% 0 0)}to{opacity:1;transform:none;clip-path:inset(0)}}@keyframes ledSweep{to{transform:translateX(55%)}}@keyframes textShine{to{background-position:220% center}}@keyframes orbitPulse{50%{transform:scale(1.03);opacity:.75}}@keyframes sealFloat{50%{transform:translateY(-12px)}}@keyframes scanDown{from{top:-5%}to{top:105%}}@keyframes mediaScan{0%,22%{left:-38%}70%,100%{left:118%}}@keyframes numGlow{50%{color:#77d9ff;text-shadow:0 0 14px rgba(56,190,255,.75)}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}.reveal,.auto-reveal{opacity:1!important;transform:none!important}}
+    header:not(.scrolled){color:#fff;text-shadow:0 2px 15px rgba(0,0,0,.35)}header:not(.scrolled) .brand small{color:rgba(255,255,255,.72)}.hero{min-height:max(920px,100svh);height:auto;max-height:none;padding:112px 0 70px;align-items:flex-start;background-position:center}.hero:before{background:linear-gradient(rgba(4,15,29,.62),rgba(4,18,35,.48) 54%,rgba(3,13,25,.72)),linear-gradient(90deg,rgba(3,16,32,.3),transparent 55%,rgba(3,16,32,.12))}.hero:after{left:50%;bottom:auto;top:8%;width:76vw;height:76vw;transform:translateX(-50%);box-shadow:0 0 0 44px rgba(108,190,245,.035),0 0 0 100px rgba(108,190,245,.025)}.hero-inner{width:100%;padding-top:6px}.hero-sequence{width:min(820px,100%);margin:auto;text-align:center;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.48);animation:sequenceIn 1.1s ease-out both}.hero-legion-logo{display:block;width:86px;height:auto;object-fit:contain;margin:0 auto 30px;filter:drop-shadow(0 0 12px rgba(221,178,96,.3));animation:crestFloat 5s ease-in-out infinite}.hero-label{display:inline-block;padding:13px 30px;border:1px solid rgba(220,179,92,.72);box-shadow:0 0 16px rgba(208,164,76,.1),inset 0 0 16px rgba(208,164,76,.06);font:.68rem/1.4 var(--sans);font-weight:650;letter-spacing:.28em;color:#f0ce82}.hero-label span{color:#8c99a8;margin:0 .5em}.hero-intro{min-height:34px;margin:38px 0 20px;font:500 1rem/1.8 var(--serif);letter-spacing:.12em;color:rgba(255,255,255,.82)}.hero-statement{margin:0!important;font-family:var(--serif)!important;line-height:1.22!important;letter-spacing:.05em!important;background:none!important;-webkit-background-clip:initial!important;color:#fff!important;animation:none!important}.hero-statement span,.hero-statement strong,.hero-statement em{display:block;font-style:normal;font-weight:500}.hero-statement span{font-size:clamp(2.1rem,4.8vw,3.8rem)}.hero-statement strong{font-size:clamp(3rem,7vw,5.8rem);color:#efd083;text-shadow:0 0 18px rgba(218,174,87,.22)}.hero-statement em{font-size:clamp(2.2rem,5.4vw,4.5rem);color:#f3d486;text-shadow:0 0 18px rgba(218,174,87,.22)}.hero-ea{margin:30px 0 7px;font-size:.92rem;letter-spacing:.12em;color:rgba(255,255,255,.82)}.hero-product{font:500 clamp(1.55rem,3vw,2.3rem)/1.4 Georgia,var(--serif);letter-spacing:.24em;color:#f1d185}.hero-divider{width:70px;height:1px;margin:28px auto;background:linear-gradient(90deg,transparent,#d7b15d,transparent);box-shadow:0 0 8px rgba(219,178,92,.65)}.hero-promise{margin:0;font:500 clamp(1.45rem,3vw,2.3rem)/1.55 var(--serif);letter-spacing:.07em}.hero-promise strong{display:block;font-weight:500;color:#f0ce7a}.hero-logic{margin:24px 0 0;font-size:.85rem;letter-spacing:.11em;color:rgba(255,255,255,.78)}.hero-version{margin-top:48px;font:.72rem/1.5 var(--sans);letter-spacing:.3em;color:#d8b867}.scroll{color:#fff}.scroll:after{background:#75ceff;box-shadow:0 0 8px #5fc7ff}@keyframes sequenceIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}@keyframes crestFloat{50%{transform:translateY(-8px);filter:brightness(1.08) drop-shadow(0 0 16px rgba(221,178,96,.38))}}
+    .faq{background:#f4f8fb}.faq-list{max-width:900px;margin:auto;border-top:1px solid var(--line)}details{border-bottom:1px solid var(--line);background:#fff}summary{list-style:none;cursor:pointer;padding:27px 70px 27px 28px;font:500 1.05rem/1.6 var(--serif);letter-spacing:.04em;position:relative}summary::-webkit-details-marker{display:none}summary:after{content:"＋";position:absolute;right:28px;top:25px;color:var(--blue);font-family:var(--sans);transition:.3s}details[open] summary:after{transform:rotate(45deg)}details p{padding:0 28px 28px;color:#596a79;margin:0;font-size:.9rem}
+    footer{background:#04111f;color:#9eb0c1;padding:42px 0 90px}.footer-grid{display:flex;justify-content:space-between;align-items:flex-end;gap:30px}.footer-brand{color:#fff;font:500 1.3rem/1.5 var(--serif);letter-spacing:.18em}.footer-brand small{display:block;color:#8296a9;font:500 .6rem/1.5 var(--sans);letter-spacing:.25em}.risk{max-width:720px;font-size:.68rem;line-height:1.8;text-align:right}.legal-labels{color:#b8c6d3}.affiliate-note{display:block;margin-top:8px;color:#b8c6d3}.mobile-cta{display:none}
+    @media(max-width:860px){.wrap{width:min(calc(100% - 34px),680px)}.links a:not(.nav-cta){display:none}.nav{height:68px}.brand-mark{width:36px;height:36px}.nav-cta{padding:10px 17px}.hero{min-height:760px;height:auto;padding:110px 0 130px;background-position:64% center;background-size:cover;animation:none}.hero:before{background:linear-gradient(90deg,rgba(3,16,32,.74) 0%,rgba(7,31,53,.52) 66%,rgba(3,16,32,.14) 100%)}.hero-copy{width:100%}.hero-seal{right:20px;bottom:35px;width:120px}.scroll{display:none}.manifesto-grid,.precision-layout,.showcase-grid{grid-template-columns:1fr;gap:48px}.legion-card{order:2;width:220px}.concept-grid,.steps-grid{grid-template-columns:1fr}.concept-item{border-right:0;border-bottom:1px solid rgba(255,255,255,.18);min-height:auto}.concept-item:last-child{border-bottom:0}.section{padding:82px 0}.footer-grid{display:block}.risk{text-align:left;margin-top:24px}.account-links{grid-template-columns:1fr}.feature.auto-reveal:nth-child(even),.screen.auto-reveal:first-child,.screen.auto-reveal:last-child{transform:translateY(34px) scale(.985)}.feature.auto-reveal:nth-child(even).in-view,.screen.auto-reveal.in-view{transform:none}.mobile-cta{display:block;position:fixed;z-index:25;left:14px;right:14px;bottom:12px;background:linear-gradient(135deg,#07172b,#19436a);color:#fff;text-align:center;padding:13px;border-radius:6px;box-shadow:0 0 22px rgba(51,186,255,.35),0 10px 35px rgba(0,0,0,.3);font-size:.86rem;letter-spacing:.08em}}
+    @media(max-width:520px){.hero h1{font-size:3.45rem}.hero h1 small{letter-spacing:.31em}.hero-ja{font-size:1.42rem}.hero-actions{display:block}.hero-actions .btn{width:100%}.hero .hero-copy{padding:24px 20px}.text-link{display:inline-block;margin-top:20px}.hero-seal{opacity:.92;width:92px}.section-head h2{font-size:2rem}.statement blockquote{font-size:2rem}.orbit-core strong{font-size:2.4rem}.precision-row{grid-template-columns:44px 1fr;padding:22px 18px}.code-box{align-items:stretch;flex-direction:column}.copy-btn{width:100%}.vps-btn{display:flex;margin:12px 0 0;width:100%;justify-content:center}.screen:nth-child(2) .screen-media img{height:420px}.spec-table th,.spec-table td{padding:16px 14px}}
+    /* Text remains visible when a downloaded HTML file is previewed without JavaScript. */
+    .reveal,.auto-reveal{opacity:1;transform:none}
+    .motion .reveal{opacity:0;transform:translateY(28px)}
+    .motion .reveal.show{opacity:1;transform:none}
+    .motion .auto-reveal{opacity:0;transform:translateY(34px) scale(.985)}
+    .motion .auto-reveal.in-view{opacity:1;transform:none}
+    .motion .feature.auto-reveal:nth-child(even){transform:translateX(36px)}
+    .motion .feature.auto-reveal:nth-child(even).in-view{transform:none}
+    .motion .screen.auto-reveal:first-child{transform:translateX(-38px)}
+    .motion .screen.auto-reveal:last-child{transform:translateX(38px)}
+    .motion .screen.auto-reveal.in-view{transform:none}
+    .required-notice{margin:16px 0!important;padding:14px 16px;border-left:3px solid #d3ad5b;background:#fff8e7;color:#72500c!important;font-weight:700;font-size:.88rem!important}
+  </style>
 </head>
 <body>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <header id="header"><div class="wrap nav"><a class="brand" href="#top"><span class="brand-mark"></span><span>IMPERIUM<small>EA</small></span></a><nav class="links"><a href="#about">ABOUT</a><a href="#features">FEATURES</a><a href="#howto">HOW TO START</a><a href="#faq">FAQ</a><a class="nav-cta" href="#howto">今すぐ始める&nbsp; →</a></nav></div></header>
 
-<!-- ── HERO ── -->
-<div class="hero">
-  <img src="phalanx-logo.png"
-       alt="PHALANX" class="hero-logo">
-  <span class="hero-badge">XAUUSD Gold — Auto Trading EA</span>
-  <p class="hero-catch">守るだけでは、終わらせない。規律を持って、仕掛けていく。</p>
-  <h1 class="h1 hero-title">統制ある攻めで、<br><span>相場を捉える。</span></h1>
-  <div class="hero-line"></div>
-  <p class="hero-sub">
-    XAUUSD（ゴールド）専用の自動売買EA。<br>
-    独自の移動平均線クロスロジックに、<br>「一番危険の少ない時間帯だけ動かす」時間制御を組み合わせています。
-  </p>
-  <a href="https://lin.ee/qfZajQi" class="btn-line" style="max-width:300px;" target="_blank" rel="noopener">💬 LINEで無料相談・登録</a>
-  <p class="hero-ver">PHALANX v1.15</p>
-</div>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-scan" aria-hidden="true"></div>
+      <div class="wrap hero-inner"><div class="hero-sequence">
+        <img class="hero-legion-logo" src="assets/legion-logo-transparent.png" alt="LEGION 正式ロゴ">
+        <div class="hero-label">XAUUSD GOLD <span>—</span> AUTO TRADING EA</div>
+        <p class="hero-intro"><span id="typing" class="caret">AIと人間が、自動化したもの。</span></p>
+        <h1 class="hero-statement"><span>それは、</span><strong>GOLDの</strong><em>トレードでした。</em></h1>
+        <p class="hero-ea">XAUUSD専用 自動売買EA</p>
+        <div class="hero-product">LEGION</div>
+        <div class="hero-divider" aria-hidden="true"></div>
+        <h2 class="hero-promise">統制ある攻めで、<strong>GOLDを捉える。</strong></h2>
+        <p class="hero-logic">独自クロスエントリー × 時間帯制御</p>
+        <div class="hero-version">LEGION V1.15</div>
+      </div></div>
+      <div class="scroll">SCROLL</div>
+    </section>
 
-<!-- ── 商品概要 ── -->
-<div class="sec">
-  <div class="sec-title">
-    <span class="label">About</span>
-    <h2 class="h2">PHALANXとは</h2>
-    <div class="divider"></div>
-  </div>
-  <p class="overview-lead">
-    攻めと守りの<strong>中間に立つ</strong>、XAUUSD専用の自動売買EAです。<br>
-    ファランクス（古代の密集陣形）の名前が示す通り、<strong>統制を保ちながら前に出る</strong>ことを軸に設計されています。
-  </p>
-  <div class="overview-points">
-    <div class="overview-point">
-      <div class="op-icon"></div>
-      <div class="op-text"><strong>独自の移動平均線クロスロジックでエントリー。</strong>数値は非公開のPHALANX専用チューニングです。</div>
-    </div>
-    <div class="overview-point">
-      <div class="op-icon"></div>
-      <div class="op-text"><strong>ナンピン段数に歯止めを設定可能。</strong>「新規停止」と「損切り」を別々に設定できます。</div>
-    </div>
-    <div class="overview-point">
-      <div class="op-icon"></div>
-      <div class="op-text"><strong>稼働時間を12:00〜17:00に絞り込み。</strong>ニューヨーク時間のような急変が起きやすい時間帯には一切踏み込みません。</div>
-    </div>
-    <div class="overview-point">
-      <div class="op-icon"></div>
-      <div class="op-text"><strong>一度設置したら監視不要。</strong>週間の損益・最大DDも自動で見える化します。</div>
-    </div>
-  </div>
-</div>
+    <section class="section manifesto" id="about"><div class="wrap manifesto-grid">
+      <div class="legion-card reveal"><img src="assets/legion-logo-transparent.png" alt="LEGION 正式ロゴ"></div>
+      <div class="statement reveal"><div class="eyebrow">ABOUT</div><blockquote>EA開発は、<br><em>ここまで進化した。</em></blockquote><p><strong>AIに作らせたEAではない。<br>AIと、一緒に作り上げたEAだ。</strong></p><p>コードを書く。<br>動かす。<br>ダメなら戻す。<br>また考える。<br>また書き直す。</p><p>「ここは違う」<br>「これは現実的じゃない」<br>「もっと使いやすくできないか」</p><p>デモ環境で実際の動きを確認しながら、何度も修正を重ねてきました。</p><p>そして完成したのが、GOLD専用自動売買EA「LEGION」です。</p><div class="signature">LEGION V1.15</div></div>
+    </div></section>
 
-<!-- ── 特徴 ── -->
-<div class="sec-gray">
-  <div class="sec-title">
-    <span class="label">Features</span>
-    <h2 class="h2">6つの統制装置</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">独自クロスエントリーロジック</div>
-      <div class="feat-card-body">移動平均線のクロスポイントを捉え、相場の転換タイミングで新規エントリー。数値は非公開の、PHALANX専用チューニングです。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">3段階利確構造</div>
-      <div class="feat-card-body">ポジション数に応じて利確ラインを自動で切り替え。積み上がった時ほど、利益確定を優先する設計です。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">ナンピン段数の二重管理</div>
-      <div class="feat-card-body">「これ以上は新規停止」の段数と、「ここまで来たら損切り」の段数を別々に設定可能。初期設定ではどちらもOFFです。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">救済決済</div>
-      <div class="feat-card-body">買いと売りのポジション全体の損益がプラスに転じた瞬間、一括決済。片方が深く沈んでいても、もう片方の利益で救い出すタイミングを逃しません。初期設定ではOFFです。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">スプレッドフィルター</div>
-      <div class="feat-card-body">スプレッドが規定値を超えている間は、新規エントリー・ナンピンともに見送り。相場が荒れているタイミングでの不利な約定を回避します。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">週間損益の見える化</div>
-      <div class="feat-card-body">週間の日別損益・最大DDを表にして常時表示。含み損や急変時にはチャート背景色で警告します。</div>
-    </div>
-  </div>
-</div>
+    <section class="section precision" id="features"><div class="wrap"><div class="section-head reveal"><div class="eyebrow">FEATURES</div><h2 class="type-on-view" data-type="攻めるために、統制する。" aria-label="攻めるために、統制する。">攻めるために、統制する。</h2><p>LEGIONは、ただエントリーを繰り返すEAではありません。<br>GOLDを自動売買するために、エントリーから決済、ナンピン、スプレッド、稼働時間まで、複数の制御を組み合わせています。<br>その中心となるのが、6つの統制装置です。</p></div><div class="feature-stack reveal">
+      <article class="feature"><div class="feature-num">01</div><div><h3>独自クロスエントリーロジック</h3><p>独自の移動平均クロス条件をもとに、BUY・SELLのエントリーを判定。</p></div></article>
+      <article class="feature"><div class="feature-num">02</div><div><h3>3段階利確構造</h3><p>保有ポジション数に応じて利確方法を切り替え、複数ポジション時には平均建値を基準に決済を管理。</p></div></article>
+      <article class="feature"><div class="feature-num">03</div><div><h3>ナンピン段数管理</h3><p>ナンピンの最大段数を設定し、無制限にポジションを増やさないための上限を設けています。</p></div></article>
+      <article class="feature"><div class="feature-num">04</div><div><h3>救済決済</h3><p>一定のポジション数に達した状態で、BUY・SELLの合算損益が設定条件を満たした場合に両方向をまとめて決済できる機能。</p></div></article>
+      <article class="feature"><div class="feature-num">05</div><div><h3>スプレッドフィルター</h3><p>スプレッドが設定した上限を超えている間は、新規エントリーを抑制。</p></div></article>
+      <article class="feature"><div class="feature-num">06</div><div><h3>運用状況の可視化</h3><p>日々の確定損益やドローダウンなど、運用判断に必要な情報をチャート上で確認できます。</p></div></article>
+    </div></div></section>
 
-<!-- ── 基本仕様 ── -->
-<div class="sec">
-  <div class="sec-title">
-    <span class="label">Specification</span>
-    <h2 class="h2">基本仕様</h2>
-    <div class="divider"></div>
-  </div>
-  <table class="spec-table">
-    <tr><td class="sl">対応通貨ペア</td><td class="sv">XAUUSD（ゴールド）</td></tr>
-    <tr><td class="sl">プラットフォーム</td><td class="sv">MetaTrader 4（MT4）</td></tr>
-    <tr><td class="sl">対応ブローカー</td><td class="sv">XM</td></tr>
-    <tr><td class="sl">稼働時間</td><td class="sv">月〜木 12:00〜17:00<br>金 12:00〜15:00（初期設定）</td></tr>
-    <tr><td class="sl">稼働方式</td><td class="sv">完全自動（VPS推奨）</td></tr>
-    <tr><td class="sl">認証方式</td><td class="sv">Web認証（オンライン必須）</td></tr>
-    <tr><td class="sl">バージョン</td><td class="sv">v1.15</td></tr>
-  </table>
-</div>
+    <section class="section showcase"><div class="wrap"><div class="showcase-grid">
+      <article class="screen reveal"><div class="screen-copy"><div class="eyebrow">LIVE TRADING</div><h3>LEGIONは、<br>実際にこう動く。</h3><p>実際のLEGION稼働チャート。<br>エントリーから決済まで、すべて自動で行われています。</p></div><div class="screen-media"><span class="evidence">REAL CHART</span><img src="assets/live-trading-chart.jpeg" alt="LEGIONの実稼働チャート"></div></article>
+      <article class="screen reveal"><div class="screen-copy"><div class="eyebrow">PERFORMANCE</div><h3>利益だけではなく、<br>実際に出金。</h3><div class="metric">500<small>万円から</small></div><p>400万円を出金後も、運用を継続。</p><p class="report-note">※ 将来の利益を保証するものではありません。相場状況により変動する可能性があります。</p></div><div class="screen-media"><span class="evidence">WITHDRAWAL RECORD</span><img src="assets/withdrawal-history.jpeg" alt="400万円出金後の取引履歴画面"></div></article>
+    </div></div></section>
 
-<!-- ── 実績 ── -->
-<div class="sec-gray">
-  <div class="sec-title">
-    <span class="label">Performance</span>
-    <h2 class="h2">参考実績</h2>
-    <div class="divider"></div>
-  </div>
+    <section class="section manifesto"><div class="wrap"><div class="section-head reveal"><div class="eyebrow">REPORT</div><h2>実際の利用者から届いた報告</h2><p>※利用者から共有された運用結果の一例です。運用結果は資金量・口座タイプ・設定・相場状況等によって異なり、将来の利益を保証するものではありません。</p></div><div class="report-panel reveal">掲載許可済みの追加報告画像を順次掲載します。</div></div></section>
 
-  <!-- 画像エリア（実績スクリーンショットがあれば ./phalanx-result.jpg に差し替え） -->
-  <div class="result-img-area">
-    <img src="result.jpg" alt="MT4運用画面" onerror="this.parentElement.innerHTML='<div class=\'result-img-placeholder\'><span style=\'font-size:36px;\'>📱</span><span>実績スクリーンショット</span></div>'">
-  </div>
+    <section class="section precision"><div class="wrap"><div class="section-head reveal"><div class="eyebrow">SPECIFICATION</div><h2>基本仕様</h2></div><table class="spec-table reveal"><tbody><tr><th>対象銘柄</th><td>XAUUSD（GOLD）</td></tr><tr><th>対応プラットフォーム</th><td>MT4</td></tr><tr><th>対応ブローカー</th><td>XMTrading</td></tr><tr><th>稼働時間</th><td>月〜木 12:00〜17:00<br>金 12:00〜15:00</td></tr><tr><th>VPS</th><td>推奨 <a class="vps-btn" href="https://px.a8.net/svt/ejp?a8mat=4AXCKH+9W18J6+CO4+2BCWEQ" target="_blank" rel="noopener noreferrer">FX専用VPSを見る →</a></td></tr><tr><th>認証</th><td>専用認証</td></tr></tbody></table></div></section>
 
-  <!-- 実績カード -->
-  <div class="result-grid">
-    <div class="result-card">
-      <div class="result-card-label">実質運用元本</div>
-      <div class="result-card-value" style="font-size:15px;">5,000,000<span style="font-size:12px;font-weight:400;color:var(--g600);">円</span></div>
-    </div>
-    <div class="result-card">
-      <div class="result-card-label">累計損益</div>
-      <div class="result-card-value plus">+1,582,215<span style="font-size:12px;font-weight:400;color:#16A34A;">円</span></div>
-    </div>
-    <div class="result-card">
-      <div class="result-card-label">残高</div>
-      <div class="result-card-value">2,582,215<span style="font-size:12px;font-weight:400;color:var(--g600);">円</span></div>
-    </div>
-    <div class="result-card">
-      <div class="result-card-label">運用期間</div>
-      <div class="result-card-value" style="font-size:13px;line-height:1.5;">2026年7月21日<br>〜2026年8月21日</div>
-    </div>
-  </div>
-  <div class="result-disc">
-    ※ 入金500万円のうち400万円を出金し、実質100万円スタートとして運用した結果です。<br>
-    ※ 将来の利益を保証するものではありません。相場状況により大きく変動し、元本を割り込む可能性があります。
-  </div>
-</div>
+    <section class="section steps" id="howto"><div class="wrap"><div class="section-head reveal"><div class="eyebrow">HOW TO START</div><h2>LEGIONを始める</h2><p>LEGIONは、XMTradingのMT4口座でご利用いただけます。</p></div><div class="feature-stack reveal">
+      <article class="step" data-step="1"><small>STEP 01</small><h3>XMTradingの口座を準備</h3><div class="account-links"><a class="mini-btn" href="https://clicks.affstrack.com/c?c=996912&amp;l=ja&amp;p=1" target="_blank" rel="noopener noreferrer">初めてXMTradingを利用する方<br>XMTradingで口座を開設する →</a><a class="mini-btn" href="https://clicks.affstrack.com/c?c=996912&amp;l=ja&amp;p=22" target="_blank" rel="noopener noreferrer">すでにXM口座をお持ちの方<br>追加口座を開設する →</a></div><p>取引プラットフォーム：MT4／基本通貨：JPY／最大レバレッジ：1,000倍<br>MICRO口座：10万円以上を目安<br>STANDARD口座：100万円以上を目安</p><h3>パートナーコードを入力</h3><p>口座開設時の「パートナーコード」欄に、以下のコードを必ず入力してください。</p><div class="code-box"><span>⚠ 必ず入力してください</span><strong class="code-value">PQW8K</strong><button class="copy-btn" type="button" id="copyCode">コードをコピーする</button></div><p class="note">！ 事後変更はできません。必ず口座開設時に入力してください。</p><p class="note">※入金前に、口座タイプを必ずご確認ください。KIWAMI口座は対象外です。</p></article>
+      <article class="step" data-step="2"><small>STEP 02</small><h3>FX専用VPSを準備</h3><p>LEGIONを稼働させるためのFX専用VPSを準備してください。</p><p><a class="mini-btn" href="https://px.a8.net/svt/ejp?a8mat=4AXCKH+9W18J6+CO4+2BCWEQ" target="_blank" rel="noopener noreferrer">FX専用VPSを申し込む →</a></p></article>
+      <article class="step" data-step="3"><small>STEP 03</small><h3>口座情報を申請</h3><p>口座開設後、以下のフォームより口座情報をご申請ください。</p><p class="required-notice">⚠ 口座情報を申請しないと、LEGION（EA）は動きません。必ず申請してください。</p><p><a class="mini-btn" href="https://forms.gle/673n9QmDQRwcDgeP8" target="_blank" rel="noopener">📝 LEGION利用申請フォームへ</a></p></article>
+      <article class="step" data-step="4"><small>STEP 04</small><h3>入金後の画面をLINEへ送信</h3><p>赤く隠している部分が口座番号です。このように「口座番号」と「入金後の残高」が確認できる画面を公式LINEへ送ってください。</p><div class="account-proof"><img src="assets/account-balance.jpeg" alt="口座番号と入金後残高の確認画面例"></div><p><a class="mini-btn" href="https://lin.ee/SRhUlxo" target="_blank" rel="noopener noreferrer">💬 公式LINEで画像を送る</a></p><p class="note">画像送信後のお手続きは、公式LINE上で進みます。確認後のご案内は、公式LINEからお送りします。</p></article>
+    </div></div></section>
 
-<!-- ── 利用開始までの流れ ── -->
-<div class="sec">
-  <div class="sec-title">
-    <span class="label">How To Start</span>
-    <h2 class="h2">利用開始までの流れ</h2>
-    <div class="divider"></div>
-  </div>
+    <section class="section faq" id="faq"><div class="wrap"><div class="section-head reveal"><div class="eyebrow">FAQ</div><h2>よくあるご質問</h2></div><div class="faq-list reveal">
+      <details><summary>FX初心者でも利用できますか？</summary><p>利用できます。ただし、FXには元本割れやロスカットのリスクがあります。基本的な仕組みをご理解のうえでご利用ください。</p></details>
+      <details><summary>VPSは必要ですか？</summary><p>必須ではありませんが、安定稼働のため推奨しています。ご自身のPCで稼働する場合は、MT4を起動した状態を維持する必要があります。</p></details>
+      <details><summary>MICROとSTANDARD、どちらを選べばいいですか？</summary><p>少額から始める場合はMICROを推奨しています。目安はMICRO 10万円以上、STANDARD 100万円以上です。</p></details>
+      <details><summary>パートナーコードを入力し忘れました。</summary><p>パートナーコード「PQW8K」を入力して、新しい口座を作成してください。パートナーコードを入力していない口座では、LEGIONの利用手続きを進められません。</p></details>
+      <details><summary>設置方法が分かりません。</summary><p>確認完了後に設置マニュアルをご案内します。不明点は公式LINEからお問い合わせいただけます。</p></details>
+    </div></div></section>
 
-  <div class="flow-wrap">
+  </main>
 
-    <!-- STEP 1 -->
-    <div class="flow-step">
-      <div class="flow-num">1</div>
-      <div class="flow-content">
-        <div class="flow-title">口座を開設する</div>
-        <p class="flow-body" style="margin-bottom:16px;">XMでご利用いただけます。以下の手順に沿って進めてください。</p>
-
-        <div class="broker-wrap">
-          <!-- XM -->
-          <div class="broker-card">
-            <div class="broker-head">
-              <span class="broker-badge">XM</span>
-              XMをお使いの方
-            </div>
-            <div class="broker-body">
-              <div class="check-list">
-                <div class="check-item">
-                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                  <div class="check-txt"><strong>取引プラットフォーム：MT4</strong>（MT5ではなくMT4を選択）</div>
-                </div>
-                <div class="check-item">
-                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                  <div class="check-txt"><strong>口座タイプ：スタンダード・マイクロ口座</strong>（KIWAMI口座は不可）</div>
-                </div>
-                <div class="check-item">
-                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                  <div class="check-txt"><strong>レバレッジ：1000倍</strong></div>
-                </div>
-                <div class="check-item">
-                  <div class="check-dot"><svg viewBox="0 0 8 8" fill="none"><path d="M1 4.5L3 6.5L7 2" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                  <div class="check-txt"><strong>基本通貨：JPY（日本円）</strong></div>
-                </div>
-              </div>
-              <div class="code-box" style="margin-top:14px;">
-                <div class="code-box-warn">⚠ 必ず入力してください</div>
-                <div class="code-box-title">パートナーコードの入力</div>
-                <p style="font-size:12px;color:#9B1C1C;margin-bottom:10px;line-height:1.75;">登録画面の「パートナーコード（任意）」欄に必ず入力してください。</p>
-                <div class="code-display"><span class="code-val">PQW8K</span></div>
-                <div class="code-note">
-                  <p>！ 事後変更はできません。入れ忘れた場合はLINEにてご相談ください。</p>
-                </div>
-              </div>
-              <a href="https://clicks.affstrack.com/c?c=996912&l=ja&p=1" class="url-btn" target="_blank" rel="noopener">新規口座を開設する →</a>
-              <a href="https://clicks.affstrack.com/c?c=996912&l=ja&p=22" class="url-btn-sub" target="_blank" rel="noopener">すでにXM口座をお持ちの方（追加口座）</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 2 -->
-    <div class="flow-step">
-      <div class="flow-num">2</div>
-      <div class="flow-content">
-        <div class="flow-title">口座番号を登録してスクショを送る</div>
-        <p class="flow-body" style="margin-bottom:16px;">フォームに口座番号を登録後、LINEに残高・口座番号が写ったスクショを1枚送ってください。</p>
-        <div class="action-cards">
-          <div class="action-card">
-            <div class="action-head">
-              <div class="action-num form">1</div>
-              <div>
-                <div class="action-title">口座番号をフォームに登録</div>
-                <div class="action-sub">EA認証に必要です・1分で完了</div>
-              </div>
-            </div>
-            <div class="action-body">
-              <a href="https://utlink.jp/l/36iOn8twP6M9" class="form-btn" target="_blank" rel="noopener">📝 口座番号を登録する</a>
-            </div>
-          </div>
-          <div class="action-card">
-            <div class="action-head">
-              <div class="action-num line">2</div>
-              <div>
-                <div class="action-title">LINEへスクショを1枚送る</div>
-                <div class="action-sub">残高・口座番号が写っていればOK</div>
-              </div>
-            </div>
-            <div class="action-body">
-              <div class="shot-list">
-                <div class="shot-item"><div class="shot-dot"></div>口座残高（入金後の金額）</div>
-                <div class="shot-item"><div class="shot-dot"></div>口座番号（MT4のログインID）</div>
-              </div>
-              <a href="https://lin.ee/qfZajQi" class="btn-line" style="margin-top:12px;" target="_blank" rel="noopener">💬 LINEで報告する</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 3 -->
-    <div class="flow-step">
-      <div class="flow-num">3</div>
-      <div class="flow-content">
-        <div class="flow-title">EAを受け取って稼働開始</div>
-        <p class="flow-body">確認次第、<strong>GoogleドライブのマニュアルURLをLINEで送付</strong>します。マニュアル通りに設置するだけで自動稼働が始まります。わからないことはLINEでいつでも聞いてください。</p>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ── FAQ ── -->
-<div class="sec-gray">
-  <div class="sec-title">
-    <span class="label">FAQ</span>
-    <h2 class="h2">よくある質問</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="faq-list">
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>FX初心者でも使えますか？</span><span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a"><div class="faq-a-inner">はい、ご利用いただけます。EAを設置すれば売買判断はすべて自動です。ただし、FX取引の基本的な仕組みや証拠金・ロスカットの概念はご理解いただいた上でご利用ください。LINE登録後に詳しい説明も行っています。</div></div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>VPS（仮想サーバー）は必要ですか？</span><span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a"><div class="faq-a-inner">必須ではありませんが、強く推奨しています。VPSを利用すると24時間365日、PCの電源を切っても稼働し続けます。自宅PCの場合、PC停止中はEAも止まります。月額1,000〜3,000円程度が目安です。</div></div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>元本は保証されますか？</span><span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a"><div class="faq-a-inner"><strong>元本の保証はありません。</strong>損切り段数・救済決済で歯止めをかけることもできますが、初期設定ではOFFです。このEAが最も重視しているのは、稼働時間そのものを危険の少ない時間帯（12:00〜17:00）に絞ることであり、余裕資金での運用を強くお勧めします。</div></div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>パートナーコードを入れ忘れた場合は？</span><span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a"><div class="faq-a-inner">コードの事後変更はできません。入れ忘れに気づいた場合は、まずLINEでご相談ください。状況に応じて一緒に対応を考えます。</div></div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>設定が難しそうです。サポートはありますか？</span><span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a"><div class="faq-a-inner">LINE登録後、初期設定のサポートを行っています。デフォルト設定のままでも稼働できる設計ですが、口座規模やリスク許容度に合わせた個別の調整もご相談いただけます。</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ── CTA ── -->
-<div class="cta-dark">
-  <h2 class="h2 serif">統制ある攻めで、<br><span>相場を捉える。</span></h2>
-  <p class="cta-body" style="margin-top:12px;">
-    詳細・ご質問・お申し込みは<br>公式LINEよりお気軽にどうぞ。
-  </p>
-  <a href="https://lin.ee/qfZajQi" class="btn-line" style="max-width:300px;margin:0 auto;" target="_blank" rel="noopener">💬 LINEで無料相談・登録</a>
-  <p class="cta-note">LINEアプリにて公式アカウントを登録後、担当者より折り返しご連絡いたします。</p>
-</div>
-
-<!-- ── FOOTER ── -->
-<div class="footer">
-  <div class="footer-links">
-    <a href="/legal/" target="_blank" rel="noopener">特定商取引法に基づく表示</a>
-    <a href="/privacy/" target="_blank" rel="noopener">プライバシーポリシー</a>
-    <a href="/legal/" target="_blank" rel="noopener">免責事項</a>
-  </div>
-  <div class="footer-copy">&copy; 2026 MKJAPAN Co.,Ltd. All rights reserved.</div>
-  <div class="footer-disc">【リスク開示】本EAを使用したFX取引には元本損失のリスクがあります。過去の実績は将来の利益を保証するものではありません。余裕資金の範囲内で、自己責任においてご利用ください。金融商品取引法に基づく投資助言は行っておりません。</div>
-</div>
-
-<script>
-function toggleFaq(btn) {
-  var item = btn.closest('.faq-item');
-  var body = item.querySelector('.faq-a');
-  var open = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(function(el) {
-    el.classList.remove('open');
-    el.querySelector('.faq-a').style.maxHeight = '0';
-  });
-  if (!open) {
-    item.classList.add('open');
-    body.style.maxHeight = body.scrollHeight + 'px';
-  }
-}
-</script>
+  <footer><div class="wrap footer-grid"><div class="footer-brand">IMPERIUM<small>EA</small></div><div class="risk"><span class="legal-labels">特定商取引法に基づく表示　プライバシーポリシー　免責事項</span><span class="affiliate-note">※本ページにはアフィリエイト広告が含まれます。</span>【リスク開示】本EAを使用したFX取引には元本損失のリスクがあります。過去の実績は将来の利益を保証するものではありません。余裕資金の範囲内で、自己責任においてご利用ください。金融商品取引法に基づく投資助言は行っておりません。<br>© 2026 IMPERIUM. All rights reserved.</div></div></footer>
+  <a class="mobile-cta" href="https://lin.ee/SRhUlxo" target="_blank" rel="noopener">LEGIONの詳細を見る →</a>
+  <div class="copy-toast" id="copyToast" role="status" aria-live="polite">パートナーコードをコピーしました</div>
+  <script>
+    const header=document.getElementById('header'),progress=document.getElementById('scrollProgress');
+    function updateScroll(){header.classList.toggle('scrolled',scrollY>20);const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=(max>0?scrollY/max*100:0)+'%'}addEventListener('scroll',updateScroll,{passive:true});updateScroll();
+    if('IntersectionObserver' in window)document.documentElement.classList.add('motion');
+    const animated=document.querySelectorAll('.feature,.screen,.step,.spec-table,details,.report-panel');animated.forEach((e,n)=>{e.classList.add('auto-reveal');e.style.setProperty('--delay',(n%6)*80+'ms')});
+    function typeText(el,text,speed=54){el.textContent='';el.classList.add('typing-view');let n=0;const timer=setInterval(()=>{el.textContent+=text[n++];if(n>=text.length){clearInterval(timer);setTimeout(()=>el.classList.remove('typing-view'),700)}},speed)}
+    const phrase='AIと人間が、自動化したもの。';setTimeout(()=>typeText(document.getElementById('typing'),phrase,52),650);
+    if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>io.observe(e));const motionIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in-view');motionIO.unobserve(e.target)}}),{threshold:.1});animated.forEach(e=>motionIO.observe(e));const typeIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){typeText(e.target,e.target.dataset.type,75);typeIO.unobserve(e.target)}}),{threshold:.55});document.querySelectorAll('.type-on-view').forEach(e=>typeIO.observe(e))}else{document.querySelectorAll('.reveal').forEach(e=>e.classList.add('show'));animated.forEach(e=>e.classList.add('in-view'))}
+    const copyButton=document.getElementById('copyCode'),toast=document.getElementById('copyToast');copyButton.addEventListener('click',async()=>{try{await navigator.clipboard.writeText('PQW8K')}catch(e){const t=document.createElement('textarea');t.value='PQW8K';document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}copyButton.textContent='コピーしました';toast.classList.add('show');setTimeout(()=>{toast.classList.remove('show');copyButton.textContent='コードをコピーする'},1800)});
+  </script>
 </body>
 </html>
