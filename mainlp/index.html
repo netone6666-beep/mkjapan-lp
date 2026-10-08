@@ -279,6 +279,7 @@
         const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('show');io.unobserve(entry.target)}}),{threshold:.14,rootMargin:'0px 0px -7% 0px'});
         reveal.forEach(el=>io.observe(el));
       }else reveal.forEach(el=>el.classList.add('show'));
+      setTimeout(()=>reveal.forEach(el=>{if(!el.classList.contains('show'))el.classList.add('show')}),1500);
 
       const type=(el,text,speed=62)=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.append(cursor);let i=0;const tick=()=>{if(i<text.length){cursor.before(text[i++]);setTimeout(tick,speed)}else setTimeout(()=>cursor.remove(),900)};tick()};
       const heroLine=document.querySelector('.type-line');
