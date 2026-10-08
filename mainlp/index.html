@@ -36,11 +36,12 @@
     .nav-link:hover{color:#fff;background:var(--navy);border-color:var(--navy);box-shadow:0 0 26px rgba(48,180,247,.32)}
 
     /* ---------- hero ---------- */
-    .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:122px 0 82px;background:linear-gradient(145deg,#fff 0%,#f4faff 42%,#e9f4fb 100%)}
-    .hero:before{content:"";position:absolute;left:-18vw;top:-28vw;width:78vw;height:78vw;border:1px solid rgba(46,155,219,.13);border-radius:50%;box-shadow:0 0 0 65px rgba(75,175,231,.025),0 0 0 150px rgba(75,175,231,.018)}
-    .hero:after{content:"";position:absolute;right:-14%;bottom:-26%;width:62vw;height:62vw;border-radius:50%;background:radial-gradient(circle,rgba(78,193,250,.2),rgba(216,240,253,.1) 38%,transparent 68%);filter:blur(2px)}
+    .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:122px 0 82px;background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(233,244,251,.3)),url("/assets/hero-poster.jpg") center/cover no-repeat,linear-gradient(145deg,#fff 0%,#f4faff 42%,#e9f4fb 100%)}
+    .hero:before{content:"";position:absolute;z-index:0;left:-18vw;top:-28vw;width:78vw;height:78vw;border:1px solid rgba(46,155,219,.13);border-radius:50%;box-shadow:0 0 0 65px rgba(75,175,231,.025),0 0 0 150px rgba(75,175,231,.018)}
+    .hero:after{content:"";position:absolute;z-index:0;right:-14%;bottom:-26%;width:62vw;height:62vw;border-radius:50%;background:radial-gradient(circle,rgba(78,193,250,.2),rgba(216,240,253,.1) 38%,transparent 68%);filter:blur(2px)}
+    .hero-video{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
     .scan-grid{position:absolute;inset:0;opacity:.22;background-image:linear-gradient(rgba(35,131,190,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(35,131,190,.09) 1px,transparent 1px);background-size:58px 58px;mask-image:linear-gradient(90deg,#000,transparent 68%)}
-    .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.04fr .96fr;gap:68px;align-items:center}
+    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.04fr .96fr;gap:68px;align-items:center}
     .eyebrow{display:flex;align-items:center;gap:12px;color:var(--blue);font-size:.7rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
     .eyebrow:before{content:"";width:58px;height:1px;background:var(--led);box-shadow:0 0 10px var(--led)}
     h1,h2,h3,p{margin-top:0}
@@ -168,7 +169,7 @@
       h1,.hero h1{font-size:clamp(1.9rem,8.7vw,2.38rem);line-height:1.5;letter-spacing:.035em}.hero-copy{padding:30px 18px 34px}.hero-lead{font-size:.92rem;min-height:4.5em}.hero-actions .primary{width:100%}.story h2{font-size:clamp(1.58rem,7.2vw,1.92rem);line-height:1.52;letter-spacing:.025em}.story h2 .phrase-context{font-size:.73em;line-height:1.75}.visual{width:min(292px,74vw)}.visual:after{inset:-25px}.visual:before{inset:-12px}.telemetry{left:-12px;bottom:4%;min-width:126px;padding:9px 11px}.final h2{font-size:clamp(1.8rem,8.2vw,2.15rem);line-height:1.56;letter-spacing:.035em}.final p{font-size:.9rem}.brand{font-size:.91rem;letter-spacing:.16em}
     }
     @media(max-width:350px){.phrase{word-break:normal}.story h2{font-size:1.48rem}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.animations-ready .logo-intro{display:none}.orb-core,.hero-orbit:before,.hero-orbit:after,.orbit-tick,.visual:before,.visual-orb,.final:before,.scroll-cue:after,.story .copy:before,.final .primary,.brand-orb,.reveal.show .phrase{animation:none}.animations-ready .reveal{opacity:1;transform:none;transition:none}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero{background-image:url("/assets/hero-poster.jpg"),linear-gradient(145deg,#fff 0%,#f4faff 42%,#e9f4fb 100%)}.hero-video{display:none}.animations-ready .logo-intro{display:none}.orb-core,.hero-orbit:before,.hero-orbit:after,.orbit-tick,.visual:before,.visual-orb,.final:before,.scroll-cue:after,.story .copy:before,.final .primary,.brand-orb,.reveal.show .phrase{animation:none}.animations-ready .reveal{opacity:1;transform:none;transition:none}}
   </style>
 </head>
 <body>
@@ -191,6 +192,16 @@
 
   <main id="top">
     <section class="hero">
+      <video id="heroVideo" class="hero-video" autoplay loop muted playsinline preload="metadata" poster="/assets/hero-poster.jpg" aria-hidden="true">
+        <source src="/assets/hero.mp4" type="video/mp4">
+      </video>
+      <script>
+        (function(){
+          var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+          var slowConnection=connection&&(connection.saveData||/(^|-)2g$/i.test(connection.effectiveType||""));
+          if(slowConnection){document.getElementById('heroVideo').remove()}
+        })();
+      </script>
       <div class="scan-grid" aria-hidden="true"></div>
       <div class="wrap hero-grid">
         <div class="hero-copy reveal">
