@@ -69,7 +69,7 @@
     .orb-core:after{content:"";position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.85),transparent 55%);mix-blend-mode:screen}
     .status{position:absolute;right:0;bottom:14%;z-index:3;padding:10px 16px;border:1px solid rgba(29,119,180,.14);background:rgba(255,255,255,.78);backdrop-filter:blur(12px);color:#56738a;font-size:.58rem;letter-spacing:.18em;box-shadow:0 8px 25px rgba(50,120,170,.1)}
     .status i{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:#38c4ff;box-shadow:0 0 9px #38c4ff}
-    .scroll-cue{position:absolute;z-index:3;bottom:28px;left:50%;color:#7590a5;font-size:.55rem;letter-spacing:.32em;writing-mode:vertical-rl}
+    .scroll-cue{position:relative;z-index:3;width:max-content;margin:28px auto 0;color:#7590a5;font-size:.55rem;letter-spacing:.32em;writing-mode:vertical-rl}
     .scroll-cue:after{content:"";display:block;width:1px;height:52px;margin:13px auto 0;background:linear-gradient(#5bcaff,transparent);animation:scan 1.8s ease-in-out infinite}
 
     /* ---------- story sections ---------- */
@@ -217,8 +217,9 @@
           <div class="status"><i></i>HUMAN × SYSTEM / ONLINE</div>
         </div>
       </div>
-      <div class="scroll-cue">SCROLL</div>
     </section>
+
+    <div class="scroll-cue">SCROLL</div>
 
     <section class="story" id="story">
       <div class="wrap story-grid">
