@@ -41,26 +41,25 @@
     .hero:before{content:"";position:absolute;z-index:0;left:-18vw;top:-28vw;width:78vw;height:78vw;border:1px solid rgba(46,155,219,.13);border-radius:50%;box-shadow:0 0 0 65px rgba(75,175,231,.025),0 0 0 150px rgba(75,175,231,.018)}
     .hero:after{content:"";position:absolute;z-index:0;right:-14%;bottom:-26%;width:62vw;height:62vw;border-radius:50%;background:radial-gradient(circle,rgba(78,193,250,.2),rgba(216,240,253,.1) 38%,transparent 68%);filter:blur(2px)}
     .hero-video{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.04fr .96fr;gap:68px;align-items:center}
     .eyebrow{display:flex;align-items:center;gap:12px;color:var(--blue);font-size:.7rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
     .eyebrow:before{content:"";width:58px;height:1px;background:var(--led);box-shadow:0 0 10px var(--led)}
     h1,h2,h3,p{margin-top:0}
     h1{margin:24px 0 25px;font:500 clamp(2.9rem,6.5vw,6rem)/1.28 var(--serif);letter-spacing:.08em}
     h1 strong{display:block;color:var(--blue);font-weight:500;text-shadow:0 0 22px rgba(57,182,244,.18)}
     .hero-lead{max-width:570px;margin:0;min-height:3.8em;color:#4e6e84;font-weight:500;font-size:1rem;line-height:2.05;letter-spacing:.04em}
-    .hero-actions{display:flex;align-items:center;gap:24px;margin-top:38px}
     .primary{position:relative;display:flex;align-items:center;justify-content:center;width:min(360px,100%);height:64px;padding:0 28px;overflow:hidden;border:1px solid rgba(60,188,247,.55);border-radius:3px;color:#fff;background:linear-gradient(115deg,#071d35,#0d3b61);font-weight:700;letter-spacing:.09em;box-shadow:0 14px 38px rgba(7,36,67,.22),0 0 22px rgba(51,184,246,.14);transition:.32s}
     .primary:before{content:"";position:absolute;top:0;left:-70%;width:42%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-24deg);transition:.65s}
     .primary:hover:before{left:130%}.primary:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(7,36,67,.28),0 0 30px rgba(51,184,246,.24)}
 
-    .hero-copy{position:relative;padding:42px 42px 44px;border:1px solid rgba(56,172,232,.16);border-left:2px solid rgba(69,199,255,.75);background:linear-gradient(115deg,rgba(255,255,255,.82),rgba(255,255,255,.28));backdrop-filter:blur(12px);box-shadow:-10px 0 30px rgba(61,183,243,.1),0 24px 70px rgba(19,80,123,.08)}
-    .hero-copy:before{content:"";display:block;width:88px;height:2px;margin-bottom:26px;background:#52c9ff;box-shadow:0 0 11px #4cc8ff,0 0 28px rgba(76,200,255,.65)}
+    .hero-fallback{position:relative;z-index:1;width:min(720px,calc(100% - 48px));margin:auto;padding:42px;border:1px solid rgba(56,172,232,.16);border-left:2px solid rgba(69,199,255,.75);background:linear-gradient(115deg,rgba(255,255,255,.82),rgba(255,255,255,.28));backdrop-filter:blur(12px);box-shadow:-10px 0 30px rgba(61,183,243,.1),0 24px 70px rgba(19,80,123,.08)}
+    .hero-fallback:before{content:"";display:block;width:88px;height:2px;margin-bottom:26px;background:#52c9ff;box-shadow:0 0 11px #4cc8ff,0 0 28px rgba(76,200,255,.65)}
+    .hero.video-playing .hero-fallback{display:none}
+    .hero-cta{position:absolute;z-index:2;left:50%;bottom:7vh;width:min(360px,86vw);height:64px;transform:translateX(-50%)}
+    .hero-cta:hover{transform:translate(-50%,-2px)}
     .hero h1{max-width:720px;font-size:clamp(2.7rem,5.7vw,5.3rem);line-height:1.38;text-wrap:balance}
     .hero h1 strong{margin-top:.08em;font-size:.82em}
     .scroll-cue{position:relative;z-index:3;width:max-content;margin:28px auto 0;color:#7590a5;font-size:.55rem;letter-spacing:.32em;writing-mode:vertical-rl}
     .scroll-cue:after{content:"";display:block;width:1px;height:52px;margin:13px auto 0;background:linear-gradient(#5bcaff,transparent);animation:scan 1.8s ease-in-out infinite}
-
-    @media(min-aspect-ratio:1/1){.hero.video-playing .eyebrow,.hero.video-playing h1,.hero.video-playing .hero-lead{opacity:0}}
 
     /* ---------- story sections ---------- */
     .story{position:relative;min-height:92svh;display:flex;align-items:center;padding:120px 0;overflow:hidden;background:#fff}
@@ -151,13 +150,13 @@
 
     @media(max-width:860px){
       .wrap{width:min(680px,calc(100% - 34px))}.nav{height:68px}.brand-orb{width:30px;height:30px}.nav-link{display:none}
-      .hero{padding:105px 0 90px}.hero-grid{grid-template-columns:1fr;gap:42px;text-align:center}.hero-copy{order:2;padding:34px 28px 38px}.hero-copy:before{margin:0 auto 24px}.eyebrow{justify-content:center}.eyebrow:before{display:none}.hero-lead{margin:auto}.hero-actions{justify-content:center}
+      .hero{padding:105px 0 90px}.hero-fallback{padding:34px 28px 38px;text-align:center}.hero-fallback:before{margin:0 auto 24px}.eyebrow{justify-content:center}.eyebrow:before{display:none}.hero-lead{margin:auto}
       .story{min-height:auto;padding:105px 0}.story-grid{grid-template-columns:1fr;gap:60px;text-align:center}.story:nth-of-type(even) .visual{order:0}.story h2{margin-left:auto;margin-right:auto}.story p{margin:auto}.story .copy{padding:24px 3px 26px 18px}.visual{width:min(360px,76vw)}.telemetry{left:-8px;text-align:left}
       .mobile-cta{display:flex;position:fixed;z-index:70;left:17px;right:17px;bottom:calc(14px + env(safe-area-inset-bottom));height:58px;align-items:center;justify-content:center;border:1px solid rgba(90,204,255,.5);border-radius:3px;background:rgba(6,31,55,.93);backdrop-filter:blur(14px);color:#fff;font-weight:700;letter-spacing:.08em;box-shadow:0 10px 38px rgba(3,20,37,.28),0 0 22px rgba(45,183,248,.17)}
       footer{padding-bottom:96px}
     }
     @media(max-width:520px){
-      h1,.hero h1{font-size:clamp(1.9rem,8.7vw,2.38rem);line-height:1.5;letter-spacing:.035em}.hero-copy{padding:30px 18px 34px}.hero-lead{font-size:.92rem;min-height:4.5em}.hero-actions .primary{width:100%}.story h2{font-size:clamp(1.58rem,7.2vw,1.92rem);line-height:1.52;letter-spacing:.025em}.story h2 .phrase-context{font-size:.73em;line-height:1.75}.visual{width:min(292px,74vw)}.visual:after{inset:-25px}.visual:before{inset:-12px}.telemetry{left:-12px;bottom:4%;min-width:126px;padding:9px 11px}.final h2{font-size:clamp(1.8rem,8.2vw,2.15rem);line-height:1.56;letter-spacing:.035em}.final p{font-size:.9rem}.brand{font-size:.91rem;letter-spacing:.16em}
+      h1,.hero h1{font-size:clamp(1.9rem,8.7vw,2.38rem);line-height:1.5;letter-spacing:.035em}.hero-fallback{padding:30px 18px 34px}.hero-lead{font-size:.92rem;min-height:4.5em}.story h2{font-size:clamp(1.58rem,7.2vw,1.92rem);line-height:1.52;letter-spacing:.025em}.story h2 .phrase-context{font-size:.73em;line-height:1.75}.visual{width:min(292px,74vw)}.visual:after{inset:-25px}.visual:before{inset:-12px}.telemetry{left:-12px;bottom:4%;min-width:126px;padding:9px 11px}.final h2{font-size:clamp(1.8rem,8.2vw,2.15rem);line-height:1.56;letter-spacing:.035em}.final p{font-size:.9rem}.brand{font-size:.91rem;letter-spacing:.16em}
     }
     @media(max-width:350px){.phrase{word-break:normal}.story h2{font-size:1.48rem}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero{background-image:url("/assets/hero-poster.jpg"),linear-gradient(145deg,#fff 0%,#f4faff 42%,#e9f4fb 100%)}.hero-video{display:none}.animations-ready .logo-intro{display:none}.visual:before,.visual-orb,.final:before,.scroll-cue:after,.story .copy:before,.final .primary,.brand-orb,.reveal.show .phrase{animation:none}.animations-ready .reveal{opacity:1;transform:none;transition:none}}
@@ -193,14 +192,12 @@
           if(slowConnection){document.getElementById('heroVideo').remove()}
         })();
       </script>
-      <div class="wrap hero-grid">
-        <div class="hero-copy reveal">
-          <div class="eyebrow">HUMAN × ARTIFICIAL INTELLIGENCE</div>
-          <h1><span class="phrase">AIに聞く時代から、</span><strong class="phrase">AIが動く時代へ。</strong></h1>
-          <p class="hero-lead type-line" data-type="人とAIが、あるものを自動化した。">人とAIが、あるものを自動化した。</p>
-          <div class="hero-actions"><a class="primary cta-link" href="https://lin.ee/W3LDlAL" target="_blank" rel="noopener noreferrer">物語を進める&nbsp; →</a></div>
-        </div>
+      <div class="hero-fallback reveal">
+        <div class="eyebrow">HUMAN × ARTIFICIAL INTELLIGENCE</div>
+        <h1><span class="phrase">AIに聞く時代から、</span><strong class="phrase">AIが動く時代へ。</strong></h1>
+        <p class="hero-lead type-line" data-type="人とAIが、あるものを自動化した。">人とAIが、あるものを自動化した。</p>
       </div>
+      <a class="primary cta-link hero-cta" href="https://lin.ee/W3LDlAL" target="_blank" rel="noopener noreferrer">物語を進める&nbsp; →</a>
     </section>
 
     <div class="scroll-cue">SCROLL</div>
@@ -253,12 +250,29 @@
       else setTimeout(()=>{document.body.classList.remove('intro-lock');intro.remove()},2900);
       const hero=document.querySelector('.hero');
       const heroVideo=document.getElementById('heroVideo');
+      const heroSource=heroVideo&&heroVideo.querySelector('source');
+      const landscapeVideo='/assets/hero.mp4';
+      const portraitVideo='/assets/hero-9x16.mp4';
+      const portraitVideoAvailable=false;
       const syncHeroVideoState=()=>hero.classList.toggle('video-playing',Boolean(heroVideo&&!reducedMotion.matches&&!heroVideo.paused&&!heroVideo.error));
+      const selectHeroVideo=()=>{
+        if(!heroVideo||!heroSource)return;
+        const nextSource=innerHeight>innerWidth&&portraitVideoAvailable?portraitVideo:landscapeVideo;
+        if(heroSource.getAttribute('src')===nextSource)return;
+        hero.classList.remove('video-playing');
+        heroSource.setAttribute('src',nextSource);
+        heroVideo.load();
+        const playback=heroVideo.play();
+        if(playback)playback.catch(syncHeroVideoState);
+      };
       if(heroVideo){
         heroVideo.addEventListener('playing',syncHeroVideoState);
         ['pause','ended','error','emptied'].forEach(event=>heroVideo.addEventListener(event,syncHeroVideoState));
+        selectHeroVideo();
         syncHeroVideoState();
       }
+      addEventListener('resize',selectHeroVideo,{passive:true});
+      addEventListener('orientationchange',selectHeroVideo,{passive:true});
       if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncHeroVideoState);
       const header=document.getElementById('header');
       const progress=document.getElementById('progress');
@@ -278,8 +292,7 @@
 
       const type=(el,text,speed=62)=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.append(cursor);let i=0;const tick=()=>{if(i<text.length){cursor.before(text[i++]);setTimeout(tick,speed)}else setTimeout(()=>cursor.remove(),900)};tick()};
       const heroLine=document.querySelector('.type-line');
-      const heroTextHidden=()=>hero.classList.contains('video-playing')&&matchMedia('(min-aspect-ratio: 1/1)').matches;
-      setTimeout(()=>{if(!heroTextHidden())type(heroLine,heroLine.dataset.type,45)},550);
+      setTimeout(()=>{if(!hero.classList.contains('video-playing'))type(heroLine,heroLine.dataset.type,45)},550);
       const finalLine=document.querySelector('.type-final');
       if('IntersectionObserver' in window){const tio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){type(finalLine,finalLine.dataset.type,82);tio.disconnect()}}),{threshold:.7});tio.observe(finalLine)}
     })();
