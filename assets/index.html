@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MKJAPAN｜Human × AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05070d;
+    --ink:#e9f1ff;
+    --dim:#7d90ad;
+    --cyan:#25d8f0;
+    --blue:#3f7dff;
+    --line:rgba(120,170,220,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Serif JP","Noto Sans CJK JP",serif;
+    overflow:hidden;
+  }
+  #stage{
+    position:fixed;
+    inset:0;
+    display:grid;
+    place-items:center;
+    isolation:isolate;
+  }
+  #net{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+  }
+  #glow{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+      radial-gradient(60% 50% at 50% 45%, rgba(37,216,240,.10), transparent 70%),
+      radial-gradient(90% 70% at 50% 120%, rgba(63,125,255,.14), transparent 70%);
+  }
+  #vignette{
+    position:absolute;
+    inset:0;
+    z-index:4;
+    pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 50%, transparent 45%, rgba(2,4,9,.85) 100%);
+  }
+  .beat{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    display:grid;
+    place-items:center;
+    text-align:center;
+    padding:6vh 6vw;
+    will-change:opacity,transform;
+  }
+  .inner{max-width:min(1100px,92vw)}
+  .label{
+    font-family:"Noto Sans CJK JP",sans-serif;
+    font-size:clamp(9px,1.05vw,13px);
+    letter-spacing:.38em;
+    color:var(--dim);
+    text-transform:uppercase;
+    margin-bottom:2.2vh;
+  }
+  .label b{color:var(--cyan);font-weight:500}
+  h1{
+    font-size:clamp(22px,4.6vw,64px);
+    font-weight:500;
+    letter-spacing:.30em;
+    line-height:1.25;
+    white-space:nowrap;
+  }
+  h2{
+    font-size:clamp(22px,4.4vw,60px);
+    font-weight:600;
+    line-height:1.42;
+    letter-spacing:.02em;
+  }
+  h2.sm{font-size:clamp(18px,3.2vw,44px);line-height:1.5}
+  .num{
+    font-family:"Noto Sans CJK JP",sans-serif;
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    font-size:min(58vh,46vw);
+    font-weight:700;
+    color:rgba(120,170,220,.06);
+    z-index:-1;
+    letter-spacing:-.04em;
+  }
+  .rule{
+    height:1px;width:0;
+    background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+    margin:3vh auto 0;
+  }
+  .tag{
+    font-family:"Noto Sans CJK JP",sans-serif;
+    font-size:clamp(10px,1.15vw,14px);
+    letter-spacing:.34em;
+    color:var(--cyan);
+    margin-top:3.4vh;
+    text-transform:uppercase;
+  }
+  .cta{
+    display:inline-block;
+    min-height:44px;
+    margin-top:4.4vh;
+    padding:.95em 2.1em;
+    border:1px solid rgba(37,216,240,.45);
+    border-radius:999px;
+    font-family:"Noto Sans CJK JP",sans-serif;
+    font-size:clamp(12px,1.25vw,15px);
+    letter-spacing:.14em;
+    color:inherit;
+    background:rgba(37,216,240,.06);
+    text-decoration:none;
+    cursor:pointer;
+  }
+  .mark{
+    position:absolute;
+    left:0;right:0;bottom:3.2vh;
+    text-align:center;
+    font-family:"Noto Sans CJK JP",sans-serif;
+    font-size:clamp(8px,.85vw,11px);
+    letter-spacing:.22em;
+    color:rgba(125,144,173,.75);
+    z-index:3;
+  }
+  .scan{
+    position:absolute;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(37,216,240,.5),transparent);
+    z-index:3;
+  }
+  @media (max-width:700px){
+    h1{white-space:normal;letter-spacing:.2em}
+    .beat{padding:7vh 7vw}
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="net"></canvas>
+  <div id="glow"></div>
+  <div class="scan" id="scan"></div>
+
+  <section class="beat" data-in="0.0"  data-out="2.30">
+    <div class="inner">
+      <h1 id="b0h">HUMAN × ARTIFICIAL INTELLIGENCE</h1>
+      <div class="rule" id="b0r"></div>
+    </div>
+  </section>
+
+  <section class="beat" data-in="2.60" data-out="5.80">
+    <div class="inner">
+      <h2 id="b1a">AIに聞く時代から、</h2>
+      <h2 id="b1b">AIが動く時代へ。</h2>
+      <div class="rule" id="b1r"></div>
+    </div>
+  </section>
+
+  <section class="beat" data-in="6.10" data-out="8.90">
+    <div class="inner">
+      <h2 id="b2h">人とAIが、あるものを自動化した。</h2>
+      <div class="rule" id="b2r"></div>
+    </div>
+  </section>
+
+  <section class="beat" data-in="9.20" data-out="12.90">
+    <div class="num" id="b3n">01</div>
+    <div class="inner">
+      <div class="label" id="b3l">AUTOMATION ／ THE BEGINNING</div>
+      <h2 id="b3h">あるものを、<br>AIですべて<br>自動化しようとした。</h2>
+    </div>
+  </section>
+
+  <section class="beat" data-in="13.20" data-out="16.90">
+    <div class="num" id="b4n">02</div>
+    <div class="inner">
+      <div class="label" id="b4l">AI ／ NOT ENOUGH</div>
+      <h2 id="b4h">でも、<br>AIだけでは<br>完成しなかった。</h2>
+    </div>
+  </section>
+
+  <section class="beat" data-in="17.20" data-out="20.90">
+    <div class="num" id="b5n">03</div>
+    <div class="inner">
+      <div class="label" id="b5l">HUMAN ／ JUDGMENT</div>
+      <h2 id="b5h">最後に必要だったのは、<br>人の判断だった。</h2>
+    </div>
+  </section>
+
+  <section class="beat" data-in="21.20" data-out="25.40">
+    <div class="num" id="b6n">04</div>
+    <div class="inner">
+      <div class="label" id="b6l">HUMAN × AI ／ IT CONTINUES</div>
+      <h2 class="sm" id="b6a">人が考え、<br>AIが動く。</h2>
+      <h2 class="sm" id="b6b" style="margin-top:2.4vh">あなたが別のことをしている間も、<br>それは止まらない。</h2>
+    </div>
+  </section>
+
+  <section class="beat" data-in="25.70" data-out="32.40">
+    <div class="inner">
+      <div class="label" id="b7l"><b>THE QUESTION</b></div>
+      <h2 id="b7h">では、人とAIは<br>何を自動化したのか？</h2>
+      <a class="cta" id="b7c" href="https://lin.ee/W3LDlAL">続きを見る　→</a>
+    </div>
+  </section>
+
+  <div class="mark">© MKJAPAN Co., Ltd.</div>
+</div>
+
+<script>
+/* ---------- deterministic timeline ---------- */
+const DUR = 32.4;
+const params = new URLSearchParams(location.search);
+const SEEK = params.has('t') ? parseFloat(params.get('t')) : null;
+
+const clamp = (v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const lin = (t,a,b)=>clamp((t-a)/(b-a));
+const ease = t=>1-Math.pow(1-t,3);
+const easeIO = t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const seg=(t,s,e)=>clamp((t-s)/(e-s));
+/* rise: 0→1 up, then hold, then continue 1→2 for a soft exit */
+function band(t,inT,outT,holdFade=0.7){
+  const dinT=inT+0.75, doutT=outT-0.55;
+  if(t<inT) return {p:0,ph:0};
+  if(t<dinT) return {p:ease(lin(t,inT,dinT)),ph:0};
+  if(t<doutT) return {p:1,ph:lin(t,dinT,doutT)};
+  if(t<outT) return {p:1-ease(lin(t,doutT,outT)),ph:1};
+  return {p:0,ph:1};
+}
+
+/* ---------- canvas node network ---------- */
+const cv=document.getElementById('net'), cx=cv.getContext('2d');
+let W=0,H=0,DPR=1,NODES=[];
+function build(){
+  DPR=Math.min(devicePixelRatio||1,2);
+  W=cv.width=innerWidth*DPR; H=cv.height=innerHeight*DPR;
+  cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px';
+  const cols=9, rows=5, gx=W/cols, gy=H/rows;
+  NODES=[];
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+    const seed=Math.abs(Math.sin((r*13.7+c*7.3))*43758.5453)%1;
+    NODES.push({
+      bx:(c+0.5)*gx, by:(r+0.5)*gy,
+      x:0,y:0, seed, r:r, c:c
+    });
+  }
+}
+addEventListener('resize',build); build();
+
+/* connection strength over the story */
+function conn(t){
+  if(t<6.1)  return 0.15+0.55*lin(t,1.0,6.1);          // forming
+  if(t<9.2)  return 0.70+0.30*lin(t,6.1,9.2);          // full
+  if(t<13.2) return 1.0-1.0*easeIO(lin(t,9.6,12.6));   // collapse
+  if(t<17.2) return 0.0;                                // broken
+  if(t<21.2) return ease(lin(t,17.4,20.4))*0.85;        // restored, ordered
+  return 0.85+0.15*lin(t,21.2,25.0);                    // steady flow
+}
+/* scatter amount per node (used to break the grid) */
+function scatter(t){
+  if(t<9.6) return 0;
+  if(t<12.6) return easeIO(lin(t,9.6,12.6));
+  if(t<17.4) return 1;
+  if(t<20.4) return 1-ease(lin(t,17.4,20.4));
+  return 0;
+}
+
+function draw(t){
+  cx.clearRect(0,0,W,H);
+  const k=conn(t), sc=scatter(t);
+  const flow=t;
+
+  for(const n of NODES){
+    const ang=n.seed*6.283;
+    const rad=(0.10+0.42*n.seed)*Math.min(W,H)*0.42*sc;
+    const wob=Math.sin(flow*0.9+n.seed*9)*0.10*sc;
+    n.x=n.bx+Math.cos(ang+wob)*rad;
+    n.y=n.by+Math.sin(ang*1.3+wob)*rad*0.72;
+    /* gentle drift when healthy */
+    const d=1-sc;
+    n.x+=Math.sin(flow*0.55+n.seed*11)*10*DPR*d;
+    n.y+=Math.cos(flow*0.47+n.seed*7)*8*DPR*d;
+  }
+
+  /* links */
+  for(let i=0;i<NODES.length;i++){
+    const a=NODES[i];
+    for(let j=i+1;j<NODES.length;j++){
+      const b=NODES[j];
+      const dx=a.x-b.x, dy=a.y-b.y;
+      const d=Math.hypot(dx,dy);
+      const maxD=Math.min(W,H)*0.30;
+      if(d>maxD) continue;
+      const fade=(1-d/maxD)*k;
+      if(fade<=0.01) continue;
+      cx.strokeStyle='rgba(37,216,240,'+(fade*0.30).toFixed(3)+')';
+      cx.lineWidth=0.7*DPR;
+      cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(b.x,b.y); cx.stroke();
+    }
+  }
+  /* nodes */
+  for(const n of NODES){
+    const pulse=0.5+0.5*Math.sin(flow*1.6+n.seed*12);
+    const rr=(1.5+pulse*1.9)*DPR;
+    cx.fillStyle='rgba(63,125,255,'+(0.20+0.45*k).toFixed(3)+')';
+    cx.beginPath(); cx.arc(n.x,n.y,rr,0,6.283); cx.fill();
+    if(sc>0.15){
+      cx.strokeStyle='rgba(240,120,140,'+(sc*0.28).toFixed(3)+')';
+      cx.lineWidth=0.8*DPR;
+      cx.beginPath(); cx.arc(n.x,n.y,rr+4*DPR,0,6.283); cx.stroke();
+    }
+  }
+  /* travelling data packets when the system is healthy */
+  const pk=Math.max(0,k-0.45)/0.55;
+  if(pk>0.02){
+    for(let i=0;i<7;i++){
+      const s=(flow*0.42+i/7)%1;
+      const a=NODES[(i*4)%NODES.length], b=NODES[(i*4+5)%NODES.length];
+      const px=a.x+(b.x-a.x)*s, py=a.y+(b.y-a.y)*s;
+      cx.fillStyle='rgba(200,245,255,'+(pk*0.55).toFixed(3)+')';
+      cx.beginPath(); cx.arc(px,py,1.6*DPR,0,6.283); cx.fill();
+    }
+  }
+}
+
+/* ---------- text beats ---------- */
+const set=(id,fn)=>{const e=document.getElementById(id); if(e) fn(e);};
+const els=[...document.querySelectorAll('.beat')].map(el=>({
+  el, inT:parseFloat(el.dataset.in), outT:parseFloat(el.dataset.out)
+}));
+
+function render(t){
+  draw(t);
+
+  /* 0 — HUMAN × ARTIFICIAL INTELLIGENCE */
+  {
+    const b=band(t,0.00,2.30);
+    const tr=ease(lin(t,0.05,1.35));
+    set('b0h',e=>{
+      e.style.opacity=b.p;
+      e.style.letterSpacing=(0.62-0.32*tr).toFixed(3)+'em';
+      e.style.filter='blur('+((1-tr)*5).toFixed(2)+'px)';
+      e.style.transform='translateY('+((1-tr)*10).toFixed(1)+'px)';
+    });
+    set('b0r',e=>{e.style.width=(tr*46).toFixed(1)+'%'; e.style.opacity=b.p*0.9;});
+  }
+
+  /* 1 — AIに聞く時代から、／AIが動く時代へ。 */
+  {
+    const b=band(t,2.60,5.80);
+    const a=ease(lin(t,2.62,3.42)), c=ease(lin(t,3.30,4.20));
+    set('b1a',e=>{
+      e.style.opacity=b.p*a;
+      e.style.transform='translateY('+((1-a)*26).toFixed(1)+'px)';
+      e.style.filter='blur('+((1-a)*6).toFixed(2)+'px)';
+    });
+    set('b1b',e=>{
+      e.style.opacity=b.p*c;
+      e.style.transform='translateY('+((1-c)*30).toFixed(1)+'px)';
+      e.style.filter='blur('+((1-c)*7).toFixed(2)+'px)';
+      e.style.color='rgb(233,241,255)';
+      e.style.textShadow='0 0 '+(c*26).toFixed(0)+'px rgba(37,216,240,'+(c*0.34).toFixed(2)+')';
+    });
+    set('b1r',e=>{e.style.width=(c*54).toFixed(1)+'%'; e.style.opacity=b.p*0.85;});
+  }
+
+  /* 2 — 人とAIが、あるものを自動化した。 */
+  {
+    const b=band(t,6.10,8.90);
+    const a=ease(lin(t,6.12,7.10));
+    set('b2h',e=>{
+      e.style.opacity=b.p*a;
+      e.style.transform='scale('+(1.055-0.055*a).toFixed(4)+')';
+      e.style.filter='blur('+((1-a)*9).toFixed(2)+'px)';
+      e.style.textShadow='0 0 '+(a*34).toFixed(0)+'px rgba(63,125,255,.30)';
+    });
+    set('b2r',e=>{e.style.width=(a*64).toFixed(1)+'%'; e.style.opacity=b.p*0.85;});
+  }
+
+  /* chapter beats */
+  const chap=(n,lid,hid,inT,outT,big)=>{
+    const b=band(t,inT,outT);
+    if(b.p<=0){ set(n,e=>e.style.opacity=0); set(lid,e=>e.style.opacity=0); set(hid,e=>e.style.opacity=0); return; }
+    const p0=ease(lin(t,inT,inT+0.70));
+    const p1=ease(lin(t,inT+0.42,inT+1.30));
+    const pp=ease(lin(t,inT+0.95,inT+1.85));
+    set(n,e=>{
+      e.style.opacity=b.p*0.95;
+      e.style.transform='translate(-50%,-50%) scale('+(1.06-0.06*ease(lin(t,inT,inT+2.4))).toFixed(4)+')';
+    });
+    set(lid,e=>{e.style.opacity=b.p*pp; e.style.transform='translateY('+((1-pp)*12).toFixed(1)+'px)';});
+    set(hid,e=>{
+      e.style.opacity=b.p;
+      e.style.transform='translateY('+((1-p0)*34).toFixed(1)+'px)';
+      e.style.filter='blur('+((1-p1)*8).toFixed(2)+'px)';
+      e.style.letterSpacing=(0.02+0.04*(1-p1)).toFixed(3)+'em';
+    });
+    return {p0,p1,b};
+  };
+  chap('b3n','b3l','b3h', 9.20,12.90);
+  chap('b4n','b4l','b4h',13.20,16.90);
+  chap('b5n','b5l','b5h',17.20,20.90);
+
+  /* 04 */
+  {
+    const b=band(t,21.20,25.40);
+    const p0=ease(lin(t,21.22,22.14)), q0=ease(lin(t,22.35,23.30));
+    const pp=ease(lin(t,21.6,22.6));
+    set('b6n',e=>{e.style.opacity=b.p*0.95;});
+    set('b6l',e=>{e.style.opacity=b.p*pp; e.style.transform='translateY('+((1-pp)*12).toFixed(1)+'px)';});
+    set('b6a',e=>{
+      e.style.opacity=b.p*p0;
+      e.style.transform='translateY('+((1-p0)*26).toFixed(1)+'px)';
+      e.style.filter='blur('+((1-p0)*7).toFixed(2)+'px)';
+    });
+    set('b6b',e=>{
+      e.style.opacity=b.p*q0;
+      e.style.transform='translateY('+((1-q0)*26).toFixed(1)+'px)';
+      e.style.filter='blur('+((1-q0)*7).toFixed(2)+'px)';
+      e.style.color='rgba(233,241,255,'+(0.62+0.38*q0).toFixed(2)+')';
+    });
+  }
+
+  /* THE QUESTION */
+  {
+    const b=band(t,25.70,32.40);
+    const p0=ease(lin(t,25.72,26.70));
+    const p1=ease(lin(t,26.80,27.90));
+    const p2=ease(lin(t,28.10,29.10));
+    const pulse=0.5+0.5*Math.sin((t-27.5)*1.5);
+    set('b7l',e=>{e.style.opacity=b.p*p0;});
+    set('b7h',e=>{
+      e.style.opacity=b.p*p1;
+      e.style.transform='scale('+(0.985+0.015*p1).toFixed(4)+')';
+      e.style.filter='blur('+((1-p1)*10).toFixed(2)+'px)';
+      e.style.textShadow='0 0 '+(p1*(24+pulse*22)).toFixed(0)+'px rgba(37,216,240,'+(p1*(0.18+pulse*0.14)).toFixed(2)+')';
+    });
+    set('b7c',e=>{
+      e.style.opacity=b.p*ease(lin(t,28.6,29.6));
+      e.style.transform='translateY('+((1-ease(lin(t,28.6,29.6)))*14).toFixed(1)+'px)';
+    });
+  }
+
+  /* thin scan line sweep */
+  set('scan',e=>{
+    const s=(t*0.16)%1;
+    e.style.top=(s*100).toFixed(2)+'%';
+    e.style.opacity=(0.10+0.16*Math.sin(t*1.2)).toFixed(2);
+  });
+}
+
+/* ---------- playback ---------- */
+if(SEEK!==null && !isNaN(SEEK)){
+  render(SEEK);
+}else{
+  const t0=performance.now();
+  const loop=(now)=>{
+    const t=((now-t0)/1000)%DUR;
+    render(t);
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+}
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
