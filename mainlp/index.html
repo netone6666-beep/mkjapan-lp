@@ -37,10 +37,10 @@
     .nav-link:hover{color:#fff;background:var(--navy);border-color:var(--navy);box-shadow:0 0 26px rgba(48,180,247,.32)}
 
     /* ---------- hero ---------- */
-    .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:122px 0 82px;background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(233,244,251,.3)),url("/assets/hero-poster.jpg") center/cover no-repeat,linear-gradient(145deg,#fff 0%,#f4faff 42%,#e9f4fb 100%)}
+    .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:122px 0 82px;background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(233,244,251,.3)),linear-gradient(145deg,#fff 0%,#f4faff 42%,#e9f4fb 100%);background-color:#06121f}
     .hero:before{content:"";position:absolute;z-index:0;left:-18vw;top:-28vw;width:78vw;height:78vw;border:1px solid rgba(46,155,219,.13);border-radius:50%;box-shadow:0 0 0 65px rgba(75,175,231,.025),0 0 0 150px rgba(75,175,231,.018)}
     .hero:after{content:"";position:absolute;z-index:0;right:-14%;bottom:-26%;width:62vw;height:62vw;border-radius:50%;background:radial-gradient(circle,rgba(78,193,250,.2),rgba(216,240,253,.1) 38%,transparent 68%);filter:blur(2px)}
-    .hero-video{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+    .hero-video{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
     .eyebrow{display:flex;align-items:center;gap:12px;color:var(--blue);font-size:.7rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
     .eyebrow:before{content:"";width:58px;height:1px;background:var(--led);box-shadow:0 0 10px var(--led)}
     h1,h2,h3,p{margin-top:0}
@@ -152,14 +152,15 @@
       .wrap{width:min(680px,calc(100% - 34px))}.nav{height:68px}.brand-orb{width:30px;height:30px}.nav-link{display:none}
       .hero{padding:105px 0 90px}.hero-fallback{padding:34px 28px 38px;text-align:center}.hero-fallback:before{margin:0 auto 24px}.eyebrow{justify-content:center}.eyebrow:before{display:none}.hero-lead{margin:auto}
       .story{min-height:auto;padding:105px 0}.story-grid{grid-template-columns:1fr;gap:60px;text-align:center}.story:nth-of-type(even) .visual{order:0}.story h2{margin-left:auto;margin-right:auto}.story p{margin:auto}.story .copy{padding:24px 3px 26px 18px}.visual{width:min(360px,76vw)}.telemetry{left:-8px;text-align:left}
-      .mobile-cta{display:flex;position:fixed;z-index:70;left:17px;right:17px;bottom:calc(14px + env(safe-area-inset-bottom));height:58px;align-items:center;justify-content:center;border:1px solid rgba(90,204,255,.5);border-radius:3px;background:rgba(6,31,55,.93);backdrop-filter:blur(14px);color:#fff;font-weight:700;letter-spacing:.08em;box-shadow:0 10px 38px rgba(3,20,37,.28),0 0 22px rgba(45,183,248,.17)}
+      .mobile-cta{display:flex;position:fixed;z-index:70;left:17px;right:17px;bottom:calc(14px + env(safe-area-inset-bottom));height:58px;align-items:center;justify-content:center;border:1px solid rgba(90,204,255,.5);border-radius:3px;background:rgba(6,31,55,.93);backdrop-filter:blur(14px);color:#fff;font-weight:700;letter-spacing:.08em;box-shadow:0 10px 38px rgba(3,20,37,.28),0 0 22px rgba(45,183,248,.17);transition:opacity .3s ease,transform .3s ease}
+      .mobile-cta.hero-in-view{opacity:0;pointer-events:none;transform:translateY(calc(100% + 30px))}
       footer{padding-bottom:96px}
     }
     @media(max-width:520px){
       h1,.hero h1{font-size:clamp(1.9rem,8.7vw,2.38rem);line-height:1.5;letter-spacing:.035em}.hero-fallback{padding:30px 18px 34px}.hero-lead{font-size:.92rem;min-height:4.5em}.story h2{font-size:clamp(1.58rem,7.2vw,1.92rem);line-height:1.52;letter-spacing:.025em}.story h2 .phrase-context{font-size:.73em;line-height:1.75}.visual{width:min(292px,74vw)}.visual:after{inset:-25px}.visual:before{inset:-12px}.telemetry{left:-12px;bottom:4%;min-width:126px;padding:9px 11px}.final h2{font-size:clamp(1.8rem,8.2vw,2.15rem);line-height:1.56;letter-spacing:.035em}.final p{font-size:.9rem}.brand{font-size:.91rem;letter-spacing:.16em}
     }
     @media(max-width:350px){.phrase{word-break:normal}.story h2{font-size:1.48rem}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero{background-image:url("/assets/hero-poster.jpg"),linear-gradient(145deg,#fff 0%,#f4faff 42%,#e9f4fb 100%)}.hero-video{display:none}.animations-ready .logo-intro{display:none}.visual:before,.visual-orb,.final:before,.scroll-cue:after,.story .copy:before,.final .primary,.brand-orb,.reveal.show .phrase{animation:none}.animations-ready .reveal{opacity:1;transform:none;transition:none}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero{background-image:linear-gradient(145deg,#fff 0%,#f4faff 42%,#e9f4fb 100%)}.hero-video{display:none}.animations-ready .logo-intro{display:none}.visual:before,.visual-orb,.final:before,.scroll-cue:after,.story .copy:before,.final .primary,.brand-orb,.reveal.show .phrase{animation:none}.animations-ready .reveal{opacity:1;transform:none;transition:none}}
   </style>
 </head>
 <body>
@@ -182,7 +183,7 @@
 
   <main id="top">
     <section class="hero">
-      <video id="heroVideo" class="hero-video" autoplay loop muted playsinline preload="metadata" poster="/assets/hero-poster.jpg" aria-hidden="true">
+      <video id="heroVideo" class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true">
         <source src="/assets/hero.mp4" type="video/mp4">
       </video>
       <script>
@@ -253,7 +254,7 @@
       const heroSource=heroVideo&&heroVideo.querySelector('source');
       const landscapeVideo='/assets/hero.mp4';
       const portraitVideo='/assets/hero-9x16.mp4';
-      const portraitVideoAvailable=false;
+      const portraitVideoAvailable=true;
       const syncHeroVideoState=()=>hero.classList.toggle('video-playing',Boolean(heroVideo&&!reducedMotion.matches&&!heroVideo.paused&&!heroVideo.error));
       const selectHeroVideo=()=>{
         if(!heroVideo||!heroSource)return;
@@ -276,6 +277,16 @@
       if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncHeroVideoState);
       const header=document.getElementById('header');
       const progress=document.getElementById('progress');
+      const mobileCta=document.querySelector('.mobile-cta');
+      if(mobileCta){
+        const setHeroInView=inView=>mobileCta.classList.toggle('hero-in-view',inView);
+        const heroRect=hero.getBoundingClientRect();
+        setHeroInView(heroRect.bottom>0&&heroRect.top<innerHeight);
+        if('IntersectionObserver' in window){
+          const heroObserver=new IntersectionObserver(entries=>entries.forEach(entry=>setHeroInView(entry.isIntersecting)),{threshold:0});
+          heroObserver.observe(hero);
+        }
+      }
       const onScroll=()=>{
         const y=window.scrollY, max=document.documentElement.scrollHeight-innerHeight;
         header.classList.toggle('scrolled',y>30);
