@@ -183,14 +183,14 @@
 
   <main id="top">
     <section class="hero">
-      <video id="heroVideo" class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true">
-        <source src="/assets/hero.mp4" type="video/mp4">
-      </video>
+      <video id="heroVideo" class="hero-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true"></video>
       <script>
         (function(){
+          var heroVideo=document.getElementById('heroVideo');
           var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
           var slowConnection=connection&&(connection.saveData||/(^|-)2g$/i.test(connection.effectiveType||""));
-          if(slowConnection){document.getElementById('heroVideo').remove()}
+          if(slowConnection){heroVideo.remove();return}
+          heroVideo.src=innerHeight>innerWidth?'/assets/hero-9x16.mp4':'/assets/hero.mp4';
         })();
       </script>
       <div class="hero-fallback reveal">
@@ -223,17 +223,16 @@
       else setTimeout(()=>{document.body.classList.remove('intro-lock');intro.remove()},2900);
       const hero=document.querySelector('.hero');
       const heroVideo=document.getElementById('heroVideo');
-      const heroSource=heroVideo&&heroVideo.querySelector('source');
       const landscapeVideo='/assets/hero.mp4';
       const portraitVideo='/assets/hero-9x16.mp4';
       const portraitVideoAvailable=true;
       const syncHeroVideoState=()=>hero.classList.toggle('video-playing',Boolean(heroVideo&&!reducedMotion.matches&&!heroVideo.paused&&!heroVideo.error));
       const selectHeroVideo=()=>{
-        if(!heroVideo||!heroSource)return;
+        if(!heroVideo)return;
         const nextSource=innerHeight>innerWidth&&portraitVideoAvailable?portraitVideo:landscapeVideo;
-        if(heroSource.getAttribute('src')===nextSource)return;
+        if(heroVideo.getAttribute('src')===nextSource)return;
         hero.classList.remove('video-playing');
-        heroSource.setAttribute('src',nextSource);
+        heroVideo.setAttribute('src',nextSource);
         heroVideo.load();
         const playback=heroVideo.play();
         if(playback)playback.catch(syncHeroVideoState);
