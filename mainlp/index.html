@@ -177,7 +177,6 @@
   <header id="header">
     <div class="wrap nav">
       <a class="brand" href="#top"><span class="brand-orb" aria-hidden="true"></span><span>HUMAN × AI</span></a>
-      <a class="nav-link cta-link" href="https://lin.ee/W3LDlAL" target="_blank" rel="noopener noreferrer">続きを見る&nbsp; →</a>
     </div>
   </header>
 
@@ -200,20 +199,7 @@
       </div>
       <a class="primary cta-link hero-cta" href="https://lin.ee/W3LDlAL" target="_blank" rel="noopener noreferrer">物語を進める&nbsp; →</a>
     </section>
-
-    <div class="scroll-cue">SCROLL</div>
-
-    <section class="final">
-      <div class="final-inner reveal">
-        <div class="eyebrow">THE QUESTION</div>
-        <h2><span class="phrase">では、人とAIは</span><em class="phrase type-final" data-type="何を自動化したのか？">何を自動化したのか？</em></h2>
-        <a class="primary cta-link" href="https://lin.ee/W3LDlAL" target="_blank" rel="noopener noreferrer">続きを見る&nbsp; →</a>
-      </div>
-    </section>
   </main>
-
-  <footer>© MKJAPAN Co., Ltd.</footer>
-  <a class="mobile-cta cta-link" href="https://lin.ee/W3LDlAL" target="_blank" rel="noopener noreferrer">続きを見る&nbsp; →</a>
 
   <script>
     (()=>{
@@ -275,8 +261,6 @@
       const type=(el,text,speed=62)=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.append(cursor);let i=0;const tick=()=>{if(i<text.length){cursor.before(text[i++]);setTimeout(tick,speed)}else setTimeout(()=>cursor.remove(),900)};tick()};
       const heroLine=document.querySelector('.type-line');
       setTimeout(()=>{if(!hero.classList.contains('video-playing'))type(heroLine,heroLine.dataset.type,45)},550);
-      const finalLine=document.querySelector('.type-final');
-      if('IntersectionObserver' in window){const tio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){type(finalLine,finalLine.dataset.type,82);tio.disconnect()}}),{threshold:.7});tio.observe(finalLine)}
     })();
   </script>
 </body>
