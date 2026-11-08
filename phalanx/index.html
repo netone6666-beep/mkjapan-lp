@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="PHALANXが展開するXAUUSD自動売買EA。独自クロスエントリー×時間帯制御で、統制ある攻めでGOLDを捉える。">
+<meta name="description" content="GOLD専用自動売買EA PHALANX v1.28。急変時の自動ブレーキと、保有ポジションを止めない自動時間管理で、荒い相場への防御性能を強化。">
 <meta name="theme-color" content="#07172b">
-<title>PHALANX｜統制ある攻めのゴールドEA</title>
+<title>PHALANX v1.28｜急変時に守るGOLD自動売買EA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -108,6 +108,34 @@ header.scrolled .brand-mark{border-color:rgba(7,23,43,.15)}
 .feature h3{margin:0 0 8px;font:500 1.15rem/1.5 var(--serif);letter-spacing:.03em}
 .feature p{margin:0;color:#5a6c7d;font-size:.9rem}
 
+/* v1.28 evolution */
+.evolution{background:linear-gradient(145deg,#061426,#0b2e52);color:#fff}
+.evolution .section-head p{color:#b8c8d8}
+.evolution .eyebrow{color:#8fcff5}
+.evolution-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.evolution-card{padding:30px;border:1px solid rgba(143,207,245,.22);border-radius:6px;background:rgba(255,255,255,.045);box-shadow:0 14px 36px rgba(0,0,0,.13)}
+.evolution-card .feature-num{display:block;margin-bottom:18px;color:#f0d9a8}
+.evolution-card h3{margin:0 0 10px;font:500 1.25rem/1.55 var(--serif);letter-spacing:.04em}
+.evolution-card p{margin:0;color:#c5d2de;font-size:.9rem}
+.evolution-note{margin:28px 0 0;padding:18px 20px;border-left:2px solid var(--gold);background:rgba(255,255,255,.04);color:#d6e0e9;font-size:.85rem}
+
+/* reference comparison */
+.comparison{background:#f3f7fa}
+.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:32px}
+.comparison-card{padding:28px;border:1px solid var(--line);border-radius:6px;background:#fff;box-shadow:0 12px 30px rgba(9,36,67,.07)}
+.comparison-card.latest{border-color:rgba(27,109,168,.45);box-shadow:0 16px 38px rgba(27,109,168,.12)}
+.comparison-version{font-size:.72rem;font-weight:700;letter-spacing:.14em;color:#6c7f91}
+.comparison-card.latest .comparison-version{color:var(--blue)}
+.comparison-row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}
+.comparison-row:last-child{border-bottom:0}
+.comparison-row span{font-size:.82rem;color:#6c7f91}
+.comparison-row strong{font:500 clamp(1.45rem,3vw,2rem)/1 var(--serif);white-space:nowrap}
+.reduction{margin:24px 0 0;padding:24px;text-align:center;color:#fff;background:linear-gradient(135deg,var(--ink),var(--blue));border-radius:6px}
+.reduction strong{display:block;font:500 clamp(2.4rem,7vw,4.6rem)/1 var(--serif);color:#f0d9a8;margin:6px 0 12px}
+.comparison-warning{margin:22px 0 0;padding:22px;border:1px solid #d5b26a;background:#fffaf0;color:#5d4a27;font-size:.84rem;line-height:1.9}
+.comparison-warning strong{color:#8a6428}
+.comparison-cta{margin-top:28px;text-align:center}
+
 /* showcase (live trading + performance) */
 .showcase{background:var(--ink);color:#fff}
 .showcase .section-head p{color:#aebfcf}
@@ -198,6 +226,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
   .brand-mark{width:34px;height:34px}
   .hero{background-attachment:scroll;padding:120px 20px 110px}
   .about-grid,.showcase-grid{grid-template-columns:1fr;gap:44px}
+  .evolution-grid,.comparison-grid{grid-template-columns:1fr}
   .about-crest{order:2;width:180px}
   .report-grid{grid-template-columns:1fr}
   .account-links{grid-template-columns:1fr}
@@ -248,13 +277,13 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
   <!-- ── HERO ── -->
   <section class="hero">
     <div class="hero-inner">
-      <span class="hero-badge">XAUUSD / GOLD EA</span>
+      <span class="hero-badge">PHALANX v1.28 / GOLD EA</span>
       <img class="hero-logo" src="phalanx-logo.png" alt="PHALANX">
       <p class="hero-type"><span id="typing" class="caret"></span></p>
       <h1>それは、<span>GOLD</span>のトレードでした。</h1>
       <p class="hero-product">XAUUSD専用 自動売買EA<br><strong>PHALANX</strong></p>
-      <p class="hero-tagline">統制ある攻めで、<span>GOLD</span>を捉える。</p>
-      <p class="hero-sub">独自クロスエントリー × 時間帯制御</p>
+      <p class="hero-tagline">荒い相場では、<span>自動でブレーキ。</span></p>
+      <p class="hero-sub">急変防御 × 保有ポジションを止めない時間管理</p>
       <div class="hero-actions">
         <a class="btn btn-gold" href="#how">PHALANXを始める →</a>
       </div>
@@ -274,7 +303,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
           <p>コードを書く。<br>動かす。<br>ダメなら戻す。<br>また考える。<br>また書き直す。</p>
           <p>「ここは違う」<br>「これは現実的じゃない」<br>「もっと使いやすくできないか」</p>
           <p>デモ環境で実際の動きを確認しながら、何度も修正を重ねてきました。</p>
-          <p>そして完成したのが、GOLD専用自動売買EA「PHALANX」です。</p>
+          <p>そしてPHALANXは、相場急変時の防御と、保有中の自動管理をさらに磨いた<strong>v1.28</strong>へ進化しました。</p>
         </div>
       </div>
     </div>
@@ -286,17 +315,63 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
       <div class="section-head reveal">
         <div class="eyebrow">FEATURES</div>
         <h2>攻めるために、統制する。</h2>
-        <p>PHALANXは、ただエントリーを繰り返すEAではありません。<br>GOLDを自動売買するために、エントリーから決済、ナンピン、スプレッド、稼働時間まで、複数の制御を組み合わせています。<br>その中心となるのが、6つの統制装置です。</p>
+        <p>PHALANXは、ただエントリーを繰り返すEAではありません。<br>GOLDを自動売買するために、エントリーから決済、追加注文、スプレッド、稼働時間まで、複数の制御を組み合わせています。<br>その中心となるのが、6つの統制装置です。</p>
         <div class="rule"></div>
       </div>
       <div class="feature-stack reveal">
-        <article class="feature"><div class="feature-num">01</div><div><h3>独自クロスエントリーロジック</h3><p>独自の移動平均クロス条件をもとに、BUY・SELLのエントリーを判定。</p></div></article>
-        <article class="feature"><div class="feature-num">02</div><div><h3>3段階利確構造</h3><p>保有ポジション数に応じて利確方法を切り替え、複数ポジション時には平均建値を基準に決済を管理。</p></div></article>
+        <article class="feature"><div class="feature-num">01</div><div><h3>独自エントリーロジック</h3><p>相場条件を判定し、BUY・SELL双方の利益機会を狙います。</p></div></article>
+        <article class="feature"><div class="feature-num">02</div><div><h3>保有状況に応じた決済管理</h3><p>保有ポジションの状況に合わせて、決済と利益確定を自動で管理します。</p></div></article>
         <article class="feature"><div class="feature-num">03</div><div><h3>ナンピン段数管理</h3><p>ナンピンの最大段数を設定し、無制限にポジションを増やさないための上限を設けています。</p></div></article>
         <article class="feature"><div class="feature-num">04</div><div><h3>救済決済</h3><p>一定のポジション数に達した状態で、BUY・SELLの合算損益が設定条件を満たした場合に両方向をまとめて決済できる機能。</p></div></article>
         <article class="feature"><div class="feature-num">05</div><div><h3>スプレッドフィルター</h3><p>スプレッドが設定した上限を超えている間は、新規エントリーを抑制。</p></div></article>
         <article class="feature"><div class="feature-num">06</div><div><h3>運用状況の可視化</h3><p>日々の確定損益やドローダウンなど、運用判断に必要な情報をチャート上で確認できます。</p></div></article>
       </div>
+    </div>
+  </section>
+
+  <!-- ── v1.28 Evolution ── -->
+  <section class="section evolution" id="v128">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">EVOLUTION / v1.28</div>
+        <h2>荒い相場に、<br>ブレーキという進化。</h2>
+        <p>急騰・急落時の連続した追加注文を抑え、すでに保有しているポジションは時間外でも管理を継続。止める判断と、保有中の管理を切り分けました。</p>
+        <div class="rule"></div>
+      </div>
+      <div class="evolution-grid reveal">
+        <article class="evolution-card"><span class="feature-num">01</span><h3>急変時の自動ブレーキ</h3><p>短時間の急騰・急落を検知すると、新規エントリーを抑制。保有中も追加注文を連続させず、1段の救済追加後は相場が落ち着くまで次の追加を抑えます。</p></article>
+        <article class="evolution-card"><span class="feature-num">02</span><h3>実質的に追加間隔を広げる</h3><p>急変中に通過した水準を一度に埋めません。価格の正常化を待つことで、荒い値動きの中でポジションが急増するリスクを抑えます。</p></article>
+        <article class="evolution-card"><span class="feature-num">03</span><h3>新規停止後も、保有管理は続く</h3><p>新規エントリーの時間が終了しても、開始済みのサイクルは別の時間枠で追加注文を管理。利確・追尾・損切りなどの決済管理は時間外も継続します。</p></article>
+        <article class="evolution-card"><span class="feature-num">04</span><h3>手動停止の負担を軽減</h3><p>「時間になったらEAを止める」のではなく、新規停止と保有中の管理をEAが自動で切り分けます。保有中にMT4を止めてしまう操作リスクも減らせます。</p></article>
+      </div>
+      <p class="evolution-note reveal">v1.28の正式ソースで確認済みの公開機能だけを記載しています。内部パラメーター、追加注文の数値条件、決済幅、売買判定の詳細は公開していません。</p>
+    </div>
+  </section>
+
+  <!-- ── Reference Comparison ── -->
+  <section class="section comparison" id="comparison">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">REFERENCE COMPARISON</div>
+        <h2>停止推奨週で見えた、<br>守りの差。</h2>
+        <p>2026年11月2日〜6日の提供集計を、特殊な相場環境における参考値として整理しました。</p>
+        <div class="rule"></div>
+      </div>
+      <div class="comparison-grid reveal">
+        <article class="comparison-card">
+          <div class="comparison-version">従来版 / v1.16</div>
+          <div class="comparison-row"><span>最大ドローダウン</span><strong>約215万円</strong></div>
+          <div class="comparison-row"><span>期間利益</span><strong>約74万円</strong></div>
+        </article>
+        <article class="comparison-card latest">
+          <div class="comparison-version">最新版 / v1.28</div>
+          <div class="comparison-row"><span>最大ドローダウン</span><strong>約45万円</strong></div>
+          <div class="comparison-row"><span>期間利益</span><strong>約36万円</strong></div>
+        </article>
+      </div>
+      <div class="reduction reveal"><span>提供集計上の最大DD</span><strong>約79%減少</strong><span>約215万円 → 約45万円</span></div>
+      <div class="comparison-warning reveal"><strong>通常運用の平均的なDDではありません。</strong><br>この週は月初・米国中間選挙・五十日などが重なり、ほぼ全期間にわたって稼働停止を推奨していた特殊な相場環境です。また、両版で口座・設定・開始時点・配信価格が一致する同一条件A/Bの原本は確認できていないため、数値は提供集計の参考表示であり、単純な性能優劣や将来の結果を示すものではありません。</div>
+      <div class="comparison-cta reveal"><a class="btn btn-gold" href="#how">PHALANX v1.28を始める →</a></div>
     </div>
   </section>
 
@@ -308,6 +383,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
           <div class="eyebrow">LIVE TRADING</div>
           <h3>PHALANXは、<br>実際にこう動く。</h3>
           <p>実際のPHALANX稼働チャート。<br>エントリーから決済まで、すべて自動で行われています。</p>
+          <p class="report-note">※ 2026年8月撮影。v1.28の比較実績画像ではありません。</p>
         </div>
         <div class="screen-media"><span class="evidence">REAL CHART</span><img src="rapture_20260827141205.jpg" alt="PHALANX 実際の自動売買チャート"></div>
       </article>
@@ -317,7 +393,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
           <h3>利益だけではなく、<br>実際に出金。</h3>
           <div class="metric">500<small>万円から</small></div>
           <p>400万円を出金後も、運用を継続。</p>
-          <p class="report-note">※ 将来の利益を保証するものではありません。相場状況により変動する可能性があります。</p>
+          <p class="report-note">※ 2026年9月時点の旧版運用資料です。v1.28の結果ではなく、将来の利益を保証するものでもありません。</p>
         </div>
         <div class="screen-media"><span class="evidence">WITHDRAWAL RECORD</span><img src="232977_0.jpg" alt="PHALANX 実運用・出金履歴"></div>
       </article>
@@ -329,7 +405,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
     <div class="wrap">
       <div class="section-head reveal">
         <div class="eyebrow">REPORT</div>
-        <h2>実際の利用者から届いた報告</h2>
+        <h2>過去に利用者から届いた報告</h2>
         <div class="rule"></div>
       </div>
       <div class="report-grid reveal">
@@ -337,7 +413,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
         <div class="report-card"><img src="231777_0.jpg" alt="利用者のOpenChat運用報告"></div>
         <div class="report-card"><img src="231778_0.jpg" alt="利用者のOpenChat運用報告"></div>
       </div>
-      <p class="report-disc">※利用者から共有された運用結果の一例です。運用結果は資金量・口座タイプ・設定・相場状況等によって異なり、将来の利益を保証するものではありません。</p>
+      <p class="report-disc">※2026年8月までに利用者から共有された旧版運用時の一例です。v1.28の比較実績ではありません。個人が特定される情報は加工しています。運用結果は資金量・口座タイプ・設定・相場状況等によって異なり、将来の利益を保証するものではありません。</p>
     </div>
   </section>
 
@@ -351,10 +427,12 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
       </div>
       <table class="spec-table reveal">
         <tbody>
+          <tr><th>バージョン</th><td>PHALANX v1.28</td></tr>
           <tr><th>対象銘柄</th><td>XAUUSD（GOLD）</td></tr>
           <tr><th>対応プラットフォーム</th><td>MT4</td></tr>
           <tr><th>対応ブローカー</th><td>XMTrading</td></tr>
-          <tr><th>稼働時間</th><td>月〜木 12:00〜17:00<br>金 12:00〜15:00</td></tr>
+          <tr><th>新規エントリー時間</th><td>月〜木 12:00〜17:00未満<br>金 12:00〜15:00未満</td></tr>
+          <tr><th>保有中の管理</th><td>新規停止後も追加注文の時間管理と決済管理を継続</td></tr>
           <tr><th>VPS</th><td>推奨</td></tr>
           <tr><th>認証</th><td>専用認証</td></tr>
         </tbody>
@@ -441,6 +519,8 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
         <details><summary>MICROとSTANDARD、どちらを選べばいいですか？</summary><p>少額から始める場合はMICROを推奨しています。目安はMICRO 10万円以上、STANDARD 100万円以上です。</p></details>
         <details><summary>パートナーコードを入力し忘れました。</summary><p>すでに作成した口座はそのままでも問題ありません。パートナーコード「FMDB2」を入力して、もう一度新しい口座を作成してください。</p></details>
         <details><summary>設置方法が分かりません。</summary><p>確認完了後に設置マニュアルをご案内します。不明点は公式LINEからお問い合わせいただけます。</p></details>
+        <details><summary>新規エントリーの停止時刻にポジションが残っていたら？</summary><p>MT4とEAを止めないでください。PHALANX v1.28は、新規エントリーを止めた後も、保有中の追加注文を別の時間枠で管理し、利確・追尾・損切りなどの決済管理を継続します。</p></details>
+        <details><summary>急変時の自動ブレーキとは？</summary><p>短時間の急騰・急落を検知したとき、新規エントリーと連続した追加注文を抑える機能です。急変中に通過した追加水準をまとめて埋めず、相場が落ち着いてから通常管理へ戻ります。</p></details>
       </div>
     </div>
   </section>
