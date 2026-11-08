@@ -119,6 +119,16 @@ a { text-decoration: none; color: inherit; }
 }
 .feat-card-title { font-size: 15px; font-weight: 700; color: var(--g900); margin-bottom: 8px; line-height: 1.4; }
 .feat-card-body { font-size: 13px; color: var(--g600); line-height: 1.8; }
+.lot-guide-image {
+  background: var(--white); border: 1px solid var(--g200); border-radius: 10px;
+  padding: 12px; margin-bottom: 16px;
+}
+.lot-guide-image img { width: 100%; border-radius: 6px; }
+.lot-guide-caption { font-size: 11px; color: var(--g400); line-height: 1.7; margin-top: 8px; }
+.lot-guide-note {
+  background: #FFF8E7; border: 1px solid #E8D28E; border-radius: 8px;
+  padding: 14px 16px; margin-top: 16px; font-size: 12px; color: #6B5A28; line-height: 1.8;
+}
 
 /* ── 仕様 ── */
 .spec-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -324,7 +334,7 @@ a { text-decoration: none; color: inherit; }
   <div class="feat-grid">
     <div class="feat-card">
       <div class="feat-card-title">初期ロット <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0.01</span></div>
-      <div class="feat-card-body">最初の1回目のエントリーで使うロット数です。スタンダード口座は資金100万円につき0.01、マイクロ口座は資金10万円につき0.10を基本推奨とします。開発者の検証口座設定とは別です。</div>
+      <div class="feat-card-body">最初の1回目のエントリーで使うロット数です。口座タイプと運用資金に合わせて設定します。具体的な基準と変更手順は、次の「ロット設定と資金管理」を確認してください。</div>
     </div>
     <div class="feat-card">
       <div class="feat-card-title">損切金額 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0（無効）</span></div>
@@ -333,8 +343,42 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<!-- ── ナンピン設定 ── -->
+<!-- ── ロット設定と資金管理 ── -->
 <div class="sec-gray">
+  <div class="sec-title">
+    <span class="label">Lot &amp; Money Management</span>
+    <h2 class="h2">ロット設定と資金管理</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="lot-guide-image">
+    <img src="phalanx-v1-28-initial-lot.jpg" alt="PHALANX v1.28のパラメーター入力画面。初期ロットの設定欄を赤枠で表示" loading="lazy">
+    <p class="lot-guide-caption">「パラメーターの入力」タブの一番上にある「初期ロット」の値を変更します。</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-title">スタンダード口座</div>
+      <div class="feat-card-body">資金100万円に対して、初期ロット<strong>0.01</strong>を基準とします。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">マイクロ口座（基本基準）</div>
+      <div class="feat-card-body">資金10万円に対して、初期ロット<strong>0.10</strong>を基準とします。資金が10万円未満の場合は、0.10をそのまま適用しないでください。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">マイクロ口座（慎重な運用）</div>
+      <div class="feat-card-body">資金10万円に対して、初期ロット<strong>0.03</strong>を推奨します。0.03は0.10の30％の取引数量ですが、相場変動や保有段数などの影響があるため、損失リスク全体の70％削減を保証するものではありません。</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-title">初期ロットの変更手順</div>
+      <div class="feat-card-body">チャート上でEAの設定画面を開き、「パラメーターの入力」タブを選びます。一番上の「初期ロット」の値をダブルクリックして希望の数値を入力し、「OK」を押します。</div>
+    </div>
+  </div>
+  <div class="lot-guide-note">
+    <strong>変更時の注意：</strong>保有ポジションがある途中でロットを変更せず、PHALANXの保有ポジションが0件であることを確認してから設定してください。入力値の桁間違いにも注意し、設定後は表示された値をもう一度確認してください。
+  </div>
+</div>
+
+<!-- ── ナンピン設定 ── -->
+<div class="sec">
   <div class="sec-title">
     <span class="label">Nanpin Settings</span>
     <h2 class="h2">ナンピン設定</h2>
@@ -357,7 +401,7 @@ a { text-decoration: none; color: inherit; }
 </div>
 
 <!-- ── 利確設定 ── -->
-<div class="sec">
+<div class="sec-gray">
   <div class="sec-title">
     <span class="label">Take Profit Settings</span>
     <h2 class="h2">利確設定</h2>
@@ -380,7 +424,7 @@ a { text-decoration: none; color: inherit; }
 </div>
 
 <!-- ── スプレッドフィルター ── -->
-<div class="sec-gray">
+<div class="sec">
   <div class="sec-title">
     <span class="label">Spread Filter</span>
     <h2 class="h2">スプレッドフィルター</h2>
@@ -395,7 +439,7 @@ a { text-decoration: none; color: inherit; }
 </div>
 
 <!-- ── 損切り段数 ── -->
-<div class="sec">
+<div class="sec-gray">
   <div class="sec-title">
     <span class="label">Cut Loss by Count</span>
     <h2 class="h2">損切り段数設定</h2>
@@ -414,7 +458,7 @@ a { text-decoration: none; color: inherit; }
 </div>
 
 <!-- ── 救済決済 ── -->
-<div class="sec-gray">
+<div class="sec">
   <div class="sec-title">
     <span class="label">Rescue Close</span>
     <h2 class="h2">救済決済の状態</h2>
@@ -429,7 +473,7 @@ a { text-decoration: none; color: inherit; }
 </div>
 
 <!-- ── 背景色アラート ── -->
-<div class="sec">
+<div class="sec-gray">
   <div class="sec-title">
     <span class="label">Background Alert</span>
     <h2 class="h2">背景色アラート</h2>
@@ -456,7 +500,7 @@ a { text-decoration: none; color: inherit; }
 </div>
 
 <!-- ── パネル設定 ── -->
-<div class="sec-gray">
+<div class="sec">
   <div class="sec-title">
     <span class="label">Panel Settings</span>
     <h2 class="h2">パネル設定</h2>
@@ -471,7 +515,7 @@ a { text-decoration: none; color: inherit; }
 </div>
 
 <!-- ── 稼働時間 ── -->
-<div class="sec">
+<div class="sec-gray">
   <div class="sec-title">
     <span class="label">Trading Hours</span>
     <h2 class="h2">稼働曜日・時間設定</h2>
@@ -490,7 +534,7 @@ a { text-decoration: none; color: inherit; }
   <h2 class="h2 serif">推奨設定</h2>
   <p class="cta-body" style="margin-top:16px;">
     スタンダード口座：資金100万円／初期0.01 lot<br>
-    マイクロ口座：資金10万円／初期0.10 lot<br>
+    マイクロ口座：資金10万円／初期0.10 lot（基本基準）、初期0.03 lot（慎重な運用向け）<br>
     ロット倍率1.5／最大14段。認証にはMT4全体とEA個別のDLL許可が必要です。WebRequest URL登録は不要です。
   </p>
 </div>
