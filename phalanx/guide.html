@@ -309,8 +309,8 @@ a { text-decoration: none; color: inherit; }
 <!-- ── イントロ ── -->
 <div class="sec-navy">
   <p style="font-size:13px;color:rgba(255,255,255,.75);line-height:2;">
-    PHALANXは、初期設定（デフォルト値）のままでも安全に運用できるよう設計されています。<br>
-    ご自身でリスク許容度に合わせて調整したい場合は、以下の解説を参考に設定を変更してください。
+    このページはPHALANX v1.28の設定ガイドです。口座タイプに合わせて初期ロットを必ず確認してください。<br>
+    認証失敗中は新規・追加注文を停止し、保有中ポジションの管理と決済を継続します。
   </p>
 </div>
 
@@ -324,11 +324,11 @@ a { text-decoration: none; color: inherit; }
   <div class="feat-grid">
     <div class="feat-card">
       <div class="feat-card-title">初期ロット <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0.01</span></div>
-      <div class="feat-card-body">最初の1回目のエントリーで使うロット数です。ナンピンのロットは、この数値を元にロット倍率で計算されます。</div>
+      <div class="feat-card-body">最初の1回目のエントリーで使うロット数です。スタンダード口座は資金100万円につき0.01、マイクロ口座は資金10万円につき0.10を基本推奨とします。開発者の検証口座設定とは別です。</div>
     </div>
     <div class="feat-card">
       <div class="feat-card-title">損切金額 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0（無効）</span></div>
-      <div class="feat-card-body">口座全体の含み損がこの金額（円）を下回ったら、強制的に全ポジションを決済します。0にすると、この機能自体がオフになります。</div>
+      <div class="feat-card-body">PHALANXの管理対象ポジションの含み損がこの金額（円）に達したら、管理対象を全決済します。0では無効です。</div>
     </div>
   </div>
 </div>
@@ -346,12 +346,12 @@ a { text-decoration: none; color: inherit; }
       <div class="feat-card-body">この段数に達すると、それ以上のナンピンは行いません。既に保有しているポジションはそのまま管理されます。0にすると制限なしになります。</div>
     </div>
     <div class="feat-card">
-      <div class="feat-card-title">ロット倍率 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：1.6</span></div>
-      <div class="feat-card-body">ナンピンのたびにロットを何倍にしていくかの倍率です。</div>
+      <div class="feat-card-title">ロット倍率 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：1.5</span></div>
+      <div class="feat-card-body">ナンピンのたびにロットを1.5倍で計算します。v1.28では設定画面から変更できません。</div>
     </div>
     <div class="feat-card">
-      <div class="feat-card-title">ナンピン幅 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：160</span></div>
-      <div class="feat-card-body">前回のエントリー価格から、どれだけ価格が離れたら次のナンピンを入れるかの幅（Point単位）です。</div>
+      <div class="feat-card-title">ナンピン幅 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：160 Point</span></div>
+      <div class="feat-card-body">前回の実約定価格からの基準幅です。v1.28では設定画面から変更できません。急変防御中は追加注文を制限します。</div>
     </div>
   </div>
 </div>
@@ -365,15 +365,15 @@ a { text-decoration: none; color: inherit; }
   </div>
   <div class="feat-grid">
     <div class="feat-card">
-      <div class="feat-card-title">利確最小pips <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：10.0</span></div>
+      <div class="feat-card-title">1本時の利確 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：10.0 pips</span></div>
       <div class="feat-card-body">ポジションが1本だけの時の利益確定幅です。この値に到達すると利益確定します。</div>
     </div>
     <div class="feat-card">
-      <div class="feat-card-title">利確最大pips <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：12.5</span></div>
+      <div class="feat-card-title">2〜5本時の利確 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：12.5 pips</span></div>
       <div class="feat-card-body">ポジションが2〜5本ある時の利益確定幅です。</div>
     </div>
     <div class="feat-card">
-      <div class="feat-card-title">トレイリング幅pips <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：3.0</span></div>
+      <div class="feat-card-title">6本以上のトレイリング <span style="color:var(--g400);font-weight:400;font-size:12px;">開始7.0／戻り3.0 pips</span></div>
       <div class="feat-card-body">6本以上保有した後は、利益を伸ばしながら、価格が設定幅だけ戻ると利益確定します。</div>
     </div>
   </div>
@@ -403,12 +403,12 @@ a { text-decoration: none; color: inherit; }
   </div>
   <div class="feat-grid">
     <div class="feat-card">
-      <div class="feat-card-title">損切り段数機能 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：OFF</span></div>
-      <div class="feat-card-body">ONにすると、下の「損切り段数」による強制決済が有効になります。</div>
+      <div class="feat-card-title">DD損切り率 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0（無効）</span></div>
+      <div class="feat-card-body">口座残高に対する管理対象ポジションの含み損率で全決済します。0では無効です。</div>
     </div>
     <div class="feat-card">
-      <div class="feat-card-title">損切り段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：10</span></div>
-      <div class="feat-card-body">損切り段数機能がONの場合、この段数に達したら強制的に決済（損切り）します。決済後もエントリーは止まらず、条件が揃えばすぐに再エントリーします。</div>
+      <div class="feat-card-title">損切り段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0（無効）</span></div>
+      <div class="feat-card-body">1以上にすると、その本数に達した方向の管理対象ポジションを決済します。0では無効です。</div>
     </div>
   </div>
 </div>
@@ -417,21 +417,13 @@ a { text-decoration: none; color: inherit; }
 <div class="sec-gray">
   <div class="sec-title">
     <span class="label">Rescue Close</span>
-    <h2 class="h2">救済決済設定</h2>
+    <h2 class="h2">救済決済の状態</h2>
     <div class="divider"></div>
   </div>
   <div class="feat-grid">
     <div class="feat-card">
-      <div class="feat-card-title">救済決済機能 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：OFF</span></div>
-      <div class="feat-card-body">ONにすると、買いと売りのポジション全体の損益がプラスになった時、一括決済します。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">救済決済発動額 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：5000</span></div>
-      <div class="feat-card-body">損益の合計がこの金額（円）以上のプラスになったら発動します。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">救済決済起動段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：8</span></div>
-      <div class="feat-card-body">買いまたは売りどちらかがこの段数以上ある時だけ、救済決済の判定を始めます。</div>
+      <div class="feat-card-title">v1.28では無効</div>
+      <div class="feat-card-body">救済決済は実装されていますが、v1.28の正式配布版では無効固定です。設定画面から有効化できません。</div>
     </div>
   </div>
 </div>
@@ -440,25 +432,25 @@ a { text-decoration: none; color: inherit; }
 <div class="sec">
   <div class="sec-title">
     <span class="label">Background Alert</span>
-    <h2 class="h2">背景色アラート設定</h2>
+    <h2 class="h2">背景色アラート</h2>
     <div class="divider"></div>
   </div>
   <div class="feat-grid">
     <div class="feat-card">
-      <div class="feat-card-title">背景色アラート機能 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：ON</span></div>
-      <div class="feat-card-body">チャートの背景色を状況に応じて変える機能のON/OFFです。売買には影響しません。</div>
+      <div class="feat-card-title">背景色アラート <span style="color:var(--g400);font-weight:400;font-size:12px;">有効固定</span></div>
+      <div class="feat-card-body">チャート背景を状況に応じて変えます。表示機能であり、設定画面から変更できません。</div>
     </div>
     <div class="feat-card">
-      <div class="feat-card-title">注意段数／警告段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：6／10</span></div>
+      <div class="feat-card-title">注意段数／警告段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：6／10</span></div>
       <div class="feat-card-body">買いまたは売りどちらかの本数がこの段数以上になったら、背景を黄色（注意段数）・赤（警告段数）にします。</div>
     </div>
     <div class="feat-card">
-      <div class="feat-card-title">注意含み損／警告含み損 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：30000／50000</span></div>
+      <div class="feat-card-title">注意含み損／警告含み損 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：30000／50000円</span></div>
       <div class="feat-card-body">口座全体の含み損がこの金額（円）以上になったら、背景を黄色・赤にします。</div>
     </div>
     <div class="feat-card">
-      <div class="feat-card-title">急落検知pips <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：500</span></div>
-      <div class="feat-card-body">短時間で価格が大きく動いた場合、背景色を赤にして注意を促します。</div>
+      <div class="feat-card-title">急変検知</div>
+      <div class="feat-card-body">短時間の急変を検知すると背景を赤くし、新規エントリーを抑制します。保有方向の救済ナンピンは急変1回につき最大1段です。</div>
     </div>
   </div>
 </div>
@@ -472,8 +464,8 @@ a { text-decoration: none; color: inherit; }
   </div>
   <div class="feat-grid">
     <div class="feat-card">
-      <div class="feat-card-title">パネル角／パネルX／パネルY_タイトル／パネル行間</div>
-      <div class="feat-card-body">チャート上に表示する情報パネルの位置を調整します。通常は初期設定のままで問題ありません。</div>
+      <div class="feat-card-title">情報パネルと操作ボタン</div>
+      <div class="feat-card-body">運用状況、認証状態、ENTRY STOP、CLOSE BUY、CLOSE SELL、CLOSE ALLを表示します。v1.28では配置設定を公開していません。</div>
     </div>
   </div>
 </div>
@@ -488,7 +480,7 @@ a { text-decoration: none; color: inherit; }
   <div class="feat-grid">
     <div class="feat-card">
       <div class="feat-card-title">曜日ごとのモード・開始時刻・停止時刻</div>
-      <div class="feat-card-body">EAが新規注文を行う曜日・時間帯を設定します。初期設定は月〜木12:00〜17:00、金12:00〜15:00、土日は停止です。</div>
+      <div class="feat-card-body">初回エントリーは月〜木12:00〜17:00、金12:00〜15:00です。停止時刻までに始まった保有サイクルの追加ナンピンは停止時刻から3時間後まで継続し、月〜木20:00、金18:00で停止します。時刻は日本時間です。</div>
     </div>
   </div>
 </div>
@@ -497,8 +489,9 @@ a { text-decoration: none; color: inherit; }
 <div class="cta-dark">
   <h2 class="h2 serif">推奨設定</h2>
   <p class="cta-body" style="margin-top:16px;">
-    初めて運用する場合は、初期設定（デフォルト値）のままご利用ください。<br>
-    各パラメーターは十分な検証を行ったうえで設定しています。
+    スタンダード口座：資金100万円／初期0.01 lot<br>
+    マイクロ口座：資金10万円／初期0.10 lot<br>
+    ロット倍率1.5／最大14段。認証にはMT4全体とEA個別のDLL許可が必要です。WebRequest URL登録は不要です。
   </p>
 </div>
 
