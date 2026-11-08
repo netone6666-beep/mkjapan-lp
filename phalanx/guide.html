@@ -3,546 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PHALANX｜パラメーター解説</title>
+<meta name="description" content="PHALANX v1.28の初期ロット設定、資金管理、曜日別の運用時間、自動管理を初心者向けに解説します。">
+<title>PHALANX v1.28｜利用者向け設定ガイド</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* ── トークン ── */
-:root {
-  --white:    #FFFFFF;
-  --g50:      #FAFAFA;
-  --g100:     #F4F4F6;
-  --g200:     #E8E8EC;
-  --g400:     #9CA3AF;
-  --g600:     #6B7280;
-  --g900:     #111318;
-  --navy:     #1B2A4A;
-  --gold:     #C9A84C;
-  --gold-lt:  #EDD98A;
-  --green:    #06C755;
-  --r:        1rem;
-}
-/* ── リセット ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  background: var(--white); color: var(--g900);
-  font-size: 15px; line-height: 1.75;
-  -webkit-font-smoothing: antialiased;
-  max-width: 640px; margin: 0 auto;
-}
-img { max-width: 100%; height: auto; display: block; }
-a { text-decoration: none; color: inherit; }
-
-/* ── タイポグラフィ ── */
-.serif { font-family: 'Noto Serif JP', serif; }
-.label {
-  display: block; font-size: 11px; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase; color: var(--gold);
-  margin-bottom: .6rem;
-}
-.h1 { font-family: 'Noto Serif JP', serif; font-size: clamp(26px, 7vw, 34px); line-height: 1.3; font-weight: 700; }
-.h2 { font-family: 'Noto Serif JP', serif; font-size: 22px; line-height: 1.4; font-weight: 700; }
-.h3 { font-size: 16px; font-weight: 700; line-height: 1.45; }
-.body { font-size: 14px; color: var(--g600); line-height: 1.85; }
-.body p + p { margin-top: .9rem; }
-.body strong { color: var(--g900); font-weight: 700; }
-.muted { font-size: 12px; color: var(--g400); line-height: 1.7; }
-
-/* ── ボタン ── */
-.btn-line {
-  display: flex; align-items: center; justify-content: center; gap: .5rem;
-  background: var(--green); color: #fff; border-radius: 6px;
-  padding: 14px 24px; font-size: 15px; font-weight: 700;
-  letter-spacing: .04em; width: 100%;
-}
-.btn-outline {
-  display: flex; align-items: center; justify-content: center;
-  border: 1.5px solid var(--gold); color: var(--gold);
-  border-radius: 6px; padding: 13px 24px; font-size: 14px; font-weight: 700;
-  width: 100%; background: transparent; letter-spacing: .04em;
-}
-.btn-outline-dark {
-  border-color: rgba(255,255,255,.3); color: #fff;
-}
-
-/* ── セクション ── */
-.sec        { padding: 56px 20px; background: var(--white); }
-.sec-gray   { padding: 56px 20px; background: var(--g50); }
-.sec-navy   { padding: 56px 20px; background: var(--navy); color: #fff; }
-.sec-dark   { padding: 56px 20px; background: var(--g900); color: #fff; }
-.sec-title  { margin-bottom: 28px; }
-.divider    { width: 32px; height: 2px; background: var(--gold); margin: 12px 0 0; }
-
-/* ── ヒーロー ── */
-.hero {
-  position: relative; min-height: 520px;
-  background:
-    linear-gradient(rgba(17,19,24,.68), rgba(17,19,24,.78)),
-    url('hero-bg.jpg')
-    center center / cover no-repeat;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 64px 24px 56px;
-  color: #fff;
-}
-.hero-badge {
-  display: inline-block; border: 1px solid rgba(201,168,76,.6);
-  color: var(--gold-lt); font-size: 10px; letter-spacing: .18em;
-  padding: 4px 14px; border-radius: 2px; margin-bottom: 24px;
-  text-transform: uppercase; font-weight: 500;
-}
-.hero-logo { height: 52px; width: auto; margin: 0 auto 20px; opacity: .9; filter: saturate(.6) brightness(.95); }
-.hero-catch { font-family: 'Noto Serif JP', serif; font-size: 13px; color: rgba(255,255,255,.6); margin-bottom: 14px; line-height: 2; }
-.hero-title { margin-bottom: 12px; color: #fff; }
-.hero-title span { color: var(--gold-lt); }
-.hero-sub { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.9; max-width: 400px; margin: 0 auto 32px; }
-.hero-line { width: 28px; height: 1px; background: var(--gold); margin: 0 auto 28px; opacity: .5; }
-.hero-ver { font-size: 10px; color: rgba(201,168,76,.5); letter-spacing: .2em; text-transform: uppercase; margin-top: 20px; }
-
-/* ── 商品概要 ── */
-.overview-lead { font-size: 15px; line-height: 1.9; color: var(--g600); margin-bottom: 24px; }
-.overview-lead strong { color: var(--g900); }
-.overview-points { display: flex; flex-direction: column; gap: 1px; background: var(--g200); border-radius: 8px; overflow: hidden; }
-.overview-point { background: var(--white); padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start; }
-.op-icon { flex-shrink: 0; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; margin-top: 8px; }
-.op-text { font-size: 14px; color: var(--g600); line-height: 1.7; }
-.op-text strong { color: var(--g900); font-weight: 700; }
-
-/* ── 特徴 ── */
-.feat-grid { display: flex; flex-direction: column; gap: 14px; }
-.feat-card {
-  background: var(--white); border-radius: 10px;
-  border: 1px solid var(--g200); padding: 22px 20px;
-  border-left: 3px solid var(--gold);
-}
-.feat-card-title { font-size: 15px; font-weight: 700; color: var(--g900); margin-bottom: 8px; line-height: 1.4; }
-.feat-card-body { font-size: 13px; color: var(--g600); line-height: 1.8; }
-.lot-guide-image {
-  background: var(--white); border: 1px solid var(--g200); border-radius: 10px;
-  padding: 12px; margin-bottom: 16px;
-}
-.lot-guide-image img { width: 100%; border-radius: 6px; }
-.lot-guide-caption { font-size: 11px; color: var(--g400); line-height: 1.7; margin-top: 8px; }
-.lot-guide-note {
-  background: #FFF8E7; border: 1px solid #E8D28E; border-radius: 8px;
-  padding: 14px 16px; margin-top: 16px; font-size: 12px; color: #6B5A28; line-height: 1.8;
-}
-
-/* ── 仕様 ── */
-.spec-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-.spec-table tr { border-bottom: 1px solid var(--g100); }
-.spec-table tr:first-child { border-top: 1px solid var(--g100); }
-.spec-table td { padding: 14px 4px; vertical-align: top; line-height: 1.6; }
-.spec-table .sl { color: var(--g400); font-size: 12px; font-weight: 500; width: 42%; padding-left: 0; }
-.spec-table .sv { color: var(--g900); font-weight: 700; }
-
-/* ── 実績 ── */
-.result-img-area {
-  background: var(--g100); border-radius: 12px;
-  aspect-ratio: 9/16; max-height: 520px;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden; margin-bottom: 20px;
-}
-.result-img-area img { width: 100%; height: 100%; object-fit: contain; }
-.result-img-placeholder {
-  width: 100%; height: 100%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 10px; color: var(--g400);
-}
-.result-img-placeholder span { font-size: 13px; }
-
-.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.result-card {
-  background: var(--white); border: 1px solid var(--g200); border-radius: 8px;
-  padding: 16px 14px; border-top: 2px solid var(--gold);
-}
-.result-card-label { font-size: 11px; color: var(--g400); letter-spacing: .06em; margin-bottom: 6px; }
-.result-card-value { font-family: 'Noto Serif JP', serif; font-size: 17px; font-weight: 700; color: var(--g900); line-height: 1.3; }
-.result-card-value.plus { color: #16A34A; }
-.result-disc { font-size: 11px; color: var(--g400); line-height: 1.7; padding: 12px 0; border-top: 1px solid var(--g100); }
-
-/* ── 流れ ── */
-.flow-wrap { display: flex; flex-direction: column; gap: 0; }
-.flow-step { display: flex; gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--g100); }
-.flow-step:last-child { border-bottom: none; }
-.flow-num {
-  flex-shrink: 0; width: 32px; height: 32px;
-  background: var(--navy); color: var(--gold-lt);
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-family: 'Noto Serif JP', serif; font-size: 14px; font-weight: 700;
-  margin-top: 2px;
-}
-.flow-content { flex: 1; }
-.flow-title { font-size: 15px; font-weight: 700; color: var(--g900); margin-bottom: 8px; line-height: 1.45; }
-.flow-body { font-size: 13px; color: var(--g600); line-height: 1.8; }
-.flow-body strong { color: var(--g900); }
-
-/* ── ブローカーカード ── */
-.broker-wrap { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
-.broker-card { border: 1px solid var(--g200); border-radius: 10px; overflow: hidden; }
-.broker-head {
-  background: var(--g50); padding: 12px 16px;
-  font-size: 13px; font-weight: 700; color: var(--g900);
-  border-bottom: 1px solid var(--g200);
-  display: flex; align-items: center; gap: 8px;
-}
-.broker-badge {
-  font-size: 10px; font-weight: 700; background: var(--navy);
-  color: var(--gold-lt); padding: 2px 8px; border-radius: 2px; letter-spacing: .06em;
-}
-.broker-body { padding: 16px; background: var(--white); }
-
-/* パートナーコードボックス */
-.code-box {
-  background: #FFF5F5; border: 1.5px solid #FCA5A5;
-  border-radius: 6px; padding: 14px 16px; margin: 12px 0;
-  animation: pulse-red 3s ease-in-out infinite;
-}
-@keyframes pulse-red {
-  0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0);}
-  50%{box-shadow:0 0 10px 2px rgba(220,38,38,0.12);}
-}
-.code-box-warn { font-size: 10px; font-weight: 700; color: #DC2626; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
-.code-box-title { font-size: 13px; font-weight: 700; color: #7F1D1D; margin-bottom: 10px; }
-.code-display { text-align: center; margin-bottom: 8px; }
-.code-val {
-  display: inline-block; font-size: 22px; font-weight: 700; letter-spacing: .3em;
-  background: linear-gradient(135deg, #fff7ed, #ffffff); border: 1px solid #FCA5A5;
-  color: #7F1D1D; padding: 6px 20px; border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.1); user-select: all;
-}
-.code-note { font-size: 11px; color: #9B1C1C; line-height: 1.75; }
-.code-note strong { color: #7F1D1D; }
-
-/* チェックリスト */
-.check-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
-.check-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--g600); }
-.check-dot { flex-shrink: 0; width: 16px; height: 16px; background: #D1FAE5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
-.check-dot svg { width: 8px; height: 8px; }
-.check-txt strong { color: var(--g900); font-weight: 700; }
-
-/* URLボタン */
-.url-btn {
-  display: block; background: var(--g900); color: #fff;
-  border-radius: 6px; padding: 12px 16px; font-size: 13px; font-weight: 700;
-  text-align: center; letter-spacing: .04em; margin-top: 12px;
-}
-.url-btn-sub {
-  display: block; background: var(--g50); color: var(--g600);
-  border: 1px solid var(--g200); border-radius: 6px;
-  padding: 11px 16px; font-size: 12px; font-weight: 500;
-  text-align: center; margin-top: 8px;
-}
-
-/* アクション（フォーム・LINE） */
-.action-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.action-card { border: 1px solid var(--g200); border-radius: 10px; overflow: hidden; }
-.action-head {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 16px; background: var(--g50); border-bottom: 1px solid var(--g200);
-}
-.action-num {
-  width: 24px; height: 24px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; flex-shrink: 0;
-}
-.action-num.form  { background: var(--gold); color: var(--g900); }
-.action-num.line  { background: var(--green); color: #fff; }
-.action-title { font-size: 13px; font-weight: 700; color: var(--g900); }
-.action-sub   { font-size: 10px; color: var(--g400); }
-.action-body  { padding: 14px 16px; }
-.form-btn {
-  display: block; background: var(--gold); color: var(--g900);
-  border-radius: 6px; padding: 13px 20px; font-size: 14px; font-weight: 700;
-  text-align: center; letter-spacing: .04em; margin-top: 12px;
-}
-
-/* shot list */
-.shot-list { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
-.shot-item { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--g600); }
-.shot-dot { flex-shrink: 0; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; margin-top: 8px; }
-
-/* ── FAQ ── */
-.faq-list { display: flex; flex-direction: column; gap: 0; }
-.faq-item { border-bottom: 1px solid var(--g100); }
-.faq-q {
-  width: 100%; text-align: left; padding: 18px 0;
-  background: none; border: none; cursor: pointer;
-  display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  font-size: 14px; font-weight: 700; color: var(--g900);
-  font-family: 'Noto Sans JP', sans-serif;
-}
-.faq-icon {
-  flex-shrink: 0; width: 20px; height: 20px;
-  border: 1px solid var(--g200); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--g400); font-size: 14px; transition: transform .3s;
-}
-.faq-item.open .faq-icon { transform: rotate(45deg); }
-.faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
-.faq-a-inner { padding-bottom: 16px; font-size: 13px; color: var(--g600); line-height: 1.85; }
-.faq-a-inner strong { color: var(--g900); }
-
-/* ── CTA（ダーク） ── */
-.cta-dark {
-  background: var(--g900); color: #fff;
-  padding: 56px 24px; text-align: center;
-}
-.cta-dark .h2 { color: #fff; margin-bottom: 14px; }
-.cta-dark .h2 span { color: var(--gold-lt); }
-.cta-body { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.9; margin-bottom: 28px; }
-.cta-note { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 12px; line-height: 1.7; }
-
-/* ── フッター ── */
-.footer { padding: 28px 20px; background: #050508; text-align: center; border-top: 1px solid rgba(255,255,255,.06); }
-.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-bottom: 14px; }
-.footer-links a { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .06em; }
-.footer-copy { font-size: 11px; color: rgba(255,255,255,.2); margin-bottom: 12px; }
-.footer-disc { font-size: 11px; color: rgba(255,255,255,.18); line-height: 1.8; border-top: 1px solid rgba(255,255,255,.06); padding-top: 12px; }
+:root{--white:#fff;--g50:#fafafa;--g100:#f4f4f6;--g200:#e8e8ec;--g400:#9ca3af;--g600:#6b7280;--g900:#111318;--navy:#1b2a4a;--navy-lt:#edf2fb;--gold:#c9a84c;--gold-lt:#edd98a;--green:#16794a;--green-lt:#edf8f2;--red:#a53a3a;--r:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{max-width:640px;margin:0 auto;background:var(--white);color:var(--g900);font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.8;-webkit-font-smoothing:antialiased;box-shadow:0 0 40px rgba(17,19,24,.06)}
+img{display:block;max-width:100%;height:auto}a{color:inherit;text-decoration:none}.serif{font-family:'Noto Serif JP',serif}
+.label{display:block;margin-bottom:.6rem;color:var(--gold);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}.h1{font-family:'Noto Serif JP',serif;font-size:clamp(27px,7vw,36px);font-weight:700;line-height:1.35}.h2{font-family:'Noto Serif JP',serif;font-size:23px;font-weight:700;line-height:1.45}.h3{font-size:16px;font-weight:700;line-height:1.5}.divider{width:32px;height:2px;margin-top:12px;background:var(--gold)}
+.sec,.sec-gray,.sec-navy{padding:54px 20px}.sec{background:var(--white)}.sec-gray{background:var(--g50)}.sec-navy{background:var(--navy);color:var(--white)}.sec-title{margin-bottom:28px}.lead{color:var(--g600);font-size:14px;line-height:1.95}.lead strong{color:var(--g900)}
+.hero{min-height:360px;padding:58px 24px 52px;color:var(--white);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(rgba(17,19,24,.7),rgba(17,19,24,.82)),url('hero-bg.jpg') center/cover no-repeat}.hero-logo{width:auto;height:52px;margin-bottom:20px;opacity:.92;filter:saturate(.6) brightness(.95)}.hero-badge{display:inline-block;margin-bottom:22px;padding:4px 14px;border:1px solid rgba(201,168,76,.6);border-radius:2px;color:var(--gold-lt);font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase}.hero-title{margin-bottom:14px}.hero-title span{color:var(--gold-lt)}.hero-line{width:28px;height:1px;margin:0 auto 24px;background:var(--gold);opacity:.6}.hero-sub{max-width:460px;color:rgba(255,255,255,.72);font-size:13px;line-height:1.95}
+.intro-list{display:grid;gap:10px;margin-top:24px}.intro-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.82)}.intro-num{flex:0 0 24px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:var(--navy);font-size:11px;font-weight:700}
+.screen-card{padding:12px;border:1px solid var(--g200);border-radius:var(--r);background:var(--white);box-shadow:0 6px 18px rgba(17,19,24,.05)}.screen-card img{width:100%;border-radius:6px}.screen-caption{margin-top:10px;color:var(--g600);font-size:12px;line-height:1.75}.steps{display:grid;gap:10px;margin-top:18px}.step{display:flex;gap:12px;padding:14px 16px;border:1px solid var(--g200);border-radius:8px;background:var(--white)}.step-num{flex:0 0 26px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:var(--gold-lt);font-size:11px;font-weight:700}.step-text{color:var(--g600);font-size:13px;line-height:1.75}.step-text strong{color:var(--g900)}
+.account-grid{display:grid;gap:14px}.account-card{padding:22px 20px;border:1px solid var(--g200);border-left:3px solid var(--gold);border-radius:var(--r);background:var(--white)}.account-card.careful{border-left-color:var(--green)}.account-tag{display:inline-block;margin-bottom:10px;padding:3px 8px;border-radius:3px;background:var(--navy);color:var(--gold-lt);font-size:10px;font-weight:700;letter-spacing:.08em}.account-card.careful .account-tag{background:var(--green);color:var(--white)}.account-value{margin:8px 0;color:var(--g900);font-family:'Noto Serif JP',serif;font-size:20px;font-weight:700;line-height:1.45}.account-body{color:var(--g600);font-size:13px;line-height:1.8}
+.compare{margin-top:18px;border:1px solid var(--g200);border-radius:var(--r);overflow:hidden;background:var(--white)}.compare-row{display:grid;grid-template-columns:78px 1fr;border-bottom:1px solid var(--g100)}.compare-row:last-child{border-bottom:0}.compare-key{padding:14px 12px;background:var(--g50);font-size:12px;font-weight:700;color:var(--g900)}.compare-value{padding:14px;color:var(--g600);font-size:12px;line-height:1.75}.callout{margin-top:18px;padding:16px 18px;border-radius:8px;font-size:12px;line-height:1.85}.callout.warning{border:1px solid #e8d28e;background:#fff8e7;color:#695a2a}.callout.important{border:1px solid #b9d9c8;background:var(--green-lt);color:#24543c}.callout strong{font-weight:700}
+.hours-table{width:100%;border-collapse:collapse;border-radius:var(--r);overflow:hidden;background:var(--white);font-size:13px;box-shadow:0 0 0 1px var(--g200)}.hours-table th,.hours-table td{padding:14px 12px;border-bottom:1px solid var(--g100);text-align:left;vertical-align:top}.hours-table tr:last-child td{border-bottom:0}.hours-table th{background:var(--navy);color:var(--white);font-size:11px;letter-spacing:.04em}.hours-table td:first-child{width:30%;font-weight:700;color:var(--g900)}.hours-table td{color:var(--g600)}.time-note{margin-top:14px;color:var(--g600);font-size:12px}
+.timeline-list{display:grid;gap:22px}.timeline{padding:20px;border:1px solid var(--g200);border-radius:var(--r);background:var(--white)}.timeline-title{margin-bottom:14px;font-size:15px;font-weight:700}.timeline-track{display:grid;gap:8px}.phase{position:relative;padding:14px 14px 14px 46px;border-radius:7px;font-size:12px;line-height:1.7}.phase::before{position:absolute;left:14px;top:14px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:var(--white);font-size:10px;font-weight:700}.phase.new{background:var(--navy-lt);color:#34466b}.phase.new::before{content:'1';background:var(--navy)}.phase.add{background:#fff8e7;color:#695a2a}.phase.add::before{content:'2';background:var(--gold);color:var(--navy)}.phase.manage{background:var(--green-lt);color:#24543c}.phase.manage::before{content:'3';background:var(--green)}.phase-time{display:block;margin-bottom:3px;color:var(--g900);font-weight:700}
+.difference-grid{display:grid;gap:12px}.difference-card{padding:20px;border:1px solid var(--g200);border-radius:var(--r);background:var(--white)}.difference-card h3{margin-bottom:8px}.difference-card p{color:var(--g600);font-size:13px;line-height:1.8}.difference-card.stop{border-top:3px solid var(--navy)}.difference-card.add{border-top:3px solid var(--gold)}.difference-card.close{border-top:3px solid var(--green)}
+.do-grid{display:grid;gap:14px}.do-card{padding:20px;border:1px solid var(--g200);border-radius:var(--r);background:var(--white)}.do-card h3{margin-bottom:10px}.do-list{display:grid;gap:9px;list-style:none}.do-list li{position:relative;padding-left:22px;color:var(--g600);font-size:13px;line-height:1.75}.do-list li::before{content:'✓';position:absolute;left:0;top:0;color:var(--green);font-weight:700}.do-card.attention .do-list li::before{content:'!';color:var(--red)}
+.faq-list{display:grid;gap:10px}.faq-item{border:1px solid var(--g200);border-radius:8px;background:var(--white);overflow:hidden}.faq-item summary{position:relative;padding:17px 44px 17px 16px;cursor:pointer;list-style:none;font-size:14px;font-weight:700;line-height:1.65}.faq-item summary::-webkit-details-marker{display:none}.faq-item summary::after{content:'＋';position:absolute;right:16px;top:17px;color:var(--gold);font-size:18px;line-height:1}.faq-item[open] summary::after{content:'−'}.faq-answer{padding:0 16px 17px;color:var(--g600);font-size:13px;line-height:1.85}.faq-answer strong{color:var(--g900)}
+.final-note{padding:48px 22px;text-align:center;background:var(--g900);color:var(--white)}.final-note .h2{margin-bottom:14px}.final-note p{color:rgba(255,255,255,.67);font-size:13px;line-height:1.9}.footer{padding:26px 20px;background:#050508;color:rgba(255,255,255,.26);text-align:center;font-size:11px}
+@media (min-width:560px){.sec,.sec-gray,.sec-navy{padding-left:30px;padding-right:30px}.account-grid.three{grid-template-columns:repeat(3,1fr)}.account-grid.three .account-card{padding:20px 16px}.account-grid.three .account-value{font-size:17px}.difference-grid{grid-template-columns:repeat(3,1fr)}.difference-card{padding:18px 16px}.do-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-
-<!-- ── HEADER ── -->
-<div class="hero" style="min-height:280px;padding:56px 24px 48px;">
+<header class="hero">
   <img src="phalanx-logo.png" alt="PHALANX" class="hero-logo">
-  <span class="hero-badge">Parameter Guide</span>
-  <h1 class="h1 hero-title">パラメーター<span>解説</span></h1>
+  <span class="hero-badge">PHALANX v1.28 User Guide</span>
+  <h1 class="h1 hero-title">利用者向け<span>設定ガイド</span></h1>
   <div class="hero-line"></div>
-  <p class="hero-sub">
-    各設定項目の内容と役割をまとめています。<br>設定を変更する際は、必ずこちらをご確認ください。
-  </p>
-</div>
-
-<!-- ── イントロ ── -->
-<div class="sec-navy">
-  <p style="font-size:13px;color:rgba(255,255,255,.75);line-height:2;">
-    このページはPHALANX v1.28の設定ガイドです。口座タイプに合わせて初期ロットを必ず確認してください。<br>
-    認証失敗中は新規・追加注文を停止し、保有中ポジションの管理と決済を継続します。
-  </p>
-</div>
-
-<!-- ── 基本設定 ── -->
-<div class="sec">
-  <div class="sec-title">
-    <span class="label">Basic Settings</span>
-    <h2 class="h2">基本設定</h2>
-    <div class="divider"></div>
+  <p class="hero-sub">最初に必要な初期ロットと、曜日・時刻に合わせてEAが何を自動管理するのかを、順番に説明します。</p>
+</header>
+<section class="sec-navy">
+  <span class="label">Before You Start</span><h2 class="h2">このガイドで確認すること</h2>
+  <div class="intro-list">
+    <div class="intro-item"><span class="intro-num">1</span><span>口座タイプと資金に合う初期ロットを選ぶ</span></div>
+    <div class="intro-item"><span class="intro-num">2</span><span>新規エントリーの時間と、保有後の管理時間を分けて理解する</span></div>
+    <div class="intro-item"><span class="intro-num">3</span><span>ポジション保有中はMT4とEAを止めず、自動管理を継続させる</span></div>
   </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">初期ロット <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0.01</span></div>
-      <div class="feat-card-body">最初の1回目のエントリーで使うロット数です。口座タイプと運用資金に合わせて設定します。具体的な基準と変更手順は、次の「ロット設定と資金管理」を確認してください。</div>
+</section>
+<main>
+  <section class="sec" id="initial-lot">
+    <div class="sec-title"><span class="label">Step 1</span><h2 class="h2">最初に設定する「初期ロット」</h2><div class="divider"></div></div>
+    <p class="lead">初期ロットは、最初の注文で使う取引数量です。<strong>運用開始前、ポジションが0件の状態</strong>で設定してください。</p>
+    <div class="screen-card" style="margin-top:20px"><img src="phalanx-v1-28-initial-lot.jpg" alt="PHALANX v1.28のパラメーター入力画面から初期ロット欄だけを抜粋" width="470" height="68"><p class="screen-caption">公開が必要な「初期ロット」欄だけを表示しています。ほかの項目を変更する必要はありません。</p></div>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><p class="step-text">EAの設定画面を開き、<strong>「パラメーターの入力」</strong>タブを選びます。</p></div>
+      <div class="step"><span class="step-num">2</span><p class="step-text"><strong>「初期ロット」</strong>の値をダブルクリックし、口座タイプに合う数値を入力します。</p></div>
+      <div class="step"><span class="step-num">3</span><p class="step-text">「OK」を押したあと、表示された値と小数点の位置をもう一度確認します。</p></div>
     </div>
-    <div class="feat-card">
-      <div class="feat-card-title">損切金額 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0（無効）</span></div>
-      <div class="feat-card-body">PHALANXの管理対象ポジションの含み損がこの金額（円）に達したら、管理対象を全決済します。0では無効です。</div>
+  </section>
+  <section class="sec-gray" id="money-management">
+    <div class="sec-title"><span class="label">Step 2</span><h2 class="h2">口座タイプ別の資金管理</h2><div class="divider"></div></div>
+    <div class="account-grid three">
+      <article class="account-card"><span class="account-tag">STANDARD</span><h3 class="h3">スタンダード口座</h3><p class="account-value">資金100万円<br>初期0.01 lot</p><p class="account-body">スタンダード口座での運用目安です。</p></article>
+      <article class="account-card"><span class="account-tag">MICRO BASIC</span><h3 class="h3">マイクロ口座</h3><p class="account-value">資金10万円<br>初期0.10 lot</p><p class="account-body">マイクロ口座での基本目安です。</p></article>
+      <article class="account-card careful"><span class="account-tag">MICRO CAREFUL</span><h3 class="h3">慎重に始める場合</h3><p class="account-value">資金10万円<br>初期0.03 lot</p><p class="account-body">取引数量を抑えて始めたい方向けの推奨です。</p></article>
     </div>
-  </div>
-</div>
-
-<!-- ── ロット設定と資金管理 ── -->
-<div class="sec-gray">
-  <div class="sec-title">
-    <span class="label">Lot &amp; Money Management</span>
-    <h2 class="h2">ロット設定と資金管理</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="lot-guide-image">
-    <img src="phalanx-v1-28-initial-lot.jpg" alt="PHALANX v1.28のパラメーター入力画面。初期ロットの設定欄を赤枠で表示" loading="lazy">
-    <p class="lot-guide-caption">「パラメーターの入力」タブの一番上にある「初期ロット」の値を変更します。</p>
-  </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">スタンダード口座</div>
-      <div class="feat-card-body">資金100万円に対して、初期ロット<strong>0.01</strong>を基準とします。</div>
+    <div class="compare" aria-label="マイクロ口座の0.10ロットと0.03ロットの比較">
+      <div class="compare-row"><div class="compare-key">0.10 lot</div><div class="compare-value">資金10万円のマイクロ口座で使う基本目安です。</div></div>
+      <div class="compare-row"><div class="compare-key">0.03 lot</div><div class="compare-value">0.10の30％の取引数量です。同じ口座・同じ銘柄・同じ値動きなら、価格変動に対する金額の振れを小さく抑えやすくなります。</div></div>
+      <div class="compare-row"><div class="compare-key">大切な点</div><div class="compare-value">0.03は、運用全体の損失リスクや最大損失が70％減ることを保証する数値ではありません。</div></div>
     </div>
-    <div class="feat-card">
-      <div class="feat-card-title">マイクロ口座（基本基準）</div>
-      <div class="feat-card-body">資金10万円に対して、初期ロット<strong>0.10</strong>を基準とします。資金が10万円未満の場合は、0.10をそのまま適用しないでください。</div>
+    <div class="callout warning"><strong>資金が10万円未満の場合：</strong>マイクロ口座の0.10 lotを機械的に適用しないでください。資金に余裕がない場合は数量を下げるか、必要資金を準備してから開始してください。</div>
+    <p class="time-note">スタンダード口座とマイクロ口座では、同じ「1 lot」でも実際の取引数量が異なります。口座タイプを取り違えず、MT4の銘柄仕様で利用できる最小数量と数量単位も確認してください。上記は運用目安であり、利益や最大損失を保証するものではありません。</p>
+  </section>
+  <section class="sec" id="trading-hours">
+    <div class="sec-title"><span class="label">Step 3</span><h2 class="h2">曜日別の新規エントリー時間</h2><div class="divider"></div></div>
+    <table class="hours-table"><thead><tr><th>曜日</th><th>新しい取引サイクルを開始する時間</th></tr></thead><tbody><tr><td>月〜木</td><td>12:00〜17:00</td></tr><tr><td>金曜日</td><td>12:00〜15:00</td></tr><tr><td>土・日</td><td>新規稼働なし</td></tr></tbody></table>
+    <div class="callout important"><strong>時刻は日本時間（JST）です。</strong>EAが夏時間・冬時間を考慮して内部で時刻を合わせるため、通常は利用者が時差を計算する必要はありません。</div>
+  </section>
+  <section class="sec-gray" id="automatic-management">
+    <div class="sec-title"><span class="label">Most Important</span><h2 class="h2">新規終了後も自動管理は続きます</h2><div class="divider"></div></div>
+    <p class="lead">17時や15時は、<strong>新しい取引サイクルを始めなくなる時刻</strong>です。その時刻になった瞬間にEAを止めたり、保有ポジションを手動決済したりする必要はありません。</p>
+    <div class="timeline-list" style="margin-top:22px">
+      <article class="timeline"><h3 class="timeline-title">月曜日〜木曜日</h3><div class="timeline-track"><div class="phase new"><span class="phase-time">12:00〜17:00</span>新しい取引サイクルを開始できます。</div><div class="phase add"><span class="phase-time">17:00〜20:00</span>新規サイクルは開始しません。17時までに始まった保有サイクルには、必要に応じて追加注文の判定が続きます。</div><div class="phase manage"><span class="phase-time">20:00以降</span>追加注文は終了します。保有ポジションの利益確定・損切りなどの決済管理は継続します。</div></div></article>
+      <article class="timeline"><h3 class="timeline-title">金曜日</h3><div class="timeline-track"><div class="phase new"><span class="phase-time">12:00〜15:00</span>新しい取引サイクルを開始できます。</div><div class="phase add"><span class="phase-time">15:00〜18:00</span>新規サイクルは開始しません。15時までに始まった保有サイクルには、必要に応じて追加注文の判定が続きます。</div><div class="phase manage"><span class="phase-time">18:00以降</span>追加注文は終了します。保有ポジションの決済管理は継続します。</div></div></article>
     </div>
-    <div class="feat-card">
-      <div class="feat-card-title">マイクロ口座（慎重な運用）</div>
-      <div class="feat-card-body">資金10万円に対して、初期ロット<strong>0.03</strong>を推奨します。0.03は0.10の30％の取引数量ですが、相場変動や保有段数などの影響があるため、損失リスク全体の70％削減を保証するものではありません。</div>
+    <div class="callout warning"><strong>20時・18時は全決済時刻ではありません。</strong>この時刻で終わるのは追加注文です。ポジションが残っている場合、EAは決済条件を監視し続けます。</div>
+  </section>
+  <section class="sec" id="three-actions">
+    <div class="sec-title"><span class="label">How It Works</span><h2 class="h2">3つの処理を分けて理解する</h2><div class="divider"></div></div>
+    <div class="difference-grid"><article class="difference-card stop"><h3 class="h3">新規停止</h3><p>新しい取引サイクルを開始しなくなることです。月〜木は17時、金曜は15時です。</p></article><article class="difference-card add"><h3 class="h3">追加注文終了</h3><p>保有サイクルへの追加注文を行わなくなることです。月〜木は20時、金曜は18時です。</p></article><article class="difference-card close"><h3 class="h3">決済管理</h3><p>保有ポジションを監視し、決済条件に応じて処理することです。追加注文終了後も継続します。</p></article></div>
+  </section>
+  <section class="sec-gray" id="user-actions">
+    <div class="sec-title"><span class="label">Step 4</span><h2 class="h2">利用者がすること・しないこと</h2><div class="divider"></div></div>
+    <div class="do-grid"><article class="do-card"><h3 class="h3">そのまま任せてよいこと</h3><ul class="do-list"><li>17時・15時になったときの新規停止</li><li>保有中の追加注文時間の管理</li><li>追加注文終了後の決済管理</li><li>翌日へ持ち越したポジションの再認識</li></ul></article><article class="do-card attention"><h3 class="h3">利用者が注意すること</h3><ul class="do-list"><li>ポジション保有中はMT4とEAを終了しない</li><li>インターネット接続と自動売買を有効に保つ</li><li>停止推奨日は新しい運用を開始しない</li><li>金曜日は週末持ち越しを避ける</li></ul></article></div>
+    <div class="callout important"><strong>翌日になってもポジションが残る場合：</strong>決済管理は継続します。また、ポジションが残ったまま次の稼働曜日の許可時間に入ると、その保有サイクルへの追加注文判定も再開します。土日は新規・追加注文を行いません。</div>
+    <div class="callout warning"><strong>停止推奨日について：</strong>EAは、別途案内される停止推奨日を自動判定しません。ポジションがない状態で新しい運用を始めないでください。すでに保有中の場合はMT4やEAを停止せず、配信された案内に従ってください。</div>
+  </section>
+  <section class="sec" id="faq">
+    <div class="sec-title"><span class="label">FAQ</span><h2 class="h2">よくある質問</h2><div class="divider"></div></div>
+    <div class="faq-list">
+      <details class="faq-item"><summary>17時になったら自分でEAを止める必要がありますか？</summary><div class="faq-answer"><strong>必要ありません。</strong>月〜木の17時は新しい取引サイクルの開始が止まる時刻です。保有中の管理はEAに任せ、MT4とEAを稼働させたままにしてください。</div></details>
+      <details class="faq-item"><summary>ポジション保有中でもEAを止めてよいですか？</summary><div class="faq-answer"><strong>止めないでください。</strong>MT4の終了、EAの取り外し、自動売買の停止、通信切断中は、自動の追加注文や決済を実行できません。再開時には保有ポジションを再認識しますが、停止中の値動きに対する管理は行えません。</div></details>
+      <details class="faq-item"><summary>20時や18時になったら自動で全決済されますか？</summary><div class="faq-answer"><strong>全決済されません。</strong>月〜木20時、金曜18時は追加注文が終了する時刻です。保有ポジションの決済管理は、その後も続きます。</div></details>
+      <details class="faq-item"><summary>決済されずに翌日になった場合はどうなりますか？</summary><div class="faq-answer">EAを稼働させていれば決済管理を続けます。次の稼働曜日の許可時間に入ると、残っている保有サイクルへの追加注文判定も再開します。週末は市場休場により価格更新や注文実行ができない時間があります。</div></details>
+      <details class="faq-item"><summary>ENTRY STOPは毎日押す必要がありますか？</summary><div class="faq-answer"><strong>必要ありません。</strong>曜日と時刻による新規停止はEAが自動で行います。ENTRY STOPは利用者が新規・追加注文を手動で止めたい場合の機能で、保有ポジションを決済するボタンではありません。</div></details>
+      <details class="faq-item"><summary>停止推奨日はどうすればよいですか？</summary><div class="faq-answer">ポジションが0件であることを確認し、新しい運用を開始しないでください。すでにポジションがある場合は、自動管理を止めないようMT4とEAを稼働させ、配信された案内に従ってください。</div></details>
+      <details class="faq-item"><summary>資金10万円未満でもマイクロ口座で0.10 lotを使えますか？</summary><div class="faq-answer">機械的に0.10 lotを適用しないでください。資金が少ないほど余裕が小さくなるため、数量を下げるか、必要資金を準備してから開始してください。</div></details>
     </div>
-    <div class="feat-card">
-      <div class="feat-card-title">初期ロットの変更手順</div>
-      <div class="feat-card-body">チャート上でEAの設定画面を開き、「パラメーターの入力」タブを選びます。一番上の「初期ロット」の値をダブルクリックして希望の数値を入力し、「OK」を押します。</div>
-    </div>
-  </div>
-  <div class="lot-guide-note">
-    <strong>変更時の注意：</strong>保有ポジションがある途中でロットを変更せず、PHALANXの保有ポジションが0件であることを確認してから設定してください。入力値の桁間違いにも注意し、設定後は表示された値をもう一度確認してください。
-  </div>
-</div>
-
-<!-- ── ナンピン設定 ── -->
-<div class="sec">
-  <div class="sec-title">
-    <span class="label">Nanpin Settings</span>
-    <h2 class="h2">ナンピン設定</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">最大ナンピン段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：14</span></div>
-      <div class="feat-card-body">この段数に達すると、それ以上のナンピンは行いません。既に保有しているポジションはそのまま管理されます。0にすると制限なしになります。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">ロット倍率 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：1.5</span></div>
-      <div class="feat-card-body">ナンピンのたびにロットを1.5倍で計算します。v1.28では設定画面から変更できません。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">ナンピン幅 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：160 Point</span></div>
-      <div class="feat-card-body">前回の実約定価格からの基準幅です。v1.28では設定画面から変更できません。急変防御中は追加注文を制限します。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── 利確設定 ── -->
-<div class="sec-gray">
-  <div class="sec-title">
-    <span class="label">Take Profit Settings</span>
-    <h2 class="h2">利確設定</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">1本時の利確 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：10.0 pips</span></div>
-      <div class="feat-card-body">ポジションが1本だけの時の利益確定幅です。この値に到達すると利益確定します。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">2〜5本時の利確 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：12.5 pips</span></div>
-      <div class="feat-card-body">ポジションが2〜5本ある時の利益確定幅です。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">6本以上のトレイリング <span style="color:var(--g400);font-weight:400;font-size:12px;">開始7.0／戻り3.0 pips</span></div>
-      <div class="feat-card-body">6本以上保有した後は、利益を伸ばしながら、価格が設定幅だけ戻ると利益確定します。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── スプレッドフィルター ── -->
-<div class="sec">
-  <div class="sec-title">
-    <span class="label">Spread Filter</span>
-    <h2 class="h2">スプレッドフィルター</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">スプレッド上限 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：55.0</span></div>
-      <div class="feat-card-body">この数値（Point）を超えるスプレッドの時、新規エントリー・ナンピンを見送ります。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── 損切り段数 ── -->
-<div class="sec-gray">
-  <div class="sec-title">
-    <span class="label">Cut Loss by Count</span>
-    <h2 class="h2">損切り段数設定</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">DD損切り率 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0（無効）</span></div>
-      <div class="feat-card-body">口座残高に対する管理対象ポジションの含み損率で全決済します。0では無効です。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">損切り段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">初期値：0（無効）</span></div>
-      <div class="feat-card-body">1以上にすると、その本数に達した方向の管理対象ポジションを決済します。0では無効です。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── 救済決済 ── -->
-<div class="sec">
-  <div class="sec-title">
-    <span class="label">Rescue Close</span>
-    <h2 class="h2">救済決済の状態</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">v1.28では無効</div>
-      <div class="feat-card-body">救済決済は実装されていますが、v1.28の正式配布版では無効固定です。設定画面から有効化できません。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── 背景色アラート ── -->
-<div class="sec-gray">
-  <div class="sec-title">
-    <span class="label">Background Alert</span>
-    <h2 class="h2">背景色アラート</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">背景色アラート <span style="color:var(--g400);font-weight:400;font-size:12px;">有効固定</span></div>
-      <div class="feat-card-body">チャート背景を状況に応じて変えます。表示機能であり、設定画面から変更できません。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">注意段数／警告段数 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：6／10</span></div>
-      <div class="feat-card-body">買いまたは売りどちらかの本数がこの段数以上になったら、背景を黄色（注意段数）・赤（警告段数）にします。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">注意含み損／警告含み損 <span style="color:var(--g400);font-weight:400;font-size:12px;">固定値：30000／50000円</span></div>
-      <div class="feat-card-body">口座全体の含み損がこの金額（円）以上になったら、背景を黄色・赤にします。</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-card-title">急変検知</div>
-      <div class="feat-card-body">短時間の急変を検知すると背景を赤くし、新規エントリーを抑制します。保有方向の救済ナンピンは急変1回につき最大1段です。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── パネル設定 ── -->
-<div class="sec">
-  <div class="sec-title">
-    <span class="label">Panel Settings</span>
-    <h2 class="h2">パネル設定</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">情報パネルと操作ボタン</div>
-      <div class="feat-card-body">運用状況、認証状態、ENTRY STOP、CLOSE BUY、CLOSE SELL、CLOSE ALLを表示します。v1.28では配置設定を公開していません。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── 稼働時間 ── -->
-<div class="sec-gray">
-  <div class="sec-title">
-    <span class="label">Trading Hours</span>
-    <h2 class="h2">稼働曜日・時間設定</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-card-title">曜日ごとのモード・開始時刻・停止時刻</div>
-      <div class="feat-card-body">初回エントリーは月〜木12:00〜17:00、金12:00〜15:00です。停止時刻までに始まった保有サイクルの追加ナンピンは停止時刻から3時間後まで継続し、月〜木20:00、金18:00で停止します。時刻は日本時間です。</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── 推奨設定 ── -->
-<div class="cta-dark">
-  <h2 class="h2 serif">推奨設定</h2>
-  <p class="cta-body" style="margin-top:16px;">
-    スタンダード口座：資金100万円／初期0.01 lot<br>
-    マイクロ口座：資金10万円／初期0.10 lot（基本基準）、初期0.03 lot（慎重な運用向け）<br>
-    ロット倍率1.5／最大14段。認証にはMT4全体とEA個別のDLL許可が必要です。WebRequest URL登録は不要です。
-  </p>
-</div>
-
-<!-- ── FOOTER ── -->
-<div class="footer">
-  <div class="footer-copy">&copy; 2026 MKJAPAN Co.,Ltd. All rights reserved.</div>
-</div>
-
+  </section>
+</main>
+<section class="final-note"><h2 class="h2 serif">迷ったときの基本</h2><p>運用開始前に口座タイプと初期ロットを確認する。<br>保有中はMT4とEAを止めない。<br>時刻による新規・追加注文の管理はEAに任せる。</p></section>
+<footer class="footer">&copy; 2026 MKJAPAN Co.,Ltd. All rights reserved.</footer>
 </body>
 </html>
