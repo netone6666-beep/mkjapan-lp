@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="PHALANX v1.28の初期ロット設定、資金管理、曜日別の運用時間、自動管理を初心者向けに解説します。">
-<title>PHALANX v1.28｜利用者向け設定ガイド</title>
+<meta name="description" content="PHALANX v1.29の初期ロット、ロット倍率、資金管理、曜日別の運用時間、自動管理を初心者向けに解説します。">
+<title>PHALANX v1.29｜利用者向け設定ガイド</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -32,29 +32,35 @@ img{display:block;max-width:100%;height:auto}a{color:inherit;text-decoration:non
 <body>
 <header class="hero">
   <img src="phalanx-logo.png" alt="PHALANX" class="hero-logo">
-  <span class="hero-badge">PHALANX v1.28 User Guide</span>
+  <span class="hero-badge">PHALANX v1.29 User Guide</span>
   <h1 class="h1 hero-title">利用者向け<span>設定ガイド</span></h1>
   <div class="hero-line"></div>
-  <p class="hero-sub">最初に必要な初期ロットと、曜日・時刻に合わせてEAが何を自動管理するのかを、順番に説明します。</p>
+  <p class="hero-sub">最初に必要な初期ロットとロット倍率、曜日・時刻に合わせてEAが何を自動管理するのかを、順番に説明します。</p>
 </header>
 <section class="sec-navy">
   <span class="label">Before You Start</span><h2 class="h2">このガイドで確認すること</h2>
   <div class="intro-list">
-    <div class="intro-item"><span class="intro-num">1</span><span>口座タイプと資金に合う初期ロットを選ぶ</span></div>
+    <div class="intro-item"><span class="intro-num">1</span><span>口座タイプと資金に合う初期ロットを選び、ロット倍率を確認する</span></div>
     <div class="intro-item"><span class="intro-num">2</span><span>新規エントリーの時間と、保有後の管理時間を分けて理解する</span></div>
     <div class="intro-item"><span class="intro-num">3</span><span>ポジション保有中はMT4とEAを止めず、自動管理を継続させる</span></div>
   </div>
 </section>
 <main>
   <section class="sec" id="initial-lot">
-    <div class="sec-title"><span class="label">Step 1</span><h2 class="h2">最初に設定する「初期ロット」</h2><div class="divider"></div></div>
-    <p class="lead">初期ロットは、最初の注文で使う取引数量です。<strong>運用開始前、ポジションが0件の状態</strong>で設定してください。</p>
-    <div class="screen-card" style="margin-top:20px"><img src="phalanx-v1-28-initial-lot.jpg" alt="PHALANX v1.28のパラメーター入力画面から初期ロット欄だけを抜粋" width="470" height="68"><p class="screen-caption">公開が必要な「初期ロット」欄だけを表示しています。ほかの項目を変更する必要はありません。</p></div>
+    <div class="sec-title"><span class="label">Step 1</span><h2 class="h2">最初に確認する「初期ロット」と「ロット倍率」</h2><div class="divider"></div></div>
+    <p class="lead">初期ロットは最初の注文で使う取引数量、ロット倍率は追加注文の数量を計算する倍率です。<strong>運用開始前、ポジションが0件の状態</strong>で設定してください。</p>
+    <div class="screen-card" style="margin-top:20px"><img src="phalanx-v1-29-lot-settings.svg" alt="PHALANX v1.29の初期ロットとロット倍率の入力欄を示す案内図" width="940" height="180"><p class="screen-caption">v1.29では「初期ロット」の直下に「ロット倍率」が表示されます。図は入力位置を示す案内図です。</p></div>
     <div class="steps">
       <div class="step"><span class="step-num">1</span><p class="step-text">EAの設定画面を開き、<strong>「パラメーターの入力」</strong>タブを選びます。</p></div>
       <div class="step"><span class="step-num">2</span><p class="step-text"><strong>「初期ロット」</strong>の値をダブルクリックし、口座タイプに合う数値を入力します。</p></div>
-      <div class="step"><span class="step-num">3</span><p class="step-text">「OK」を押したあと、表示された値と小数点の位置をもう一度確認します。</p></div>
+      <div class="step"><span class="step-num">3</span><p class="step-text"><strong>「ロット倍率」</strong>が初期値の<strong>1.50</strong>になっていることを確認します。</p></div>
+      <div class="step"><span class="step-num">4</span><p class="step-text">「OK」を押したあと、表示された値と小数点の位置をもう一度確認します。</p></div>
     </div>
+    <div class="account-grid" style="margin-top:20px">
+      <article class="account-card careful"><span class="account-tag">DEFAULT</span><h3 class="h3">ロット倍率 1.50</h3><p class="account-value">初期値・通常推奨</p><p class="account-body">v1.28の固定倍率と同じ動作です。通常は変更せず、1.50のままご利用ください。</p></article>
+      <article class="account-card"><span class="account-tag">ADVANCED</span><h3 class="h3">ロット倍率 1.60</h3><p class="account-value">経験者向け</p><p class="account-body">後半の注文数量が1.50より速く大きくなります。十分な運用資金があり、リスク管理を理解している方向けです。</p></article>
+    </div>
+    <div class="callout warning"><strong>1.60へ変更する前に：</strong>必要資金と損失リスクが増えます。利益が保証される設定ではありません。資金に余裕がない場合や、倍率変更の影響を判断できない場合は、初期値1.50のまま使用してください。</div>
   </section>
   <section class="sec-gray" id="money-management">
     <div class="sec-title"><span class="label">Step 2</span><h2 class="h2">口座タイプ別の資金管理</h2><div class="divider"></div></div>

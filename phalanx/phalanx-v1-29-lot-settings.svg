@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="180" viewBox="0 0 940 180" role="img" aria-labelledby="title desc">
+  <title id="title">PHALANX v1.29 初期ロットとロット倍率</title>
+  <desc id="desc">パラメーターの入力タブで、初期ロット0.01とロット倍率1.50が上下に並ぶ案内図</desc>
+  <rect width="940" height="180" fill="#f4f4f4"/>
+  <rect x="0" y="0" width="940" height="44" fill="#e8e8e8"/>
+  <rect x="248" y="1" width="188" height="42" fill="#ffffff" stroke="#b8b8b8"/>
+  <g fill="#222" font-family="Meiryo, 'Noto Sans JP', sans-serif" font-size="22">
+    <text x="20" y="30">バージョン情報</text>
+    <text x="168" y="30">全般</text>
+    <text x="270" y="30">パラメーターの入力</text>
+    <text x="455" y="30">仕様</text>
+  </g>
+  <rect x="12" y="56" width="916" height="34" fill="#ededed" stroke="#c6c6c6"/>
+  <rect x="12" y="90" width="916" height="36" fill="#ffffff" stroke="#d0d0d0"/>
+  <rect x="12" y="126" width="916" height="36" fill="#f7f7f7" stroke="#d0d0d0"/>
+  <line x1="650" y1="56" x2="650" y2="162" stroke="#c6c6c6"/>
+  <g fill="#222" font-family="Meiryo, 'Noto Sans JP', sans-serif" font-size="21">
+    <text x="32" y="80">変数</text>
+    <text x="670" y="80">値</text>
+    <text x="52" y="116">初期ロット</text>
+    <text x="670" y="116">0.01</text>
+    <text x="52" y="152">ロット倍率</text>
+    <text x="670" y="152">1.50</text>
+  </g>
+  <rect x="22" y="92" width="884" height="68" fill="none" stroke="#e1262f" stroke-width="6"/>
+</svg>

@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="GOLD専用自動売買EA PHALANX v1.28。急変時の自動ブレーキと、保有ポジションを止めない自動時間管理で、荒い相場への防御性能を強化。">
+<meta name="description" content="GOLD専用自動売買EA PHALANX v1.29。急変時の自動ブレーキと自動時間管理を維持し、ロット倍率を運用方針に合わせて変更できるようになりました。">
 <meta name="theme-color" content="#07172b">
-<title>PHALANX v1.28｜急変時に守るGOLD自動売買EA</title>
+<title>PHALANX v1.29｜急変時に守るGOLD自動売買EA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ header.scrolled .brand-mark{border-color:rgba(7,23,43,.15)}
 .feature h3{margin:0 0 8px;font:500 1.15rem/1.5 var(--serif);letter-spacing:.03em}
 .feature p{margin:0;color:#5a6c7d;font-size:.9rem}
 
-/* v1.28 evolution */
+/* v1.29 evolution */
 .evolution{background:linear-gradient(145deg,#061426,#0b2e52);color:#fff}
 .evolution .section-head p{color:#b8c8d8}
 .evolution .eyebrow{color:#8fcff5}
@@ -277,7 +277,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
   <!-- ── HERO ── -->
   <section class="hero">
     <div class="hero-inner">
-      <span class="hero-badge">PHALANX v1.28 / GOLD EA</span>
+      <span class="hero-badge">PHALANX v1.29 / GOLD EA</span>
       <img class="hero-logo" src="phalanx-logo.png" alt="PHALANX">
       <p class="hero-type"><span id="typing" class="caret"></span></p>
       <h1>それは、<span>GOLD</span>のトレードでした。</h1>
@@ -303,7 +303,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
           <p>コードを書く。<br>動かす。<br>ダメなら戻す。<br>また考える。<br>また書き直す。</p>
           <p>「ここは違う」<br>「これは現実的じゃない」<br>「もっと使いやすくできないか」</p>
           <p>デモ環境で実際の動きを確認しながら、何度も修正を重ねてきました。</p>
-          <p>そしてPHALANXは、相場急変時の防御と、保有中の自動管理をさらに磨いた<strong>v1.28</strong>へ進化しました。</p>
+          <p>そしてPHALANXは、v1.28の相場急変時の防御と保有中の自動管理を維持したまま、ロット倍率を運用方針に合わせて変更できる<strong>v1.29</strong>へ進化しました。</p>
         </div>
       </div>
     </div>
@@ -329,11 +329,11 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
     </div>
   </section>
 
-  <!-- ── v1.28 Evolution ── -->
-  <section class="section evolution" id="v128">
+  <!-- ── v1.29 Evolution ── -->
+  <section class="section evolution" id="v129">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="eyebrow">EVOLUTION / v1.28</div>
+        <div class="eyebrow">EVOLUTION / v1.29</div>
         <h2>荒い相場に、<br>ブレーキという進化。</h2>
         <p>急騰・急落時の連続した追加注文を抑え、すでに保有しているポジションは時間外でも管理を継続。止める判断と、保有中の管理を切り分けました。</p>
         <div class="rule"></div>
@@ -344,7 +344,8 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
         <article class="evolution-card"><span class="feature-num">03</span><h3>新規停止後も、保有管理は続く</h3><p>新規エントリーの時間が終了しても、開始済みのサイクルは別の時間枠で追加注文を管理。利確・追尾・損切りなどの決済管理は時間外も継続します。</p></article>
         <article class="evolution-card"><span class="feature-num">04</span><h3>手動停止の負担を軽減</h3><p>「時間になったらEAを止める」のではなく、新規停止と保有中の管理をEAが自動で切り分けます。保有中にMT4を止めてしまう操作リスクも減らせます。</p></article>
       </div>
-      <p class="evolution-note reveal">v1.28の正式ソースで確認済みの公開機能だけを記載しています。内部パラメーター、追加注文の数値条件、決済幅、売買判定の詳細は公開していません。</p>
+      <div class="comparison-warning reveal"><strong>v1.29でロット倍率を変更できます。</strong><br>初期値は1.50です。通常は初期値のままご利用ください。1.60は後半の注文数量がより速く大きくなり、必要資金と損失リスクも増えるため、十分な運用資金があり、リスク管理を理解している方向けです。</div>
+      <p class="evolution-note reveal">v1.29のEAソースで確認済みの公開機能だけを記載しています。ロット倍率以外の内部パラメーター、追加注文の数値条件、決済幅、売買判定の詳細は公開していません。</p>
     </div>
   </section>
 
@@ -364,14 +365,14 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
           <div class="comparison-row"><span>期間利益</span><strong>約74万円</strong></div>
         </article>
         <article class="comparison-card latest">
-          <div class="comparison-version">最新版 / v1.28</div>
+          <div class="comparison-version">比較対象 / v1.28</div>
           <div class="comparison-row"><span>最大ドローダウン</span><strong>約45万円</strong></div>
           <div class="comparison-row"><span>期間利益</span><strong>約36万円</strong></div>
         </article>
       </div>
       <div class="reduction reveal"><span>提供集計上の最大DD</span><strong>約79%減少</strong><span>約215万円 → 約45万円</span></div>
       <div class="comparison-warning reveal"><strong>通常運用の平均的なDDではありません。</strong><br>この週は月初・米国中間選挙・五十日などが重なり、ほぼ全期間にわたって稼働停止を推奨していた特殊な相場環境です。また、両版で口座・設定・開始時点・配信価格が一致する同一条件A/Bの原本は確認できていないため、数値は提供集計の参考表示であり、単純な性能優劣や将来の結果を示すものではありません。</div>
-      <div class="comparison-cta reveal"><a class="btn btn-gold" href="#how">PHALANX v1.28を始める →</a></div>
+      <div class="comparison-cta reveal"><a class="btn btn-gold" href="#how">PHALANX v1.29を始める →</a></div>
     </div>
   </section>
 
@@ -383,7 +384,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
           <div class="eyebrow">LIVE TRADING</div>
           <h3>PHALANXは、<br>実際にこう動く。</h3>
           <p>実際のPHALANX稼働チャート。<br>エントリーから決済まで、すべて自動で行われています。</p>
-          <p class="report-note">※ 2026年8月撮影。v1.28の比較実績画像ではありません。</p>
+          <p class="report-note">※ 2026年8月撮影。v1.29の実績画像ではありません。</p>
         </div>
         <div class="screen-media"><span class="evidence">REAL CHART</span><img src="rapture_20260827141205.jpg" alt="PHALANX 実際の自動売買チャート"></div>
       </article>
@@ -393,7 +394,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
           <h3>利益だけではなく、<br>実際に出金。</h3>
           <div class="metric">500<small>万円から</small></div>
           <p>400万円を出金後も、運用を継続。</p>
-          <p class="report-note">※ 2026年9月時点の旧版運用資料です。v1.28の結果ではなく、将来の利益を保証するものでもありません。</p>
+          <p class="report-note">※ 2026年9月時点の旧版運用資料です。v1.29の結果ではなく、将来の利益を保証するものでもありません。</p>
         </div>
         <div class="screen-media"><span class="evidence">WITHDRAWAL RECORD</span><img src="232977_0.jpg" alt="PHALANX 実運用・出金履歴"></div>
       </article>
@@ -413,7 +414,7 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
         <div class="report-card"><img src="231777_0.jpg" alt="利用者のOpenChat運用報告"></div>
         <div class="report-card"><img src="231778_0.jpg" alt="利用者のOpenChat運用報告"></div>
       </div>
-      <p class="report-disc">※2026年8月までに利用者から共有された旧版運用時の一例です。v1.28の比較実績ではありません。個人が特定される情報は加工しています。運用結果は資金量・口座タイプ・設定・相場状況等によって異なり、将来の利益を保証するものではありません。</p>
+      <p class="report-disc">※2026年8月までに利用者から共有された旧版運用時の一例です。v1.29の実績ではありません。個人が特定される情報は加工しています。運用結果は資金量・口座タイプ・設定・相場状況等によって異なり、将来の利益を保証するものではありません。</p>
     </div>
   </section>
 
@@ -427,10 +428,11 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
       </div>
       <table class="spec-table reveal">
         <tbody>
-          <tr><th>バージョン</th><td>PHALANX v1.28</td></tr>
+          <tr><th>バージョン</th><td>PHALANX v1.29</td></tr>
           <tr><th>対象銘柄</th><td>XAUUSD（GOLD）</td></tr>
           <tr><th>対応プラットフォーム</th><td>MT4</td></tr>
           <tr><th>対応ブローカー</th><td>XMTrading</td></tr>
+          <tr><th>ロット倍率</th><td>初期値1.50（設定画面から変更可能）<br>1.60は十分な運用資金があり、リスク管理を理解している方向け</td></tr>
           <tr><th>新規エントリー時間</th><td>月〜木 12:00〜17:00未満<br>金 12:00〜15:00未満</td></tr>
           <tr><th>保有中の管理</th><td>新規停止後も追加注文の時間管理と決済管理を継続</td></tr>
           <tr><th>VPS</th><td>推奨</td></tr>
@@ -519,7 +521,8 @@ footer{background:var(--ink);color:#9eb0c1;padding:44px 0 30px}
         <details><summary>MICROとSTANDARD、どちらを選べばいいですか？</summary><p>少額から始める場合はMICROを推奨しています。目安はMICRO 10万円以上、STANDARD 100万円以上です。</p></details>
         <details><summary>パートナーコードを入力し忘れました。</summary><p>すでに作成した口座はそのままでも問題ありません。パートナーコード「FMDB2」を入力して、もう一度新しい口座を作成してください。</p></details>
         <details><summary>設置方法が分かりません。</summary><p>確認完了後に設置マニュアルをご案内します。不明点は公式LINEからお問い合わせいただけます。</p></details>
-        <details><summary>新規エントリーの停止時刻にポジションが残っていたら？</summary><p>MT4とEAを止めないでください。PHALANX v1.28は、新規エントリーを止めた後も、保有中の追加注文を別の時間枠で管理し、利確・追尾・損切りなどの決済管理を継続します。</p></details>
+        <details><summary>ロット倍率は変更したほうがよいですか？</summary><p>通常は初期値の1.50を推奨します。1.60は後半の注文数量がより速く大きくなるため、十分な運用資金があり、損失リスクを理解して管理できる場合に限ってご検討ください。</p></details>
+        <details><summary>新規エントリーの停止時刻にポジションが残っていたら？</summary><p>MT4とEAを止めないでください。PHALANX v1.29は、新規エントリーを止めた後も、保有中の追加注文を別の時間枠で管理し、利確・追尾・損切りなどの決済管理を継続します。</p></details>
         <details><summary>急変時の自動ブレーキとは？</summary><p>短時間の急騰・急落を検知したとき、新規エントリーと連続した追加注文を抑える機能です。急変中に通過した追加水準をまとめて埋めず、相場が落ち着いてから通常管理へ戻ります。</p></details>
       </div>
     </div>
