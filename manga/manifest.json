@@ -52,6 +52,6 @@
     "P20.webp": "213e8de888665faa22dbaca0e2b8eac7f75840a483e7b5849e24192c37b5cf73"
   },
   "all_manga_hashes_match": true,
-  "production_published": false,
+  "production_published": true,
   "planned_url": "https://fx.mkjpn.jp/manga/"
 }
