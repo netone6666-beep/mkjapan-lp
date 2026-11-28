@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="PHALANX v1.29の初期ロット、ロット倍率、資金管理、曜日別の運用時間、自動管理を初心者向けに解説します。">
-<title>PHALANX v1.29｜利用者向け設定ガイド</title>
+<meta name="description" content="PHALANX v1.32の初期ロット、ロット倍率、資金管理、曜日別の運用時間、夜間延長モード、自動管理を初心者向けに解説します。">
+<title>PHALANX v1.32｜利用者向け設定ガイド</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -32,16 +32,16 @@ img{display:block;max-width:100%;height:auto}a{color:inherit;text-decoration:non
 <body>
 <header class="hero">
   <img src="phalanx-logo.png" alt="PHALANX" class="hero-logo">
-  <span class="hero-badge">PHALANX v1.29 User Guide</span>
+  <span class="hero-badge">PHALANX v1.32 User Guide</span>
   <h1 class="h1 hero-title">利用者向け<span>設定ガイド</span></h1>
   <div class="hero-line"></div>
-  <p class="hero-sub">最初に必要な初期ロットとロット倍率、曜日・時刻に合わせてEAが何を自動管理するのかを、順番に説明します。</p>
+  <p class="hero-sub">最初に必要な初期ロットとロット倍率、曜日・時刻に合わせてEAが何を自動管理するのか、夜間延長モードの使い方を、順番に説明します。</p>
 </header>
 <section class="sec-navy">
   <span class="label">Before You Start</span><h2 class="h2">このガイドで確認すること</h2>
   <div class="intro-list">
     <div class="intro-item"><span class="intro-num">1</span><span>口座タイプと資金に合う初期ロットを選び、ロット倍率を確認する</span></div>
-    <div class="intro-item"><span class="intro-num">2</span><span>新規エントリーの時間と、保有後の管理時間を分けて理解する</span></div>
+    <div class="intro-item"><span class="intro-num">2</span><span>新規エントリーの時間と、保有後の管理時間を分けて理解する（夜間延長モードは初期値OFF）</span></div>
     <div class="intro-item"><span class="intro-num">3</span><span>ポジション保有中はMT4とEAを止めず、自動管理を継続させる</span></div>
   </div>
 </section>
@@ -49,7 +49,7 @@ img{display:block;max-width:100%;height:auto}a{color:inherit;text-decoration:non
   <section class="sec" id="initial-lot">
     <div class="sec-title"><span class="label">Step 1</span><h2 class="h2">最初に確認する「初期ロット」と「ロット倍率」</h2><div class="divider"></div></div>
     <p class="lead">初期ロットは最初の注文で使う取引数量、ロット倍率は追加注文の数量を計算する倍率です。<strong>運用開始前、ポジションが0件の状態</strong>で設定してください。</p>
-    <div class="screen-card" style="margin-top:20px"><img src="phalanx-v1-29-lot-settings.svg" alt="PHALANX v1.29の初期ロットとロット倍率の入力欄を示す案内図" width="940" height="180"><p class="screen-caption">v1.29では「初期ロット」の直下に「ロット倍率」が表示されます。図は入力位置を示す案内図です。</p></div>
+    <div class="screen-card" style="margin-top:20px"><img src="phalanx-v1-29-lot-settings.svg" alt="PHALANX v1.32の初期ロットとロット倍率の入力欄を示す案内図" width="940" height="180"><p class="screen-caption">「初期ロット」の直下に「ロット倍率」が表示されます。図は入力位置を示す案内図です。</p></div>
     <div class="steps">
       <div class="step"><span class="step-num">1</span><p class="step-text">EAの設定画面を開き、<strong>「パラメーターの入力」</strong>タブを選びます。</p></div>
       <div class="step"><span class="step-num">2</span><p class="step-text"><strong>「初期ロット」</strong>の値をダブルクリックし、口座タイプに合う数値を入力します。</p></div>
@@ -80,6 +80,7 @@ img{display:block;max-width:100%;height:auto}a{color:inherit;text-decoration:non
   <section class="sec" id="trading-hours">
     <div class="sec-title"><span class="label">Step 3</span><h2 class="h2">曜日別の新規エントリー時間</h2><div class="divider"></div></div>
     <table class="hours-table"><thead><tr><th>曜日</th><th>新しい取引サイクルを開始する時間</th></tr></thead><tbody><tr><td>月〜木</td><td>12:00〜17:00</td></tr><tr><td>金曜日</td><td>12:00〜15:00</td></tr><tr><td>土・日</td><td>新規稼働なし</td></tr></tbody></table>
+    <p class="time-note">上の表は<strong>夜間延長モードOFF（初期値）</strong>の時間です。ONにした場合は<a href="#night-extension" style="text-decoration:underline">Step 4</a>をご覧ください。</p>
     <div class="callout important"><strong>時刻は日本時間（JST）です。</strong>EAが夏時間・冬時間を考慮して内部で時刻を合わせるため、通常は利用者が時差を計算する必要はありません。</div>
   </section>
   <section class="sec-gray" id="automatic-management">
@@ -95,13 +96,41 @@ img{display:block;max-width:100%;height:auto}a{color:inherit;text-decoration:non
     <div class="sec-title"><span class="label">How It Works</span><h2 class="h2">3つの処理を分けて理解する</h2><div class="divider"></div></div>
     <div class="difference-grid"><article class="difference-card stop"><h3 class="h3">新規停止</h3><p>新しい取引サイクルを開始しなくなることです。月〜木は17時、金曜は15時です。</p></article><article class="difference-card add"><h3 class="h3">追加注文終了</h3><p>保有サイクルへの追加注文を行わなくなることです。月〜木は20時、金曜は18時です。</p></article><article class="difference-card close"><h3 class="h3">決済管理</h3><p>保有ポジションを監視し、決済条件に応じて処理することです。追加注文終了後も継続します。</p></article></div>
   </section>
-  <section class="sec-gray" id="user-actions">
-    <div class="sec-title"><span class="label">Step 4</span><h2 class="h2">利用者がすること・しないこと</h2><div class="divider"></div></div>
+  <section class="sec-gray" id="night-extension">
+    <div class="sec-title"><span class="label">Step 4</span><h2 class="h2">夜間延長モード（初期値OFF）</h2><div class="divider"></div></div>
+    <p class="lead">月〜木の新規エントリーと追加注文の受付を、夜まで延ばす設定です。<strong>初期値はOFF</strong>で、OFFのままなら上の時間（新規17時まで・追加注文20時まで）で動きます。</p>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><p class="step-text">EAの設定画面の<strong>「パラメーターの入力」</strong>タブで、<strong>「夜間延長モード」</strong>を探します。</p></div>
+      <div class="step"><span class="step-num">2</span><p class="step-text">使わない場合は<strong>false（OFF）</strong>のままにします。使う場合は<strong>true（ON）</strong>に変えて「OK」を押します。</p></div>
+    </div>
+    <table class="hours-table" style="margin-top:20px"><thead><tr><th>設定</th><th>月〜木の新規エントリー</th><th>月〜木の追加注文</th></tr></thead><tbody>
+      <tr><td>OFF（初期値）</td><td>12:00〜17:00</td><td>20:00まで</td></tr>
+      <tr><td>ON・米国夏時間<br><span style="font-weight:400">（3月中旬〜11月上旬）</span></td><td>12:00〜19:00</td><td>21:00まで</td></tr>
+      <tr><td>ON・米国冬時間<br><span style="font-weight:400">（11月上旬〜3月中旬）</span></td><td>12:00〜20:00</td><td>22:00まで</td></tr>
+    </tbody></table>
+    <p class="time-note">時刻は日本時間（JST）です。米国の夏時間・冬時間はEAが自動で判定するので、切り替えの操作は不要です。</p>
+    <div class="compare" aria-label="夜間延長モードの注意点">
+      <div class="compare-row"><div class="compare-key">金曜日</div><div class="compare-value">ON・OFFとも変わりません。新規12:00〜15:00、追加注文18:00までです。</div></div>
+      <div class="compare-row"><div class="compare-key">開始時刻</div><div class="compare-value">ONにしても12:00のままです。延びるのは終わりの時刻だけです。</div></div>
+      <div class="compare-row"><div class="compare-key">停止時刻の設定</div><div class="compare-value">ONの月〜木は、上の表の時刻が優先されます。「通常モード：○曜停止時刻」の値は、OFFのときに使われます。</div></div>
+      <div class="compare-row"><div class="compare-key">対象外の日</div><div class="compare-value">曜日を「終日稼働」または「終日停止」にしている日は、延長されません。</div></div>
+    </div>
+    <div class="callout warning"><strong>延長しても全決済の時刻ではありません。</strong>19時・20時は新規エントリー、21時・22時は追加注文が終わる時刻です。保有ポジションの利益確定・損切りなどの決済管理は、その後も続きます。ONにすると取引する時間帯が夜にかかるため、その分ポジションを持つ時間も長くなります。</div>
+    <h3 class="h3" style="margin-top:30px">チャートでの確認</h3>
+    <p class="lead" style="margin-top:8px">チャート左上の「時間制御」の行で、今の状態を確認できます。</p>
+    <div class="compare" aria-label="チャートの時間制御表示">
+      <div class="compare-row"><div class="compare-key">OFF</div><div class="compare-value">時間制御: 通常モード｜時間指定</div></div>
+      <div class="compare-row"><div class="compare-key">ON</div><div class="compare-value">時間制御: 夜間延長ON｜米国夏時間（または米国冬時間）</div></div>
+      <div class="compare-row"><div class="compare-key">2行目</div><div class="compare-value">新規停止 ○○:○○ JST｜ナンピン停止 ○○:○○ JST｜ENTRY STOP: OFF<br>その日の実際の停止時刻が表示されます。</div></div>
+    </div>
+  </section>
+  <section class="sec" id="user-actions">
+    <div class="sec-title"><span class="label">Step 5</span><h2 class="h2">利用者がすること・しないこと</h2><div class="divider"></div></div>
     <div class="do-grid"><article class="do-card"><h3 class="h3">そのまま任せてよいこと</h3><ul class="do-list"><li>17時・15時になったときの新規停止</li><li>保有中の追加注文時間の管理</li><li>追加注文終了後の決済管理</li><li>翌日へ持ち越したポジションの再認識</li></ul></article><article class="do-card attention"><h3 class="h3">利用者が注意すること</h3><ul class="do-list"><li>ポジション保有中はMT4とEAを終了しない</li><li>インターネット接続と自動売買を有効に保つ</li><li>停止推奨日は新しい運用を開始しない</li><li>金曜日は週末持ち越しを避ける</li></ul></article></div>
     <div class="callout important"><strong>翌日になってもポジションが残る場合：</strong>決済管理は継続します。また、ポジションが残ったまま次の稼働曜日の許可時間に入ると、その保有サイクルへの追加注文判定も再開します。土日は新規・追加注文を行いません。</div>
     <div class="callout warning"><strong>停止推奨日について：</strong>EAは、別途案内される停止推奨日を自動判定しません。ポジションがない状態で新しい運用を始めないでください。すでに保有中の場合はMT4やEAを停止せず、配信された案内に従ってください。</div>
   </section>
-  <section class="sec" id="faq">
+  <section class="sec-gray" id="faq">
     <div class="sec-title"><span class="label">FAQ</span><h2 class="h2">よくある質問</h2><div class="divider"></div></div>
     <div class="faq-list">
       <details class="faq-item"><summary>17時になったら自分でEAを止める必要がありますか？</summary><div class="faq-answer"><strong>必要ありません。</strong>月〜木の17時は新しい取引サイクルの開始が止まる時刻です。保有中の管理はEAに任せ、MT4とEAを稼働させたままにしてください。</div></details>
@@ -110,6 +139,7 @@ img{display:block;max-width:100%;height:auto}a{color:inherit;text-decoration:non
       <details class="faq-item"><summary>決済されずに翌日になった場合はどうなりますか？</summary><div class="faq-answer">EAを稼働させていれば決済管理を続けます。次の稼働曜日の許可時間に入ると、残っている保有サイクルへの追加注文判定も再開します。週末は市場休場により価格更新や注文実行ができない時間があります。</div></details>
       <details class="faq-item"><summary>ENTRY STOPは毎日押す必要がありますか？</summary><div class="faq-answer"><strong>必要ありません。</strong>曜日と時刻による新規停止はEAが自動で行います。ENTRY STOPは利用者が新規・追加注文を手動で止めたい場合の機能で、保有ポジションを決済するボタンではありません。</div></details>
       <details class="faq-item"><summary>停止推奨日はどうすればよいですか？</summary><div class="faq-answer">ポジションが0件であることを確認し、新しい運用を開始しないでください。すでにポジションがある場合は、自動管理を止めないようMT4とEAを稼働させ、配信された案内に従ってください。</div></details>
+      <details class="faq-item"><summary>夜間延長モードは設定しないといけませんか？</summary><div class="faq-answer"><strong>設定は不要です。</strong>初期値はOFFで、OFFのままなら月〜木は新規17時・追加注文20時までの従来どおりの時間で動きます。夜も取引したい場合だけONにしてください。</div></details>
       <details class="faq-item"><summary>資金10万円未満でもマイクロ口座で0.10 lotを使えますか？</summary><div class="faq-answer">機械的に0.10 lotを適用しないでください。資金が少ないほど余裕が小さくなるため、数量を下げるか、必要資金を準備してから開始してください。</div></details>
     </div>
   </section>
